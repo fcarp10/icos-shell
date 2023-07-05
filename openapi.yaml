@@ -1,0 +1,346 @@
+openapi: 3.0.3
+info:
+  title: ICOS Shell
+  description: This is the ICOS Shell based on the OpenAPI 3.0 specification.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+- url: http://localhost:8080/api/v3
+tags:
+- name: resource
+  description: Operations about resources
+- name: deployment
+  description: Operations about deployments
+- name: user
+  description: Operations about user
+
+paths:
+  /healthcheck:
+    get:
+      operationId: getHealthcheck
+      responses:
+        "200":
+          description: successful operation
+  /deployment/:
+    get:
+      tags:
+      - deployment
+      summary: Returns a list of deployments
+      description: Returns the list of deployments
+      operationId: getDeployments
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+      security:
+      - api_key: []
+    post:
+      tags:
+      - deployment
+      summary: Creates a new deployment
+      description: ""
+      operationId: createDeployment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - application
+                - requirements
+              properties:
+                application:
+                  type: string
+                requirements:
+                  type: array
+                  items: 
+                    type: string
+      responses:
+        "201":
+          description: Deployment created
+        "405":
+          description: Invalid input
+      security:
+      - api_key: []
+  /deployment/{deploymentId}:
+    get:
+      tags:
+      - deployment
+      summary: Find deployment by ID
+      description: Returns a single deployment
+      operationId: getDeploymentById
+      parameters:
+      - name: deploymentId
+        in: path
+        description: ID of deployment to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Deployment not found
+      security:
+      - api_key: []
+    put:
+      tags:
+      - deployment
+      summary: Updates a deployment
+      description: "Updates a deployment"
+      operationId: updateDeployment
+      parameters:
+      - name: deploymentId
+        in: path
+        description: ID of deployment that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object 
+              required:
+                - application
+                - requirements
+              properties:
+                application:
+                  type: string
+                requirements:
+                  type: array
+                  items: 
+                    type: string
+      responses:
+        "200":
+          description: Deployment updated
+        "405":
+          description: Invalid input
+      security:
+      - api_key: []
+    delete:
+      tags:
+      - deployment
+      summary: Deletes a deployment
+      description: "Deletes a deployment"
+      operationId: deleteDeploymentById
+      parameters:
+      - name: deploymentId
+        in: path
+        description: ID of deployment that needs to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - api_key: []
+  /resource/:
+    get:
+      tags:
+      - resource
+      summary: Returns a list of resources
+      description: Returns a list of resources
+      operationId: getResources
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+      security:
+      - api_key: []
+  /resource/{resourceId}:
+    get:
+      tags:
+      - resource
+      summary: Find resource by ID
+      description: Returns a single resource
+      operationId: getResourceById
+      parameters:
+      - name: resourceId
+        in: path
+        description: ID of resource to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Deployment not found
+      security:
+      - api_key: []
+  /user/login:
+    get:
+      tags:
+      - user
+      summary: Logs user into the system
+      description: ""
+      operationId: loginUser
+      parameters:
+      - name: username
+        in: query
+        description: The user name for login
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              style: simple
+              explode: false
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      description: ""
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+components:
+  schemas:
+    Resource:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - controller
+          - node
+        parentId:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+          - online
+          - offline
+      example:
+        id: 1
+        name: resource_1
+        type: controller
+        parentId: 1
+        status: online
+    Deployment:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+          - running
+          - pending
+      example:
+        id: 1
+        name: test_deployment
+        status: running
+    User:
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        password:
+          type: string
+        status:
+          type: integer
+          format: int32
+      example:
+        id: 1
+        username: username1
+        password: 123456a
+        status: offline
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
