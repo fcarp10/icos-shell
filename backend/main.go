@@ -13,7 +13,8 @@ import (
 	"log"
 	"net/http"
 
-	shellbackend "github.com/GIT_USER_ID/GIT_REPO_ID/go"
+	// shellbackend "github.com/GIT_USER_ID/GIT_REPO_ID/go" // full path for debugging
+	shellbackend "./go"
 )
 
 func main() {
