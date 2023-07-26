@@ -7,6 +7,8 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 | Class | Method | HTTP request | Description |
 |------------ | ------------- | ------------- | -------------|
+| *ControllerApi* | [**addController**](Apis/ControllerApi.md#addcontroller) | **POST** /controller/ | Adds a new controller |
+*ControllerApi* | [**getControllers**](Apis/ControllerApi.md#getcontrollers) | **GET** /controller/ | Returns a list of controllers |
 | *DefaultApi* | [**getHealthcheck**](Apis/DefaultApi.md#gethealthcheck) | **GET** /healthcheck |  |
 | *DeploymentApi* | [**createDeployment**](Apis/DeploymentApi.md#createdeployment) | **POST** /deployment/ | Creates a new deployment |
 *DeploymentApi* | [**deleteDeploymentById**](Apis/DeploymentApi.md#deletedeploymentbyid) | **DELETE** /deployment/{deploymentId} | Deletes a deployment |
@@ -22,9 +24,9 @@ All URIs are relative to *http://localhost:8080/api/v3*
 <a name="documentation-for-models"></a>
 ## Documentation for Models
 
+ - [Controller](./Models/Controller.md)
  - [Deployment](./Models/Deployment.md)
  - [Resource](./Models/Resource.md)
- - [User](./Models/User.md)
  - [createDeployment_request](./Models/createDeployment_request.md)
 
 

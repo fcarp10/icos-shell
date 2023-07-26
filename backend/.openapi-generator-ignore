@@ -23,3 +23,4 @@
 #!docs/README.md
 
 go/api_default_service.go
+go/api_controller_service.go

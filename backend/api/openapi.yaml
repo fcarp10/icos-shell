@@ -22,6 +22,52 @@ paths:
       responses:
         "200":
           description: successful operation
+  /controller/:
+    get:
+      operationId: getControllers
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Controller'
+                type: array
+          description: successful operation
+      summary: Returns a list of controllers
+      tags:
+      - controller
+    post:
+      operationId: addController
+      parameters:
+      - explode: true
+        in: query
+        name: username
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: password
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Controller'
+        required: true
+      responses:
+        "201":
+          description: Deployment created
+        "405":
+          description: Invalid input
+      summary: Adds a new controller
+      tags:
+      - controller
   /deployment/:
     get:
       description: Returns the list of deployments
@@ -297,26 +343,20 @@ components:
       required:
       - id
       type: object
-    User:
+    Controller:
       example:
-        id: 1
-        username: username1
-        password: 123456a
-        status: offline
+        address: 192.168.100.1
+        name: controller_1
       properties:
-        id:
-          format: int64
-          type: integer
-        username:
+        name:
+          example: controller_1
           type: string
-        password:
+        address:
+          example: 192.168.100.1
           type: string
-        status:
-          format: int32
-          type: integer
       required:
-      - password
-      - username
+      - address
+      - name
       type: object
     createDeployment_request:
       properties:

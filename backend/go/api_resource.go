@@ -10,11 +10,11 @@
 package shellbackend
 
 import (
-	_ "encoding/json"
 	"net/http"
 	"strings"
 
 	"github.com/gorilla/mux"
+	_ "github.com/gorilla/mux"
 )
 
 // ResourceApiController binds http requests to an api service and writes the service results to the http response

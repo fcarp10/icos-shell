@@ -20,6 +20,9 @@ import (
 func main() {
 	log.Printf("Server started")
 
+	ControllerApiService := shellbackend.NewControllerApiService()
+	ControllerApiController := shellbackend.NewControllerApiController(ControllerApiService)
+
 	DefaultApiService := shellbackend.NewDefaultApiService()
 	DefaultApiController := shellbackend.NewDefaultApiController(DefaultApiService)
 
@@ -32,7 +35,7 @@ func main() {
 	UserApiService := shellbackend.NewUserApiService()
 	UserApiController := shellbackend.NewUserApiController(UserApiService)
 
-	router := shellbackend.NewRouter(DefaultApiController, DeploymentApiController, ResourceApiController, UserApiController)
+	router := shellbackend.NewRouter(ControllerApiController, DefaultApiController, DeploymentApiController, ResourceApiController, UserApiController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

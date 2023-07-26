@@ -16,6 +16,13 @@ import (
 
 
 
+// ControllerApiRouter defines the required methods for binding the api requests to a responses for the ControllerApi
+// The ControllerApiRouter implementation should parse necessary information from the http request,
+// pass the data to a ControllerApiServicer to perform the required actions, then write the service results to the http response.
+type ControllerApiRouter interface { 
+	AddController(http.ResponseWriter, *http.Request)
+	GetControllers(http.ResponseWriter, *http.Request)
+}
 // DefaultApiRouter defines the required methods for binding the api requests to a responses for the DefaultApi
 // The DefaultApiRouter implementation should parse necessary information from the http request,
 // pass the data to a DefaultApiServicer to perform the required actions, then write the service results to the http response.
@@ -45,6 +52,16 @@ type ResourceApiRouter interface {
 type UserApiRouter interface { 
 	LoginUser(http.ResponseWriter, *http.Request)
 	LogoutUser(http.ResponseWriter, *http.Request)
+}
+
+
+// ControllerApiServicer defines the api actions for the ControllerApi service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type ControllerApiServicer interface { 
+	AddController(context.Context, string, string, Controller) (ImplResponse, error)
+	GetControllers(context.Context) (ImplResponse, error)
 }
 
 

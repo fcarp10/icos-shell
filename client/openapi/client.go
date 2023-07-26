@@ -49,6 +49,8 @@ type APIClient struct {
 
 	// API Services
 
+	ControllerApi *ControllerApiService
+
 	DefaultApi *DefaultApiService
 
 	DeploymentApi *DeploymentApiService
@@ -74,6 +76,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.ControllerApi = (*ControllerApiService)(&c.common)
 	c.DefaultApi = (*DefaultApiService)(&c.common)
 	c.DeploymentApi = (*DeploymentApiService)(&c.common)
 	c.ResourceApi = (*ResourceApiService)(&c.common)

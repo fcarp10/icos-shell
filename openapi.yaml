@@ -23,6 +23,53 @@ paths:
       responses:
         "200":
           description: successful operation
+  /controller/:
+    get:
+      tags:
+      - controller
+      summary: Returns a list of controllers
+      operationId: getControllers
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Controller'
+    post:
+      tags:
+      - controller
+      summary: Adds a new controller
+      operationId: addController
+      parameters:
+      - name: username
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Controller'
+      responses:
+        "201":
+          description: Deployment created
+        "405":
+          description: Invalid input
+      
   /deployment/:
     get:
       tags:
@@ -318,27 +365,18 @@ components:
         id: 1
         name: test_deployment
         status: running
-    User:
+    Controller:
       required:
-      - username
-      - password
+      - name
+      - address
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        username:
+        name:
           type: string
-        password:
+          example: "controller_1"
+        address:
           type: string
-        status:
-          type: integer
-          format: int32
-      example:
-        id: 1
-        username: username1
-        password: 123456a
-        status: offline
+          example: "192.168.100.1"
   securitySchemes:
     api_key:
       type: apiKey
