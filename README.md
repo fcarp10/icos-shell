@@ -64,9 +64,16 @@ Assuming the server is running in localhost, run the client with:
 ```
 cd client
 go run main.go
-2023/09/19 14:10:04 OK!
+2023/09/19 14:10:04 Server connection successful!
 ```
 
+Other backend servers can be specified with `--server` option:
+
+```
+go run main.go --server=lighthouse.icos-project.eu:8080
+Trying to connect to lighthouse.icos-project.eu:8080
+2023/09/20 12:21:05 Server connection successful!
+```
 
 ## License
 TBD
