@@ -2,78 +2,73 @@
 
 ICOS Shell is a component part of the [ICOS Project](https://cordis.europa.eu/project/id/101070177)
 
-## Generate OpenAPI
+- Backend: server running on the ICOS controller
+- Client: CLI tool for interfacing the Shell backend
 
-Generate the API from the backend with:
+## Run
+
+### Backend
+```
+docker run fcarp10/shell-backend
+```
+
+### CLI
+```
+icos-cli -h
+NAME:
+   icos-cli - CLI
+
+USAGE:
+   icos-cli [global options] command [command options] [arguments...]
+
+VERSION:
+   v0.1
+
+COMMANDS:
+   controller, c  options for controllers
+   help, h        Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --config value, -c value  config file (default: config.yaml) [$CONFIG_FILE]
+   --server value            URL of the shell-backend (default: "localhost:8080")
+   --username value          username (default: "admin")
+   --password value          password
+   --help, -h                show help
+   --version, -v             print the version
+```
+
+
+## Build
+
+### Backend
+```
+cd backend
+docker build .
+```
+
+### CLI
+```
+cd client
+go build -o icos-cli
+```
+
+### Generate OpenAPI
+
+#### Server
 ```
 openapi-generator-cli generate -g go-server -i openapi.yaml -o backend/ --additional-properties=packageName=shellbackend
 ```
 
-Generate the API from the client with:
+#### Client
 ```
 openapi-generator-cli generate -g go -i openapi.yaml -o client/openapi --additional-properties=packageName=shellclient,isGoSubmodule=true
 
 rm client/openapi/go.mod client/openapi/go.sum
 ```
 
-Generate the docs for the APIs with:
+#### Docs
 ```
 openapi-generator-cli generate -g markdown -i openapi.yaml -o docs/
 ```
 
-## Testing the lighthouse
 
-Retrieve the list of controllers from the lighthouse with:
-```
-curl -XGET http://lighthouse.icos-project.eu:8080/api/v3/controller/
-```
-
-Add a new controller to the lighthouse with:
-```
-curl -XPOST 'http://lighthouse.icos-project.eu:8080/api/v3/controller/?username=admin&password=Iki946D56!!J@gSHpuonoUyH1uB*^' -d '{"name": "controller_1", "address": "192.168.100.2"}'
-```
-
-## Run
-
-Run the backend with:
-
-```
-docker run fcarp10/shell-backend
-```
-
-## Debug
-
-### Backend
-
-Adjust the relative paths from `backend/main.go`:
-
-```
-	shellbackend "github.com/GIT_USER_ID/GIT_REPO_ID/go" // full path for debugging
-	// shellbackend "./go" // comment out for debugging
-```
-
-And run the server with:
-```
-cd backend
-go run main.go
-```
-
-### Client
-
-Assuming the server is running in localhost, run the client with:
-```
-cd client
-go run main.go
-2023/09/19 14:10:04 Server connection successful!
-```
-
-Other backend servers can be specified with `--server` option:
-
-```
-go run main.go --server=lighthouse.icos-project.eu:8080
-Trying to connect to lighthouse.icos-project.eu:8080
-2023/09/20 12:21:05 Server connection successful!
-```
-
-## License
-TBD

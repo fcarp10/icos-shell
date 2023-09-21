@@ -20,6 +20,7 @@ paths:
   /healthcheck:
     get:
       operationId: getHealthcheck
+      summary: Health check
       responses:
         "200":
           description: successful operation
@@ -325,18 +326,23 @@ components:
         id:
           type: integer
           format: int64
+          description: Unique identifier of the resource
         name:
           type: string
+          description: Name of the resource
         type:
           type: string
+          description: Type of resource
           enum:
           - controller
           - node
         parentId:
           type: integer
+          description: ID of the parent resource
           format: int64
         status:
           type: string
+          description: Status of the resource
           enum:
           - online
           - offline
@@ -354,10 +360,13 @@ components:
         id:
           type: integer
           format: int64
+          description: Unique identifier of the deployment
         name:
           type: string
+          description: Name of the deployment
         status:
           type: string
+          description: Status of the deployment
           enum:
           - running
           - pending
@@ -374,9 +383,11 @@ components:
         name:
           type: string
           example: "controller_1"
+          description: Name of the controller
         address:
           type: string
           example: "192.168.100.1"
+          description: IP address of the controller
   securitySchemes:
     api_key:
       type: apiKey
