@@ -14,27 +14,28 @@ docker run fcarp10/shell-backend
 
 ### CLI
 ```
-icos-cli -h
-NAME:
-   icos-cli - CLI
+./icos-shell -h
+icos-shell - a CLI to interface the ICOS Shell
+   
+The icos-shell can be used to modify or inspect resources in the ICOS controller from the terminal
 
-USAGE:
-   icos-cli [global options] command [command options] [arguments...]
+Usage:
+  icos-shell [command]
 
-VERSION:
-   v0.1
+Available Commands:
+  add         Add a resource
+  completion  Generate the autocompletion script for the specified shell
+  get         Get a resource
+  help        Help about any command
 
-COMMANDS:
-   controller, c  options for controllers
-   help, h        Shows a list of commands or help for one command
+Flags:
+      --config string     config file (default "$XDG_CONFIG_HOME/icos-shell/config.yaml")
+  -h, --help              help for icos-shell
+  -p, --password string   password parameter
+  -s, --server string     server URL (default "localhost:8080")
+  -u, --username string   username parameter (default "admin")
 
-GLOBAL OPTIONS:
-   --config value, -c value  config file (default: config.yaml) [$CONFIG_FILE]
-   --server value            URL of the shell-backend (default: "localhost:8080")
-   --username value          username (default: "admin")
-   --password value          password
-   --help, -h                show help
-   --version, -v             print the version
+Use "icos-shell [command] --help" for more information about a command.
 ```
 
 
@@ -49,7 +50,7 @@ docker build .
 ### CLI
 ```
 cd client
-go build -o icos-cli
+go build -o icos-shell
 ```
 
 ### Generate OpenAPI
@@ -61,7 +62,7 @@ openapi-generator-cli generate -g go-server -i openapi.yaml -o backend/ --additi
 
 #### Client
 ```
-openapi-generator-cli generate -g go -i openapi.yaml -o client/openapi --additional-properties=packageName=shellclient,isGoSubmodule=true
+openapi-generator-cli generate -g go -i openapi.yaml -o client/pkg/openapi --additional-properties=packageName=openapi,isGoSubmodule=true
 
 rm client/openapi/go.mod client/openapi/go.sum
 ```
