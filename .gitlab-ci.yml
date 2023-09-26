@@ -4,6 +4,6 @@ include:
     file: '/pipelines/docker-build.yml'
 
 variables:
-  PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: 'backend'
-  PH_KANIKO_OPTS: '--cache-copy-layers=false'
-  PH_DOCKER_IMAGE_PATH: 'icos/shell-backend'
+  PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
+  PH_KANIKO_OPTS: --cache-copy-layers=false
+  PH_DOCKER_IMAGE_PATH: icos/shell-backend
