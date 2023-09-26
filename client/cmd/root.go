@@ -82,5 +82,5 @@ func initConfig() {
 	}
 
 	fmt.Println("Server:", viper.GetString("server"))
-	openapi.Init()
+	openapi.Init(viper.GetString("server"))
 }

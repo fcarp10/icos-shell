@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/openapi"
+	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_DeploymentApiService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService CreateDeployment", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		httpRes, err := apiClient.DeploymentApi.CreateDeployment(context.Background()).Execute()
 
@@ -35,7 +36,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService DeleteDeploymentById", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var deploymentId int64
 
@@ -48,7 +49,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService GetDeploymentById", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var deploymentId int64
 
@@ -62,7 +63,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService GetDeployments", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.DeploymentApi.GetDeployments(context.Background()).Execute()
 
@@ -74,7 +75,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService UpdateDeployment", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var deploymentId int64
 

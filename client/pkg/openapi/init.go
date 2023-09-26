@@ -1,11 +1,9 @@
 package openapi
 
-import "github.com/spf13/viper"
-
 var Client *APIClient
 
-func Init() {
+func Init(server string) {
 	cfg := NewConfiguration()
-	cfg.Host = viper.GetString("server")
+	cfg.Host = server
 	Client = NewAPIClient(cfg)
 }

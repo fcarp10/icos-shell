@@ -86,7 +86,7 @@ func (s *ControllerApiService) GetControllers(ctx context.Context) (ImplResponse
 	// Add api_controller_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 	var controllers = GetControllersList()
 	if controllers == nil {
-		return Response(200, "No controllers in the lighthouse"), nil
+		return Response(200, map[string]string{"msg": "No controllers in the lighthouse"}), nil
 	} else {
 		return Response(200, controllers), nil
 	}

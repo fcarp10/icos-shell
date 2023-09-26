@@ -13,7 +13,7 @@ import (
 	"log"
 	"net/http"
 
-	// shellbackend "github.com/GIT_USER_ID/GIT_REPO_ID/go" // full path for debugging
+	// shellbackend "github.com/tubskns/icos-shell/backend/go" // full path for debugging
 	shellbackend "./go"
 )
 

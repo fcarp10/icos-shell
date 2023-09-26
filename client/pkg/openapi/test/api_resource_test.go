@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/openapi"
+	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_ResourceApiService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 	t.Run("Test ResourceApiService GetResourceById", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var resourceId int64
 
@@ -38,7 +39,7 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 	t.Run("Test ResourceApiService GetResources", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ResourceApi.GetResources(context.Background()).Execute()
 
