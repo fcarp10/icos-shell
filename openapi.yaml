@@ -39,6 +39,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Controller'
+        "204":
+          description: No content
     post:
       tags:
       - controller
@@ -67,7 +69,9 @@ paths:
               $ref: '#/components/schemas/Controller'
       responses:
         "201":
-          description: Deployment created
+          description: Controller added
+        "202":
+          description: Controller already exists
         "405":
           description: Invalid input
       

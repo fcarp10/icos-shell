@@ -38,19 +38,28 @@ func DeleteController(key string) {
 	delete(timers, key)
 }
 
-func StartTimer(name string, controller Controller) {
-	// Create a new timer
-	timer := time.NewTimer(time.Second * time.Duration(TIMEOUT))
-	// Store the timer in the map
-	timers[name] = TimerData{
-		timer:      timer,
-		controller: controller,
+func AddController(controller Controller) bool {
+	key := controller.Address
+	val, exists := timers[key]
+	duration := time.Second * time.Duration(TIMEOUT)
+	if exists {
+		val.timer.Reset(duration)
+		fmt.Printf("Timer reset for controller: '%s'\n", controller.Address)
+		return true
+	} else {
+		timer := time.NewTimer(duration)
+		timers[key] = TimerData{
+			timer:      timer,
+			controller: controller,
+		}
+		fmt.Printf("Controller added: '%s'\n", controller.Address)
+		// Start a goroutine to wait for the timer to expire
+		go func() {
+			<-timer.C
+			DeleteController(key)
+		}()
+		return false
 	}
-	// Start a goroutine to wait for the timer to expire
-	go func() {
-		<-timer.C
-		DeleteController(name)
-	}()
 }
 
 func GetControllersList() []Controller {
@@ -68,27 +77,24 @@ func NewControllerApiService() ControllerApiServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerApiService) AddController(ctx context.Context, username string, password string, controller Controller) (ImplResponse, error) {
-	// TODO - update AddController with the required logic for this service method.
-	// Add api_controller_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 	if (strings.Compare(username, USER) == 0) && (strings.Compare(password, PASS) == 0) {
-		StartTimer(controller.Name, controller)
-		return Response(201, "Controller correctly added"), nil
+		exists := AddController(controller)
+		if exists {
+			return Response(202, "Controller already exists, timer has been reset"), nil
+		} else {
+			return Response(201, "New controller correctly added"), nil
+		}
 	} else {
 		return Response(405, nil), errors.New("Wrong user or password")
 	}
-
-	// return Response(http.StatusNotImplemented, nil), errors.New("AddController method not implemented")
 }
 
 // GetControllers - Returns a list of controllers
 func (s *ControllerApiService) GetControllers(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetControllers with the required logic for this service method.
-	// Add api_controller_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 	var controllers = GetControllersList()
 	if controllers == nil {
-		return Response(200, map[string]string{"msg": "No controllers in the lighthouse"}), nil
+		return Response(204, nil), nil
 	} else {
 		return Response(200, controllers), nil
 	}
-	// return Response(http.StatusNotImplemented, nil), errors.New("GetControllers method not implemented")
 }
