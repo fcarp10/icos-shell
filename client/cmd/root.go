@@ -39,23 +39,18 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "$XDG_CONFIG_HOME/icos-shell/config.yaml", "config file")
-	rootCmd.PersistentFlags().StringP("server", "s", "localhost:8080", "server URL")
-	rootCmd.PersistentFlags().StringP("username", "u", "admin", "username parameter")
+	rootCmd.PersistentFlags().StringP("lighthouse", "l", "", "lighthouse address")
+	rootCmd.PersistentFlags().StringP("controller", "b", "", "controller address")
+	rootCmd.PersistentFlags().StringP("username", "u", "", "username parameter")
 	rootCmd.PersistentFlags().StringP("password", "p", "", "password parameter")
+	rootCmd.PersistentFlags().StringP("token", "t", "", "token")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	viper.BindPFlag("server", rootCmd.PersistentFlags().Lookup("server"))
+	viper.BindPFlag("lighthouse", rootCmd.PersistentFlags().Lookup("lighthouse"))
+	viper.BindPFlag("controller", rootCmd.PersistentFlags().Lookup("controller"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
-
+	viper.BindPFlag("token", rootCmd.PersistentFlags().Lookup("token"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -81,6 +76,14 @@ func initConfig() {
 		fmt.Fprintln(os.Stderr, "Config:", viper.ConfigFileUsed())
 	}
 
-	fmt.Println("Server:", viper.GetString("server"))
-	openapi.Init(viper.GetString("server"))
+	if viper.GetString("controller") == "" {
+		fmt.Println("Controller not defined")
+		os.Exit(0)
+	} else if viper.GetString("controller") != "" && viper.GetString("token") == "" {
+		fmt.Println("Token is empty, you must login first")
+	} else {
+		fmt.Println("Controller:", viper.GetString("controller"))
+		fmt.Println("Token found:", viper.GetString("token"))
+	}
+	openapi.Init(viper.GetString("controller"))
 }
