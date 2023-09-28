@@ -1,9 +1,48 @@
 include:
   - project: 'icos/common/pipeline-helpers'
     ref: main
-    file: '/pipelines/docker-build.yml'
+    file: '/all-job-templates.yml'
 
-variables:
-  PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
-  PH_KANIKO_OPTS: --cache-copy-layers=false
-  PH_DOCKER_IMAGE_PATH: icos/shell-backend
+
+# Backend Jobs
+
+backend-docker:
+  extends: .build_with_kaniko
+  variables:
+    PH_KANIKO_OPTS: --cache-copy-layers=false
+    PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
+    PH_DOCKER_IMAGE_PATH: icos/shell-backend
+
+backend-lint:
+  extends: .go-job-lint
+  allow_failure: true
+  variables:
+    PH_GO_SRC_DIR: backend
+
+backend-test:
+  extends: .go-job-test
+  allow_failure: true
+  variables:
+    PH_GO_SRC_DIR: backend
+    PH_GO_VERSION: "1.10"
+
+
+# Client Jobs
+
+cli-compile:
+  extends: .go-job-compile
+  variables:
+    PH_GO_SRC_DIR: client
+    PH_GO_OUTPUT_FILENAME: icosctl
+
+cli-lint:
+  extends: .go-job-lint
+  allow_failure: true
+  variables:
+    PH_GO_SRC_DIR: client
+
+cli-test:
+  extends: .go-job-test
+  allow_failure: true
+  variables:
+    PH_GO_SRC_DIR: client
