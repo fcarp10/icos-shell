@@ -79,11 +79,11 @@ type DefaultAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type DeploymentAPIServicer interface { 
-	CreateDeployment(context.Context, Descriptor) (ImplResponse, error)
+	CreateDeployment(context.Context, map[string]interface{}) (ImplResponse, error)
 	DeleteDeploymentById(context.Context, int64) (ImplResponse, error)
 	GetDeploymentById(context.Context, int64) (ImplResponse, error)
 	GetDeployments(context.Context) (ImplResponse, error)
-	UpdateDeployment(context.Context, int64, Descriptor) (ImplResponse, error)
+	UpdateDeployment(context.Context, int64, map[string]interface{}) (ImplResponse, error)
 }
 
 

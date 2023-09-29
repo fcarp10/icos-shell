@@ -80,22 +80,14 @@ func (c *DeploymentAPIController) Routes() Routes {
 
 // CreateDeployment - Creates a new deployment
 func (c *DeploymentAPIController) CreateDeployment(w http.ResponseWriter, r *http.Request) {
-	descriptorParam := Descriptor{}
+	bodyParam := map[string]interface{}{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&descriptorParam); err != nil {
+	if err := d.Decode(&bodyParam); err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertDescriptorRequired(descriptorParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertDescriptorConstraints(descriptorParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.CreateDeployment(r.Context(), descriptorParam)
+	result, err := c.service.CreateDeployment(r.Context(), bodyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -170,22 +162,14 @@ func (c *DeploymentAPIController) UpdateDeployment(w http.ResponseWriter, r *htt
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	descriptorParam := Descriptor{}
+	bodyParam := map[string]interface{}{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&descriptorParam); err != nil {
+	if err := d.Decode(&bodyParam); err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertDescriptorRequired(descriptorParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertDescriptorConstraints(descriptorParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, descriptorParam)
+	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, bodyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

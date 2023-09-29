@@ -19,12 +19,12 @@ import (
 )
 
 
-// UserApiService UserApi service
-type UserApiService service
+// UserAPIService UserAPI service
+type UserAPIService service
 
 type ApiLoginUserRequest struct {
 	ctx context.Context
-	ApiService *UserApiService
+	ApiService *UserAPIService
 	username *string
 	password *string
 }
@@ -53,7 +53,7 @@ LoginUser Logs user into the system
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLoginUserRequest
 */
-func (a *UserApiService) LoginUser(ctx context.Context) ApiLoginUserRequest {
+func (a *UserAPIService) LoginUser(ctx context.Context) ApiLoginUserRequest {
 	return ApiLoginUserRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -62,7 +62,7 @@ func (a *UserApiService) LoginUser(ctx context.Context) ApiLoginUserRequest {
 
 // Execute executes the request
 //  @return string
-func (a *UserApiService) LoginUserExecute(r ApiLoginUserRequest) (string, *http.Response, error) {
+func (a *UserAPIService) LoginUserExecute(r ApiLoginUserRequest) (string, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -70,7 +70,7 @@ func (a *UserApiService) LoginUserExecute(r ApiLoginUserRequest) (string, *http.
 		localVarReturnValue  string
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserApiService.LoginUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.LoginUser")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -143,7 +143,7 @@ func (a *UserApiService) LoginUserExecute(r ApiLoginUserRequest) (string, *http.
 
 type ApiLogoutUserRequest struct {
 	ctx context.Context
-	ApiService *UserApiService
+	ApiService *UserAPIService
 }
 
 func (r ApiLogoutUserRequest) Execute() (*http.Response, error) {
@@ -158,7 +158,7 @@ LogoutUser Logs out current logged in user session
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLogoutUserRequest
 */
-func (a *UserApiService) LogoutUser(ctx context.Context) ApiLogoutUserRequest {
+func (a *UserAPIService) LogoutUser(ctx context.Context) ApiLogoutUserRequest {
 	return ApiLogoutUserRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -166,14 +166,14 @@ func (a *UserApiService) LogoutUser(ctx context.Context) ApiLogoutUserRequest {
 }
 
 // Execute executes the request
-func (a *UserApiService) LogoutUserExecute(r ApiLogoutUserRequest) (*http.Response, error) {
+func (a *UserAPIService) LogoutUserExecute(r ApiLogoutUserRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserApiService.LogoutUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.LogoutUser")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -49,15 +49,15 @@ type APIClient struct {
 
 	// API Services
 
-	ControllerApi *ControllerApiService
+	ControllerAPI *ControllerAPIService
 
-	DefaultApi *DefaultApiService
+	DefaultAPI *DefaultAPIService
 
-	DeploymentApi *DeploymentApiService
+	DeploymentAPI *DeploymentAPIService
 
-	ResourceApi *ResourceApiService
+	ResourceAPI *ResourceAPIService
 
-	UserApi *UserApiService
+	UserAPI *UserAPIService
 }
 
 type service struct {
@@ -76,11 +76,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.ControllerApi = (*ControllerApiService)(&c.common)
-	c.DefaultApi = (*DefaultApiService)(&c.common)
-	c.DeploymentApi = (*DeploymentApiService)(&c.common)
-	c.ResourceApi = (*ResourceApiService)(&c.common)
-	c.UserApi = (*UserApiService)(&c.common)
+	c.ControllerAPI = (*ControllerAPIService)(&c.common)
+	c.DefaultAPI = (*DefaultAPIService)(&c.common)
+	c.DeploymentAPI = (*DeploymentAPIService)(&c.common)
+	c.ResourceAPI = (*ResourceAPIService)(&c.common)
+	c.UserAPI = (*UserAPIService)(&c.common)
 
 	return c
 }
@@ -448,6 +448,7 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 			return
 		}
 		_, err = f.Seek(0, io.SeekStart)
+		err = os.Remove(f.Name())
 		return
 	}
 	if f, ok := v.(**os.File); ok {
@@ -460,6 +461,7 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 			return
 		}
 		_, err = (*f).Seek(0, io.SeekStart)
+		err = os.Remove((*f).Name())
 		return
 	}
 	if xmlCheck.MatchString(contentType) {
@@ -536,7 +538,11 @@ func setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err e
 	} else if jsonCheck.MatchString(contentType) {
 		err = json.NewEncoder(bodyBuf).Encode(body)
 	} else if xmlCheck.MatchString(contentType) {
-		err = xml.NewEncoder(bodyBuf).Encode(body)
+		var bs []byte
+		bs, err = xml.Marshal(body)
+		if err == nil {
+			bodyBuf.Write(bs)
+		}
 	}
 
 	if err != nil {

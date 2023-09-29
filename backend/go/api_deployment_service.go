@@ -27,7 +27,7 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 }
 
 // CreateDeployment - Creates a new deployment
-func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, descriptor Descriptor) (ImplResponse, error) {
+func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}) (ImplResponse, error) {
 	// TODO - update CreateDeployment with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -80,7 +80,7 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse
 }
 
 // UpdateDeployment - Updates a deployment
-func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, descriptor Descriptor) (ImplResponse, error) {
+func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, body map[string]interface{}) (ImplResponse, error) {
 	// TODO - update UpdateDeployment with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

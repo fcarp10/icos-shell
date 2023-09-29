@@ -19,12 +19,12 @@ import (
 )
 
 
-// ControllerApiService ControllerApi service
-type ControllerApiService service
+// ControllerAPIService ControllerAPI service
+type ControllerAPIService service
 
 type ApiAddControllerRequest struct {
 	ctx context.Context
-	ApiService *ControllerApiService
+	ApiService *ControllerAPIService
 	username *string
 	password *string
 	controller *Controller
@@ -55,7 +55,7 @@ AddController Adds a new controller
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiAddControllerRequest
 */
-func (a *ControllerApiService) AddController(ctx context.Context) ApiAddControllerRequest {
+func (a *ControllerAPIService) AddController(ctx context.Context) ApiAddControllerRequest {
 	return ApiAddControllerRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -63,14 +63,14 @@ func (a *ControllerApiService) AddController(ctx context.Context) ApiAddControll
 }
 
 // Execute executes the request
-func (a *ControllerApiService) AddControllerExecute(r ApiAddControllerRequest) (*http.Response, error) {
+func (a *ControllerAPIService) AddControllerExecute(r ApiAddControllerRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ControllerApiService.AddController")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ControllerAPIService.AddController")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -141,7 +141,7 @@ func (a *ControllerApiService) AddControllerExecute(r ApiAddControllerRequest) (
 
 type ApiGetControllersRequest struct {
 	ctx context.Context
-	ApiService *ControllerApiService
+	ApiService *ControllerAPIService
 }
 
 func (r ApiGetControllersRequest) Execute() ([]Controller, *http.Response, error) {
@@ -154,7 +154,7 @@ GetControllers Returns a list of controllers
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetControllersRequest
 */
-func (a *ControllerApiService) GetControllers(ctx context.Context) ApiGetControllersRequest {
+func (a *ControllerAPIService) GetControllers(ctx context.Context) ApiGetControllersRequest {
 	return ApiGetControllersRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -163,7 +163,7 @@ func (a *ControllerApiService) GetControllers(ctx context.Context) ApiGetControl
 
 // Execute executes the request
 //  @return []Controller
-func (a *ControllerApiService) GetControllersExecute(r ApiGetControllersRequest) ([]Controller, *http.Response, error) {
+func (a *ControllerAPIService) GetControllersExecute(r ApiGetControllersRequest) ([]Controller, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -171,7 +171,7 @@ func (a *ControllerApiService) GetControllersExecute(r ApiGetControllersRequest)
 		localVarReturnValue  []Controller
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ControllerApiService.GetControllers")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ControllerAPIService.GetControllers")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

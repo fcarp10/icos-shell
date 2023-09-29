@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"os"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/spf13/viper"
-	"github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func AddController(name string, address string) (result string) {
 	controller := *openapi.NewController(name, address)
-	resp, err := openapi.Client.ControllerApi.AddController(context.Background()).Username(viper.GetString("username")).Password(viper.GetString("password")).Controller(controller).Execute()
+	resp, err := openapi.Client.ControllerAPI.AddController(context.Background()).Username(viper.GetString("username")).Password(viper.GetString("password")).Controller(controller).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		fmt.Fprintf(os.Stderr, "%v\n", resp.Body)
@@ -28,7 +29,7 @@ func AddController(name string, address string) (result string) {
 }
 
 func GetController() (result string) {
-	controllers, resp, err := openapi.Client.ControllerApi.GetControllers(context.Background()).Execute()
+	controllers, resp, err := openapi.Client.ControllerAPI.GetControllers(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return "Error when retrieving controllers"

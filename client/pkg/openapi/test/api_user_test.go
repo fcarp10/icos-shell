@@ -16,19 +16,19 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
+	openapi "shellclient/pkg/openapi"
 )
 
 func Test_openapi_UserApiService(t *testing.T) {
 
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := openapi.NewConfiguration()
+	apiClient := openapi.NewAPIClient(configuration)
 
 	t.Run("Test UserApiService LoginUser", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.UserApi.LoginUser(context.Background()).Execute()
+		resp, httpRes, err := apiClient.UserAPI.LoginUser(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -40,7 +40,7 @@ func Test_openapi_UserApiService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		httpRes, err := apiClient.UserApi.LogoutUser(context.Background()).Execute()
+		httpRes, err := apiClient.UserAPI.LogoutUser(context.Background()).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

@@ -13,9 +13,10 @@ import (
 	"context"
 	"testing"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_ControllerApiService(t *testing.T) {
@@ -30,7 +31,7 @@ func Test_openapi_ControllerApiService(t *testing.T) {
 
 		// httpRes, err := openapi.Client.ControllerApi.AddController(context.Background()).Execute()
 		controller := *openapi.NewController("name_test", "address_test")
-		httpRes, err := openapi.Client.ControllerApi.AddController(context.Background()).Username(username).Password(password).Controller(controller).Execute()
+		httpRes, err := openapi.Client.ControllerAPI.AddController(context.Background()).Username(username).Password(password).Controller(controller).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 201, httpRes.StatusCode)
@@ -41,7 +42,7 @@ func Test_openapi_ControllerApiService(t *testing.T) {
 
 		// t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := openapi.Client.ControllerApi.GetControllers(context.Background()).Execute()
+		resp, httpRes, err := openapi.Client.ControllerAPI.GetControllers(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

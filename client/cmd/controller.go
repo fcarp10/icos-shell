@@ -6,8 +6,9 @@ package cmd
 import (
 	"fmt"
 
+	"shellclient/pkg/cli"
+
 	"github.com/spf13/cobra"
-	"github.com/tubskns/icos-shell/client/pkg/cli"
 )
 
 // controllerCmd represents the controller command
@@ -39,7 +40,7 @@ func init() {
 	var addControllerCmd = *controllerCmd
 	getCmd.AddCommand(&getControllerCmd)
 	addCmd.AddCommand(&addControllerCmd)
-	
+
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -48,7 +49,7 @@ func init() {
 	addControllerCmd.PersistentFlags().StringP("address", "a", "", "Address of the controller")
 	addControllerCmd.MarkPersistentFlagRequired("name")
 	addControllerCmd.MarkPersistentFlagRequired("address")
-	
+
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// controllerCmd.Flags().StringP("name", "n", "", "Name of the controller")

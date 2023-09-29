@@ -6,8 +6,9 @@ package cmd
 import (
 	"fmt"
 
+	"shellclient/pkg/cli"
+
 	"github.com/spf13/cobra"
-	"github.com/tubskns/icos-shell/client/pkg/cli"
 )
 
 // deploymentCmd represents the deployment command

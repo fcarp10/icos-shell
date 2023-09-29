@@ -373,36 +373,16 @@ components:
           example: "192.168.100.1"
           description: IP address of the controller
     Descriptor:
-      required:
-      - name
-      - components
-      - requirements
-      type: object
-      properties:
-        name:
-          type: string
-          example: "my_application"
-          description: Name of the application
-        components:
-          type: array
-          description: List of components
-          items: 
-            $ref: "#/components/schemas/Components"
-        requirements:
-          type: array
-          description: List of requirements
-          items:
-            $ref: "#/components/schemas/Requirements"
-    Components:
       type: object
       example:
-        name: component-1
-        type: helm
+        name: "my_application"
+        components: 
+          - name: component-1
+            type: helm
+            repository: foo/bar
+        Requirements:
+          - optimization_metric: metric_x
         repository: foo/bar
-    Requirements:
-      type: object
-      example:
-        optimization_metric: metric_x
   securitySchemes:
     api_key:
       type: apiKey

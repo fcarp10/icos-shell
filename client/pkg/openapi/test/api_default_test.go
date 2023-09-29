@@ -13,21 +13,22 @@ import (
 	"context"
 	"testing"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_DefaultApiService(t *testing.T) {
 
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := openapi.NewConfiguration()
+	apiClient := openapi.NewAPIClient(configuration)
 
 	t.Run("Test DefaultApiService GetHealthcheck", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		httpRes, err := apiClient.DefaultApi.GetHealthcheck(context.Background()).Execute()
+		httpRes, err := apiClient.DefaultAPI.GetHealthcheck(context.Background()).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

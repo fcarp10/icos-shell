@@ -35,6 +35,8 @@ paths:
                   $ref: '#/components/schemas/Controller'
                 type: array
           description: successful operation
+        "204":
+          description: No content
       summary: Returns a list of controllers
       tags:
       - controller
@@ -63,7 +65,9 @@ paths:
         required: true
       responses:
         "201":
-          description: Deployment created
+          description: Controller added
+        "202":
+          description: Controller already exists
         "405":
           description: Invalid input
       summary: Adds a new controller
@@ -92,9 +96,9 @@ paths:
       operationId: createDeployment
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              $ref: '#/components/schemas/createDeployment_request'
+              $ref: '#/components/schemas/Descriptor'
         required: true
       responses:
         "201":
@@ -172,9 +176,9 @@ paths:
         style: simple
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              $ref: '#/components/schemas/createDeployment_request'
+              $ref: '#/components/schemas/Descriptor'
         required: true
       responses:
         "200":
@@ -369,17 +373,16 @@ components:
       - address
       - name
       type: object
-    createDeployment_request:
-      properties:
-        application:
-          type: string
-        requirements:
-          items:
-            type: string
-          type: array
-      required:
-      - application
-      - requirements
+    Descriptor:
+      example:
+        name: my_application
+        components:
+        - name: component-1
+          type: helm
+          repository: foo/bar
+        Requirements:
+        - optimization_metric: metric_x
+        repository: foo/bar
       type: object
   securitySchemes:
     api_key:

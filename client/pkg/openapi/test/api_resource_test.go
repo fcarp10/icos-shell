@@ -13,15 +13,16 @@ import (
 	"context"
 	"testing"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_ResourceApiService(t *testing.T) {
 
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := openapi.NewConfiguration()
+	apiClient := openapi.NewAPIClient(configuration)
 
 	t.Run("Test ResourceApiService GetResourceById", func(t *testing.T) {
 
@@ -29,7 +30,7 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 		var resourceId int64
 
-		resp, httpRes, err := apiClient.ResourceApi.GetResourceById(context.Background(), resourceId).Execute()
+		resp, httpRes, err := apiClient.ResourceAPI.GetResourceById(context.Background(), resourceId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -41,7 +42,7 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.ResourceApi.GetResources(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ResourceAPI.GetResources(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

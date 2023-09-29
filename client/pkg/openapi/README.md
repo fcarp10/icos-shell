@@ -77,24 +77,23 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ControllerApi* | [**AddController**](docs/ControllerApi.md#addcontroller) | **Post** /controller/ | Adds a new controller
-*ControllerApi* | [**GetControllers**](docs/ControllerApi.md#getcontrollers) | **Get** /controller/ | Returns a list of controllers
-*DefaultApi* | [**GetHealthcheck**](docs/DefaultApi.md#gethealthcheck) | **Get** /healthcheck | Health check
-*DeploymentApi* | [**CreateDeployment**](docs/DeploymentApi.md#createdeployment) | **Post** /deployment/ | Creates a new deployment
-*DeploymentApi* | [**DeleteDeploymentById**](docs/DeploymentApi.md#deletedeploymentbyid) | **Delete** /deployment/{deploymentId} | Deletes a deployment
-*DeploymentApi* | [**GetDeploymentById**](docs/DeploymentApi.md#getdeploymentbyid) | **Get** /deployment/{deploymentId} | Find deployment by ID
-*DeploymentApi* | [**GetDeployments**](docs/DeploymentApi.md#getdeployments) | **Get** /deployment/ | Returns a list of deployments
-*DeploymentApi* | [**UpdateDeployment**](docs/DeploymentApi.md#updatedeployment) | **Put** /deployment/{deploymentId} | Updates a deployment
-*ResourceApi* | [**GetResourceById**](docs/ResourceApi.md#getresourcebyid) | **Get** /resource/{resourceId} | Find resource by ID
-*ResourceApi* | [**GetResources**](docs/ResourceApi.md#getresources) | **Get** /resource/ | Returns a list of resources
-*UserApi* | [**LoginUser**](docs/UserApi.md#loginuser) | **Get** /user/login | Logs user into the system
-*UserApi* | [**LogoutUser**](docs/UserApi.md#logoutuser) | **Get** /user/logout | Logs out current logged in user session
+*ControllerAPI* | [**AddController**](docs/ControllerAPI.md#addcontroller) | **Post** /controller/ | Adds a new controller
+*ControllerAPI* | [**GetControllers**](docs/ControllerAPI.md#getcontrollers) | **Get** /controller/ | Returns a list of controllers
+*DefaultAPI* | [**GetHealthcheck**](docs/DefaultAPI.md#gethealthcheck) | **Get** /healthcheck | Health check
+*DeploymentAPI* | [**CreateDeployment**](docs/DeploymentAPI.md#createdeployment) | **Post** /deployment/ | Creates a new deployment
+*DeploymentAPI* | [**DeleteDeploymentById**](docs/DeploymentAPI.md#deletedeploymentbyid) | **Delete** /deployment/{deploymentId} | Deletes a deployment
+*DeploymentAPI* | [**GetDeploymentById**](docs/DeploymentAPI.md#getdeploymentbyid) | **Get** /deployment/{deploymentId} | Find deployment by ID
+*DeploymentAPI* | [**GetDeployments**](docs/DeploymentAPI.md#getdeployments) | **Get** /deployment/ | Returns a list of deployments
+*DeploymentAPI* | [**UpdateDeployment**](docs/DeploymentAPI.md#updatedeployment) | **Put** /deployment/{deploymentId} | Updates a deployment
+*ResourceAPI* | [**GetResourceById**](docs/ResourceAPI.md#getresourcebyid) | **Get** /resource/{resourceId} | Find resource by ID
+*ResourceAPI* | [**GetResources**](docs/ResourceAPI.md#getresources) | **Get** /resource/ | Returns a list of resources
+*UserAPI* | [**LoginUser**](docs/UserAPI.md#loginuser) | **Get** /user/login | Logs user into the system
+*UserAPI* | [**LogoutUser**](docs/UserAPI.md#logoutuser) | **Get** /user/logout | Logs out current logged in user session
 
 
 ## Documentation For Models
 
  - [Controller](docs/Controller.md)
- - [CreateDeploymentRequest](docs/CreateDeploymentRequest.md)
  - [Deployment](docs/Deployment.md)
  - [Resource](docs/Resource.md)
 
@@ -110,6 +109,19 @@ Authentication schemes defined for the API:
 - **Location**: HTTP header
 
 Note, each API key must be added to a map of `map[string]APIKey` where the key is: api_key and passed in as the auth context for each request.
+
+Example
+
+```golang
+auth := context.WithValue(
+		context.Background(),
+		sw.ContextAPIKeys,
+		map[string]sw.APIKey{
+			"api_key": {Key: "API_KEY_STRING"},
+		},
+	)
+r, err := client.Service.Operation(auth, args)
+```
 
 
 ## Documentation for Utility Methods

@@ -7,9 +7,10 @@ import (
 	"fmt"
 	"os"
 
+	"shellclient/pkg/openapi"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 var cfgFile string

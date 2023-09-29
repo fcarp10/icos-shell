@@ -13,21 +13,22 @@ import (
 	"context"
 	"testing"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	openapiclient "github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func Test_openapi_DeploymentApiService(t *testing.T) {
 
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := openapi.NewConfiguration()
+	apiClient := openapi.NewAPIClient(configuration)
 
 	t.Run("Test DeploymentApiService CreateDeployment", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		httpRes, err := apiClient.DeploymentApi.CreateDeployment(context.Background()).Execute()
+		httpRes, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -40,7 +41,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 		var deploymentId int64
 
-		httpRes, err := apiClient.DeploymentApi.DeleteDeploymentById(context.Background(), deploymentId).Execute()
+		httpRes, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -53,7 +54,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 		var deploymentId int64
 
-		resp, httpRes, err := apiClient.DeploymentApi.GetDeploymentById(context.Background(), deploymentId).Execute()
+		resp, httpRes, err := apiClient.DeploymentAPI.GetDeploymentById(context.Background(), deploymentId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -65,7 +66,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.DeploymentApi.GetDeployments(context.Background()).Execute()
+		resp, httpRes, err := apiClient.DeploymentAPI.GetDeployments(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -79,7 +80,7 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 		var deploymentId int64
 
-		httpRes, err := apiClient.DeploymentApi.UpdateDeployment(context.Background(), deploymentId).Execute()
+		httpRes, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

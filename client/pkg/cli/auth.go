@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	openapi "shellclient/pkg/openapi"
+
 	"github.com/spf13/viper"
-	"github.com/tubskns/icos-shell/client/pkg/openapi"
 )
 
 func LoginUser() (result string) {
-	value, resp, err := openapi.Client.UserApi.LoginUser(context.Background()).Username(viper.GetString("username")).Password(viper.GetString("password")).Execute()
+	value, resp, err := openapi.Client.UserAPI.LoginUser(context.Background()).Username(viper.GetString("username")).Password(viper.GetString("password")).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		fmt.Fprintf(os.Stderr, "%v\n", resp.Body)

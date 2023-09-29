@@ -14,6 +14,5 @@ go/impl.go
 go/logger.go
 go/model_controller.go
 go/model_deployment.go
-go/model_descriptor.go
 go/model_resource.go
 go/routers.go

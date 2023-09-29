@@ -19,12 +19,12 @@ import (
 )
 
 
-// DefaultApiService DefaultApi service
-type DefaultApiService service
+// DefaultAPIService DefaultAPI service
+type DefaultAPIService service
 
 type ApiGetHealthcheckRequest struct {
 	ctx context.Context
-	ApiService *DefaultApiService
+	ApiService *DefaultAPIService
 }
 
 func (r ApiGetHealthcheckRequest) Execute() (*http.Response, error) {
@@ -37,7 +37,7 @@ GetHealthcheck Health check
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetHealthcheckRequest
 */
-func (a *DefaultApiService) GetHealthcheck(ctx context.Context) ApiGetHealthcheckRequest {
+func (a *DefaultAPIService) GetHealthcheck(ctx context.Context) ApiGetHealthcheckRequest {
 	return ApiGetHealthcheckRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -45,14 +45,14 @@ func (a *DefaultApiService) GetHealthcheck(ctx context.Context) ApiGetHealthchec
 }
 
 // Execute executes the request
-func (a *DefaultApiService) GetHealthcheckExecute(r ApiGetHealthcheckRequest) (*http.Response, error) {
+func (a *DefaultAPIService) GetHealthcheckExecute(r ApiGetHealthcheckRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.GetHealthcheck")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.GetHealthcheck")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -374,35 +374,15 @@ components:
       - name
       type: object
     Descriptor:
-      properties:
-        name:
-          description: Name of the application
-          example: my_application
-          type: string
+      example:
+        name: my_application
         components:
-          description: List of components
-          items:
-            $ref: '#/components/schemas/Components'
-          type: array
-        requirements:
-          description: List of requirements
-          items:
-            $ref: '#/components/schemas/Requirements'
-          type: array
-      required:
-      - components
-      - name
-      - requirements
-      type: object
-    Components:
-      example:
-        name: component-1
-        type: helm
+        - name: component-1
+          type: helm
+          repository: foo/bar
+        Requirements:
+        - optimization_metric: metric_x
         repository: foo/bar
-      type: object
-    Requirements:
-      example:
-        optimization_metric: metric_x
       type: object
   securitySchemes:
     api_key:

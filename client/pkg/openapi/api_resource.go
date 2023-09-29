@@ -20,12 +20,12 @@ import (
 )
 
 
-// ResourceApiService ResourceApi service
-type ResourceApiService service
+// ResourceAPIService ResourceAPI service
+type ResourceAPIService service
 
 type ApiGetResourceByIdRequest struct {
 	ctx context.Context
-	ApiService *ResourceApiService
+	ApiService *ResourceAPIService
 	resourceId int64
 }
 
@@ -42,7 +42,7 @@ Returns a single resource
  @param resourceId ID of resource to return
  @return ApiGetResourceByIdRequest
 */
-func (a *ResourceApiService) GetResourceById(ctx context.Context, resourceId int64) ApiGetResourceByIdRequest {
+func (a *ResourceAPIService) GetResourceById(ctx context.Context, resourceId int64) ApiGetResourceByIdRequest {
 	return ApiGetResourceByIdRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -52,7 +52,7 @@ func (a *ResourceApiService) GetResourceById(ctx context.Context, resourceId int
 
 // Execute executes the request
 //  @return Resource
-func (a *ResourceApiService) GetResourceByIdExecute(r ApiGetResourceByIdRequest) (*Resource, *http.Response, error) {
+func (a *ResourceAPIService) GetResourceByIdExecute(r ApiGetResourceByIdRequest) (*Resource, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -60,7 +60,7 @@ func (a *ResourceApiService) GetResourceByIdExecute(r ApiGetResourceByIdRequest)
 		localVarReturnValue  *Resource
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceApiService.GetResourceById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceAPIService.GetResourceById")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -142,7 +142,7 @@ func (a *ResourceApiService) GetResourceByIdExecute(r ApiGetResourceByIdRequest)
 
 type ApiGetResourcesRequest struct {
 	ctx context.Context
-	ApiService *ResourceApiService
+	ApiService *ResourceAPIService
 }
 
 func (r ApiGetResourcesRequest) Execute() ([]Resource, *http.Response, error) {
@@ -157,7 +157,7 @@ Returns a list of resources
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetResourcesRequest
 */
-func (a *ResourceApiService) GetResources(ctx context.Context) ApiGetResourcesRequest {
+func (a *ResourceAPIService) GetResources(ctx context.Context) ApiGetResourcesRequest {
 	return ApiGetResourcesRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -166,7 +166,7 @@ func (a *ResourceApiService) GetResources(ctx context.Context) ApiGetResourcesRe
 
 // Execute executes the request
 //  @return []Resource
-func (a *ResourceApiService) GetResourcesExecute(r ApiGetResourcesRequest) ([]Resource, *http.Response, error) {
+func (a *ResourceAPIService) GetResourcesExecute(r ApiGetResourcesRequest) ([]Resource, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -174,7 +174,7 @@ func (a *ResourceApiService) GetResourcesExecute(r ApiGetResourcesRequest) ([]Re
 		localVarReturnValue  []Resource
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceApiService.GetResources")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceAPIService.GetResources")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

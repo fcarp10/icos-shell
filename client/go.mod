@@ -1,4 +1,4 @@
-module github.com/tubskns/icos-shell/client
+module shellclient
 
 go 1.21
 

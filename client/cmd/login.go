@@ -4,9 +4,10 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"shellclient/pkg/cli"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/tubskns/icos-shell/client/pkg/cli"
 )
 
 // loginCmd represents the login command
