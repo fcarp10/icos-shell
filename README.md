@@ -7,11 +7,11 @@ ICOS Shell is a component part of the [ICOS Project](https://cordis.europa.eu/pr
 
 ## Build and run
 
-### Backend 
+### Backend (with Docker)
 ```
 cd backend
 docker build -t "shell-backend" .
-docker run -p 8080:8080 shell-backend:latest
+docker run --volume ./config.yml:/app/config.yml -p 8080:8080 shell-backend:latest
 ```
 More info [here](./backend/README.md)
 
