@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: icos-shell-backend
+  labels:
+    service: icos-shell-backend
+spec:
+  selector:
+    app: icos
+  ports:
+  - port: 8080
+    nodePort: 30500
+    targetPort: 8080
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icos-shell-backend
+  labels:
+    name: icos-shell-backend
+spec:
+  selector:
+    matchLabels:
+      app: icos
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: icos
+    spec:
+      containers:
+      - name: icos-shell-backend
+        image: michalkeit/icos-shell-backend:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /app/config.yml
+          name: backend-config
+          subPath: backend-config
+        env: 
+        - name: KEYCLOAK_URL
+          value: "keycloak:443"
+      volumes:
+      - name: backend-config
+        configMap:
+          name: icos-shell-backend-cfgmap
+---
+# TODO: convert this to Kubernetes secret
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: icos-shell-backend-cfgmap
+data:
+  backend-config: |
+    controller_timeout: 60
+    username: "admin"
+    password: "Iki946D56!!J@gSHpuonoUyH1uB*^"

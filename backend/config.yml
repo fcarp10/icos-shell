@@ -1,3 +1,4 @@
+# Note: duplicate changes made here to the Kubernetes configuration file!
 controller_timeout: 60
 username: "admin"
 password: "Iki946D56!!J@gSHpuonoUyH1uB*^"
