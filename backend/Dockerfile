@@ -1,14 +1,14 @@
-FROM golang:1.10 AS build
-WORKDIR /go/src
+FROM golang:1.21 AS build
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
 COPY go ./go
-COPY main.go .
+COPY config.yml ./
+COPY *.go ./
 
-ENV CGO_ENABLED=0
-RUN go get -d -v ./...
+RUN CGO_ENABLED=0 GOOS=linux go build -o /shell-backend
 
-RUN go build -a -installsuffix cgo -o shellbackend .
+EXPOSE 8080
+CMD ["/shell-backend"]
 
-FROM scratch AS runtime
-COPY --from=build /go/src/shellbackend ./
-EXPOSE 8080/tcp
-ENTRYPOINT ["./shellbackend"]

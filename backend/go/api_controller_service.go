@@ -15,6 +15,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 // ControllerApiService is a service that implements the logic for the ControllerApiServicer
@@ -29,9 +31,6 @@ type TimerData struct {
 }
 
 var timers = make(map[string]TimerData)
-var TIMEOUT = 60                           // seconds
-var USER = "admin"                         // temp
-var PASS = "Iki946D56!!J@gSHpuonoUyH1uB*^" // temp
 
 func DeleteController(key string) {
 	fmt.Printf("Timeout, deleting controller: '%s'\n", key)
@@ -41,7 +40,7 @@ func DeleteController(key string) {
 func AddController(controller Controller) bool {
 	key := controller.Address
 	val, exists := timers[key]
-	duration := time.Second * time.Duration(TIMEOUT)
+	duration := time.Second * time.Duration(viper.GetInt("controller_timeout"))
 	if exists {
 		val.timer.Reset(duration)
 		fmt.Printf("Timer reset for controller: '%s'\n", controller.Address)
@@ -77,7 +76,7 @@ func NewControllerApiService() ControllerApiServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerApiService) AddController(ctx context.Context, username string, password string, controller Controller) (ImplResponse, error) {
-	if (strings.Compare(username, USER) == 0) && (strings.Compare(password, PASS) == 0) {
+	if (strings.Compare(username, viper.GetString("username")) == 0) && (strings.Compare(password, viper.GetString("password")) == 0) {
 		exists := AddController(controller)
 		if exists {
 			return Response(202, "Controller already exists, timer has been reset"), nil

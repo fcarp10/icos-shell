@@ -10,15 +10,30 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	shellbackend "shellbackend/go"
 
-	// shellbackend "github.com/tubskns/icos-shell/backend/go" // full path for debugging
-	shellbackend "./go"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	log.Printf("Server started")
+
+	cfgFile := flag.String("config", "config.yml", "config file")
+	flag.Parse()
+	cfgFileString := *cfgFile
+
+	viper.SetConfigFile(cfgFileString)
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Fprintln(os.Stderr, "Config:", viper.ConfigFileUsed())
+	} else {
+		fmt.Fprintln(os.Stderr, "Config file not found!")
+	}
+
+	log.Printf("Backend service starting...")
 
 	ControllerApiService := shellbackend.NewControllerApiService()
 	ControllerApiController := shellbackend.NewControllerApiController(ControllerApiService)
