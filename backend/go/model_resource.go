@@ -9,16 +9,24 @@
 
 package shellbackend
 
+
+
+
 type Resource struct {
 
+	// Unique identifier of the resource
 	Id int64 `json:"id"`
 
+	// Name of the resource
 	Name string `json:"name,omitempty"`
 
+	// Type of resource
 	Type string `json:"type"`
 
+	// ID of the parent resource
 	ParentId int64 `json:"parentId,omitempty"`
 
+	// Status of the resource
 	Status string `json:"status,omitempty"`
 }
 
@@ -37,14 +45,7 @@ func AssertResourceRequired(obj Resource) error {
 	return nil
 }
 
-// AssertRecurseResourceRequired recursively checks if required fields are not zero-ed in a nested slice.
-// Accepts only nested slice of Resource (e.g. [][]Resource), otherwise ErrTypeAssertionError is thrown.
-func AssertRecurseResourceRequired(objSlice interface{}) error {
-	return AssertRecurseInterfaceRequired(objSlice, func(obj interface{}) error {
-		aResource, ok := obj.(Resource)
-		if !ok {
-			return ErrTypeAssertionError
-		}
-		return AssertResourceRequired(aResource)
-	})
+// AssertResourceConstraints checks if the values respects the defined constraints
+func AssertResourceConstraints(obj Resource) error {
+	return nil
 }

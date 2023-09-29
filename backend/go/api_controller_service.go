@@ -70,7 +70,7 @@ func GetControllersList() []Controller {
 }
 
 // NewControllerApiService creates a default api service
-func NewControllerApiService() ControllerApiServicer {
+func NewControllerApiService() ControllerAPIServicer {
 	return &ControllerApiService{}
 }
 

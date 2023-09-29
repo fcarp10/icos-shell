@@ -9,12 +9,18 @@
 
 package shellbackend
 
+
+
+
 type Deployment struct {
 
+	// Unique identifier of the deployment
 	Id int64 `json:"id"`
 
+	// Name of the deployment
 	Name string `json:"name,omitempty"`
 
+	// Status of the deployment
 	Status string `json:"status,omitempty"`
 }
 
@@ -32,14 +38,7 @@ func AssertDeploymentRequired(obj Deployment) error {
 	return nil
 }
 
-// AssertRecurseDeploymentRequired recursively checks if required fields are not zero-ed in a nested slice.
-// Accepts only nested slice of Deployment (e.g. [][]Deployment), otherwise ErrTypeAssertionError is thrown.
-func AssertRecurseDeploymentRequired(objSlice interface{}) error {
-	return AssertRecurseInterfaceRequired(objSlice, func(obj interface{}) error {
-		aDeployment, ok := obj.(Deployment)
-		if !ok {
-			return ErrTypeAssertionError
-		}
-		return AssertDeploymentRequired(aDeployment)
-	})
+// AssertDeploymentConstraints checks if the values respects the defined constraints
+func AssertDeploymentConstraints(obj Deployment) error {
+	return nil
 }

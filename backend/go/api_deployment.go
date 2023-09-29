@@ -17,25 +17,25 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// DeploymentApiController binds http requests to an api service and writes the service results to the http response
-type DeploymentApiController struct {
-	service DeploymentApiServicer
+// DeploymentAPIController binds http requests to an api service and writes the service results to the http response
+type DeploymentAPIController struct {
+	service DeploymentAPIServicer
 	errorHandler ErrorHandler
 }
 
-// DeploymentApiOption for how the controller is set up.
-type DeploymentApiOption func(*DeploymentApiController)
+// DeploymentAPIOption for how the controller is set up.
+type DeploymentAPIOption func(*DeploymentAPIController)
 
-// WithDeploymentApiErrorHandler inject ErrorHandler into controller
-func WithDeploymentApiErrorHandler(h ErrorHandler) DeploymentApiOption {
-	return func(c *DeploymentApiController) {
+// WithDeploymentAPIErrorHandler inject ErrorHandler into controller
+func WithDeploymentAPIErrorHandler(h ErrorHandler) DeploymentAPIOption {
+	return func(c *DeploymentAPIController) {
 		c.errorHandler = h
 	}
 }
 
-// NewDeploymentApiController creates a default api controller
-func NewDeploymentApiController(s DeploymentApiServicer, opts ...DeploymentApiOption) Router {
-	controller := &DeploymentApiController{
+// NewDeploymentAPIController creates a default api controller
+func NewDeploymentAPIController(s DeploymentAPIServicer, opts ...DeploymentAPIOption) Router {
+	controller := &DeploymentAPIController{
 		service:      s,
 		errorHandler: DefaultErrorHandler,
 	}
@@ -47,35 +47,30 @@ func NewDeploymentApiController(s DeploymentApiServicer, opts ...DeploymentApiOp
 	return controller
 }
 
-// Routes returns all the api routes for the DeploymentApiController
-func (c *DeploymentApiController) Routes() Routes {
-	return Routes{ 
-		{
-			"CreateDeployment",
+// Routes returns all the api routes for the DeploymentAPIController
+func (c *DeploymentAPIController) Routes() Routes {
+	return Routes{
+		"CreateDeployment": Route{
 			strings.ToUpper("Post"),
 			"/api/v3/deployment/",
 			c.CreateDeployment,
 		},
-		{
-			"DeleteDeploymentById",
+		"DeleteDeploymentById": Route{
 			strings.ToUpper("Delete"),
 			"/api/v3/deployment/{deploymentId}",
 			c.DeleteDeploymentById,
 		},
-		{
-			"GetDeploymentById",
+		"GetDeploymentById": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/deployment/{deploymentId}",
 			c.GetDeploymentById,
 		},
-		{
-			"GetDeployments",
+		"GetDeployments": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/deployment/",
 			c.GetDeployments,
 		},
-		{
-			"UpdateDeployment",
+		"UpdateDeployment": Route{
 			strings.ToUpper("Put"),
 			"/api/v3/deployment/{deploymentId}",
 			c.UpdateDeployment,
@@ -84,19 +79,23 @@ func (c *DeploymentApiController) Routes() Routes {
 }
 
 // CreateDeployment - Creates a new deployment
-func (c *DeploymentApiController) CreateDeployment(w http.ResponseWriter, r *http.Request) {
-	createDeploymentRequestParam := CreateDeploymentRequest{}
+func (c *DeploymentAPIController) CreateDeployment(w http.ResponseWriter, r *http.Request) {
+	descriptorParam := Descriptor{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&createDeploymentRequestParam); err != nil {
+	if err := d.Decode(&descriptorParam); err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertCreateDeploymentRequestRequired(createDeploymentRequestParam); err != nil {
+	if err := AssertDescriptorRequired(descriptorParam); err != nil {
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.CreateDeployment(r.Context(), createDeploymentRequestParam)
+	if err := AssertDescriptorConstraints(descriptorParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.CreateDeployment(r.Context(), descriptorParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -104,13 +103,15 @@ func (c *DeploymentApiController) CreateDeployment(w http.ResponseWriter, r *htt
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // DeleteDeploymentById - Deletes a deployment
-func (c *DeploymentApiController) DeleteDeploymentById(w http.ResponseWriter, r *http.Request) {
+func (c *DeploymentAPIController) DeleteDeploymentById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseInt64Parameter(params["deploymentId"], true)
+	deploymentIdParam, err := parseNumericParameter[int64](
+		params["deploymentId"],
+		WithRequire[int64](parseInt64),
+	)
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
@@ -123,13 +124,15 @@ func (c *DeploymentApiController) DeleteDeploymentById(w http.ResponseWriter, r 
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // GetDeploymentById - Find deployment by ID
-func (c *DeploymentApiController) GetDeploymentById(w http.ResponseWriter, r *http.Request) {
+func (c *DeploymentAPIController) GetDeploymentById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseInt64Parameter(params["deploymentId"], true)
+	deploymentIdParam, err := parseNumericParameter[int64](
+		params["deploymentId"],
+		WithRequire[int64](parseInt64),
+	)
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
@@ -142,11 +145,10 @@ func (c *DeploymentApiController) GetDeploymentById(w http.ResponseWriter, r *ht
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // GetDeployments - Returns a list of deployments
-func (c *DeploymentApiController) GetDeployments(w http.ResponseWriter, r *http.Request) {
+func (c *DeploymentAPIController) GetDeployments(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.GetDeployments(r.Context())
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -155,29 +157,35 @@ func (c *DeploymentApiController) GetDeployments(w http.ResponseWriter, r *http.
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // UpdateDeployment - Updates a deployment
-func (c *DeploymentApiController) UpdateDeployment(w http.ResponseWriter, r *http.Request) {
+func (c *DeploymentAPIController) UpdateDeployment(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseInt64Parameter(params["deploymentId"], true)
+	deploymentIdParam, err := parseNumericParameter[int64](
+		params["deploymentId"],
+		WithRequire[int64](parseInt64),
+	)
 	if err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	createDeploymentRequestParam := CreateDeploymentRequest{}
+	descriptorParam := Descriptor{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&createDeploymentRequestParam); err != nil {
+	if err := d.Decode(&descriptorParam); err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertCreateDeploymentRequestRequired(createDeploymentRequestParam); err != nil {
+	if err := AssertDescriptorRequired(descriptorParam); err != nil {
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, createDeploymentRequestParam)
+	if err := AssertDescriptorConstraints(descriptorParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, descriptorParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -185,5 +193,4 @@ func (c *DeploymentApiController) UpdateDeployment(w http.ResponseWriter, r *htt
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }

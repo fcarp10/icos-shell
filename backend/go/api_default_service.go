@@ -20,7 +20,7 @@ type DefaultApiService struct {
 }
 
 // NewDefaultApiService creates a default api service
-func NewDefaultApiService() DefaultApiServicer {
+func NewDefaultApiService() DefaultAPIServicer {
 	return &DefaultApiService{}
 }
 

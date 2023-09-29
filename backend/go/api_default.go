@@ -12,29 +12,27 @@ package shellbackend
 import (
 	"net/http"
 	"strings"
-
-	_ "github.com/gorilla/mux"
 )
 
-// DefaultApiController binds http requests to an api service and writes the service results to the http response
-type DefaultApiController struct {
-	service      DefaultApiServicer
+// DefaultAPIController binds http requests to an api service and writes the service results to the http response
+type DefaultAPIController struct {
+	service      DefaultAPIServicer
 	errorHandler ErrorHandler
 }
 
-// DefaultApiOption for how the controller is set up.
-type DefaultApiOption func(*DefaultApiController)
+// DefaultAPIOption for how the controller is set up.
+type DefaultAPIOption func(*DefaultAPIController)
 
-// WithDefaultApiErrorHandler inject ErrorHandler into controller
-func WithDefaultApiErrorHandler(h ErrorHandler) DefaultApiOption {
-	return func(c *DefaultApiController) {
+// WithDefaultAPIErrorHandler inject ErrorHandler into controller
+func WithDefaultAPIErrorHandler(h ErrorHandler) DefaultAPIOption {
+	return func(c *DefaultAPIController) {
 		c.errorHandler = h
 	}
 }
 
-// NewDefaultApiController creates a default api controller
-func NewDefaultApiController(s DefaultApiServicer, opts ...DefaultApiOption) Router {
-	controller := &DefaultApiController{
+// NewDefaultAPIController creates a default api controller
+func NewDefaultAPIController(s DefaultAPIServicer, opts ...DefaultAPIOption) Router {
+	controller := &DefaultAPIController{
 		service:      s,
 		errorHandler: DefaultErrorHandler,
 	}
@@ -46,11 +44,10 @@ func NewDefaultApiController(s DefaultApiServicer, opts ...DefaultApiOption) Rou
 	return controller
 }
 
-// Routes returns all the api routes for the DefaultApiController
-func (c *DefaultApiController) Routes() Routes {
+// Routes returns all the api routes for the DefaultAPIController
+func (c *DefaultAPIController) Routes() Routes {
 	return Routes{
-		{
-			"GetHealthcheck",
+		"GetHealthcheck": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/healthcheck",
 			c.GetHealthcheck,
@@ -58,8 +55,8 @@ func (c *DefaultApiController) Routes() Routes {
 	}
 }
 
-// GetHealthcheck -
-func (c *DefaultApiController) GetHealthcheck(w http.ResponseWriter, r *http.Request) {
+// GetHealthcheck - Health check
+func (c *DefaultAPIController) GetHealthcheck(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.GetHealthcheck(r.Context())
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -68,5 +65,4 @@ func (c *DefaultApiController) GetHealthcheck(w http.ResponseWriter, r *http.Req
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }

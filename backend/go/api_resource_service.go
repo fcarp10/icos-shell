@@ -15,41 +15,41 @@ import (
 	"errors"
 )
 
-// ResourceApiService is a service that implements the logic for the ResourceApiServicer
-// This service should implement the business logic for every endpoint for the ResourceApi API.
+// ResourceAPIService is a service that implements the logic for the ResourceAPIServicer
+// This service should implement the business logic for every endpoint for the ResourceAPI API.
 // Include any external packages or services that will be required by this service.
-type ResourceApiService struct {
+type ResourceAPIService struct {
 }
 
-// NewResourceApiService creates a default api service
-func NewResourceApiService() ResourceApiServicer {
-	return &ResourceApiService{}
+// NewResourceAPIService creates a default api service
+func NewResourceAPIService() ResourceAPIServicer {
+	return &ResourceAPIService{}
 }
 
 // GetResourceById - Find resource by ID
-func (s *ResourceApiService) GetResourceById(ctx context.Context, resourceId int64) (ImplResponse, error) {
+func (s *ResourceAPIService) GetResourceById(ctx context.Context, resourceId int64) (ImplResponse, error) {
 	// TODO - update GetResourceById with the required logic for this service method.
 	// Add api_resource_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, Resource{}) or use other options such as http.Ok ...
-	//return Response(200, Resource{}), nil
+	// TODO: Uncomment the next line to return response Response(200, Resource{}) or use other options such as http.Ok ...
+	// return Response(200, Resource{}), nil
 
-	//TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	//return Response(400, nil),nil
+	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
+	// return Response(400, nil),nil
 
-	//TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	//return Response(404, nil),nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetResourceById method not implemented")
 }
 
 // GetResources - Returns a list of resources
-func (s *ResourceApiService) GetResources(ctx context.Context) (ImplResponse, error) {
+func (s *ResourceAPIService) GetResources(ctx context.Context) (ImplResponse, error) {
 	// TODO - update GetResources with the required logic for this service method.
 	// Add api_resource_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, []Resource{}) or use other options such as http.Ok ...
-	//return Response(200, []Resource{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []Resource{}) or use other options such as http.Ok ...
+	// return Response(200, []Resource{}), nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetResources method not implemented")
 }

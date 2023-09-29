@@ -102,19 +102,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              type: object 
-              required:
-                - application
-                - requirements
-              properties:
-                application:
-                  type: string
-                requirements:
-                  type: array
-                  items: 
-                    type: string
+              $ref: '#/components/schemas/Descriptor'
       responses:
         "201":
           description: Deployment created
@@ -171,19 +161,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              type: object 
-              required:
-                - application
-                - requirements
-              properties:
-                application:
-                  type: string
-                requirements:
-                  type: array
-                  items: 
-                    type: string
+              $ref: '#/components/schemas/Descriptor'
       responses:
         "200":
           description: Deployment updated
@@ -392,6 +372,37 @@ components:
           type: string
           example: "192.168.100.1"
           description: IP address of the controller
+    Descriptor:
+      required:
+      - name
+      - components
+      - requirements
+      type: object
+      properties:
+        name:
+          type: string
+          example: "my_application"
+          description: Name of the application
+        components:
+          type: array
+          description: List of components
+          items: 
+            $ref: "#/components/schemas/Components"
+        requirements:
+          type: array
+          description: List of requirements
+          items:
+            $ref: "#/components/schemas/Requirements"
+    Components:
+      type: object
+      example:
+        name: component-1
+        type: helm
+        repository: foo/bar
+    Requirements:
+      type: object
+      example:
+        optimization_metric: metric_x
   securitySchemes:
     api_key:
       type: apiKey

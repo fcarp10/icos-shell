@@ -13,29 +13,27 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
-	_ "github.com/gorilla/mux"
 )
 
-// ControllerApiController binds http requests to an api service and writes the service results to the http response
-type ControllerApiController struct {
-	service      ControllerApiServicer
+// ControllerAPIController binds http requests to an api service and writes the service results to the http response
+type ControllerAPIController struct {
+	service      ControllerAPIServicer
 	errorHandler ErrorHandler
 }
 
-// ControllerApiOption for how the controller is set up.
-type ControllerApiOption func(*ControllerApiController)
+// ControllerAPIOption for how the controller is set up.
+type ControllerAPIOption func(*ControllerAPIController)
 
-// WithControllerApiErrorHandler inject ErrorHandler into controller
-func WithControllerApiErrorHandler(h ErrorHandler) ControllerApiOption {
-	return func(c *ControllerApiController) {
+// WithControllerAPIErrorHandler inject ErrorHandler into controller
+func WithControllerAPIErrorHandler(h ErrorHandler) ControllerAPIOption {
+	return func(c *ControllerAPIController) {
 		c.errorHandler = h
 	}
 }
 
-// NewControllerApiController creates a default api controller
-func NewControllerApiController(s ControllerApiServicer, opts ...ControllerApiOption) Router {
-	controller := &ControllerApiController{
+// NewControllerAPIController creates a default api controller
+func NewControllerAPIController(s ControllerAPIServicer, opts ...ControllerAPIOption) Router {
+	controller := &ControllerAPIController{
 		service:      s,
 		errorHandler: DefaultErrorHandler,
 	}
@@ -47,17 +45,15 @@ func NewControllerApiController(s ControllerApiServicer, opts ...ControllerApiOp
 	return controller
 }
 
-// Routes returns all the api routes for the ControllerApiController
-func (c *ControllerApiController) Routes() Routes {
+// Routes returns all the api routes for the ControllerAPIController
+func (c *ControllerAPIController) Routes() Routes {
 	return Routes{
-		{
-			"AddController",
+		"AddController": Route{
 			strings.ToUpper("Post"),
 			"/api/v3/controller/",
 			c.AddController,
 		},
-		{
-			"GetControllers",
+		"GetControllers": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/controller/",
 			c.GetControllers,
@@ -66,7 +62,7 @@ func (c *ControllerApiController) Routes() Routes {
 }
 
 // AddController - Adds a new controller
-func (c *ControllerApiController) AddController(w http.ResponseWriter, r *http.Request) {
+func (c *ControllerAPIController) AddController(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	usernameParam := query.Get("username")
 	passwordParam := query.Get("password")
@@ -81,6 +77,10 @@ func (c *ControllerApiController) AddController(w http.ResponseWriter, r *http.R
 		c.errorHandler(w, r, err, nil)
 		return
 	}
+	if err := AssertControllerConstraints(controllerParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
 	result, err := c.service.AddController(r.Context(), usernameParam, passwordParam, controllerParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -89,11 +89,10 @@ func (c *ControllerApiController) AddController(w http.ResponseWriter, r *http.R
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // GetControllers - Returns a list of controllers
-func (c *ControllerApiController) GetControllers(w http.ResponseWriter, r *http.Request) {
+func (c *ControllerAPIController) GetControllers(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.GetControllers(r.Context())
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -102,5 +101,4 @@ func (c *ControllerApiController) GetControllers(w http.ResponseWriter, r *http.
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }

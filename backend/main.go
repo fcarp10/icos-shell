@@ -36,19 +36,19 @@ func main() {
 	log.Printf("Backend service starting...")
 
 	ControllerApiService := shellbackend.NewControllerApiService()
-	ControllerApiController := shellbackend.NewControllerApiController(ControllerApiService)
+	ControllerApiController := shellbackend.NewControllerAPIController(ControllerApiService)
 
 	DefaultApiService := shellbackend.NewDefaultApiService()
-	DefaultApiController := shellbackend.NewDefaultApiController(DefaultApiService)
+	DefaultApiController := shellbackend.NewDefaultAPIController(DefaultApiService)
 
-	DeploymentApiService := shellbackend.NewDeploymentApiService()
-	DeploymentApiController := shellbackend.NewDeploymentApiController(DeploymentApiService)
+	DeploymentApiService := shellbackend.NewDeploymentAPIService()
+	DeploymentApiController := shellbackend.NewDeploymentAPIController(DeploymentApiService)
 
-	ResourceApiService := shellbackend.NewResourceApiService()
-	ResourceApiController := shellbackend.NewResourceApiController(ResourceApiService)
+	ResourceApiService := shellbackend.NewResourceAPIService()
+	ResourceApiController := shellbackend.NewResourceAPIController(ResourceApiService)
 
-	UserApiService := shellbackend.NewUserApiService()
-	UserApiController := shellbackend.NewUserApiController(UserApiService)
+	UserApiService := shellbackend.NewUserAPIService()
+	UserApiController := shellbackend.NewUserAPIController(UserApiService)
 
 	router := shellbackend.NewRouter(ControllerApiController, DefaultApiController, DeploymentApiController, ResourceApiController, UserApiController)
 

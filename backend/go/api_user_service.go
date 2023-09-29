@@ -15,38 +15,38 @@ import (
 	"errors"
 )
 
-// UserApiService is a service that implements the logic for the UserApiServicer
-// This service should implement the business logic for every endpoint for the UserApi API.
+// UserAPIService is a service that implements the logic for the UserAPIServicer
+// This service should implement the business logic for every endpoint for the UserAPI API.
 // Include any external packages or services that will be required by this service.
-type UserApiService struct {
+type UserAPIService struct {
 }
 
-// NewUserApiService creates a default api service
-func NewUserApiService() UserApiServicer {
-	return &UserApiService{}
+// NewUserAPIService creates a default api service
+func NewUserAPIService() UserAPIServicer {
+	return &UserAPIService{}
 }
 
 // LoginUser - Logs user into the system
-func (s *UserApiService) LoginUser(ctx context.Context, username string, password string) (ImplResponse, error) {
+func (s *UserAPIService) LoginUser(ctx context.Context, username string, password string) (ImplResponse, error) {
 	// TODO - update LoginUser with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, string{}) or use other options such as http.Ok ...
-	//return Response(200, string{}), nil
+	// TODO: Uncomment the next line to return response Response(200, string{}) or use other options such as http.Ok ...
+	// return Response(200, string{}), nil
 
-	//TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	//return Response(400, nil),nil
+	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
+	// return Response(400, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("LoginUser method not implemented")
 }
 
 // LogoutUser - Logs out current logged in user session
-func (s *UserApiService) LogoutUser(ctx context.Context) (ImplResponse, error) {
+func (s *UserAPIService) LogoutUser(ctx context.Context) (ImplResponse, error) {
 	// TODO - update LogoutUser with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(0, {}) or use other options such as http.Ok ...
-	//return Response(0, nil),nil
+	// TODO: Uncomment the next line to return response Response(0, {}) or use other options such as http.Ok ...
+	// return Response(0, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("LogoutUser method not implemented")
 }

@@ -22,6 +22,7 @@ paths:
       responses:
         "200":
           description: successful operation
+      summary: Health check
   /controller/:
     get:
       operationId: getControllers
@@ -34,6 +35,8 @@ paths:
                   $ref: '#/components/schemas/Controller'
                 type: array
           description: successful operation
+        "204":
+          description: No content
       summary: Returns a list of controllers
       tags:
       - controller
@@ -62,7 +65,9 @@ paths:
         required: true
       responses:
         "201":
-          description: Deployment created
+          description: Controller added
+        "202":
+          description: Controller already exists
         "405":
           description: Invalid input
       summary: Adds a new controller
@@ -91,9 +96,9 @@ paths:
       operationId: createDeployment
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              $ref: '#/components/schemas/createDeployment_request'
+              $ref: '#/components/schemas/Descriptor'
         required: true
       responses:
         "201":
@@ -171,9 +176,9 @@ paths:
         style: simple
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
-              $ref: '#/components/schemas/createDeployment_request'
+              $ref: '#/components/schemas/Descriptor'
         required: true
       responses:
         "200":
@@ -303,19 +308,24 @@ components:
         status: online
       properties:
         id:
+          description: Unique identifier of the resource
           format: int64
           type: integer
         name:
+          description: Name of the resource
           type: string
         type:
+          description: Type of resource
           enum:
           - controller
           - node
           type: string
         parentId:
+          description: ID of the parent resource
           format: int64
           type: integer
         status:
+          description: Status of the resource
           enum:
           - online
           - offline
@@ -331,11 +341,14 @@ components:
         status: running
       properties:
         id:
+          description: Unique identifier of the deployment
           format: int64
           type: integer
         name:
+          description: Name of the deployment
           type: string
         status:
+          description: Status of the deployment
           enum:
           - running
           - pending
@@ -349,26 +362,47 @@ components:
         name: controller_1
       properties:
         name:
+          description: Name of the controller
           example: controller_1
           type: string
         address:
+          description: IP address of the controller
           example: 192.168.100.1
           type: string
       required:
       - address
       - name
       type: object
-    createDeployment_request:
+    Descriptor:
       properties:
-        application:
+        name:
+          description: Name of the application
+          example: my_application
           type: string
-        requirements:
+        components:
+          description: List of components
           items:
-            type: string
+            $ref: '#/components/schemas/Components'
+          type: array
+        requirements:
+          description: List of requirements
+          items:
+            $ref: '#/components/schemas/Requirements'
           type: array
       required:
-      - application
+      - components
+      - name
       - requirements
+      type: object
+    Components:
+      example:
+        name: component-1
+        type: helm
+        repository: foo/bar
+      type: object
+    Requirements:
+      example:
+        optimization_metric: metric_x
       type: object
   securitySchemes:
     api_key:

@@ -12,29 +12,27 @@ package shellbackend
 import (
 	"net/http"
 	"strings"
-
-	_ "github.com/gorilla/mux"
 )
 
-// UserApiController binds http requests to an api service and writes the service results to the http response
-type UserApiController struct {
-	service      UserApiServicer
+// UserAPIController binds http requests to an api service and writes the service results to the http response
+type UserAPIController struct {
+	service      UserAPIServicer
 	errorHandler ErrorHandler
 }
 
-// UserApiOption for how the controller is set up.
-type UserApiOption func(*UserApiController)
+// UserAPIOption for how the controller is set up.
+type UserAPIOption func(*UserAPIController)
 
-// WithUserApiErrorHandler inject ErrorHandler into controller
-func WithUserApiErrorHandler(h ErrorHandler) UserApiOption {
-	return func(c *UserApiController) {
+// WithUserAPIErrorHandler inject ErrorHandler into controller
+func WithUserAPIErrorHandler(h ErrorHandler) UserAPIOption {
+	return func(c *UserAPIController) {
 		c.errorHandler = h
 	}
 }
 
-// NewUserApiController creates a default api controller
-func NewUserApiController(s UserApiServicer, opts ...UserApiOption) Router {
-	controller := &UserApiController{
+// NewUserAPIController creates a default api controller
+func NewUserAPIController(s UserAPIServicer, opts ...UserAPIOption) Router {
+	controller := &UserAPIController{
 		service:      s,
 		errorHandler: DefaultErrorHandler,
 	}
@@ -46,17 +44,15 @@ func NewUserApiController(s UserApiServicer, opts ...UserApiOption) Router {
 	return controller
 }
 
-// Routes returns all the api routes for the UserApiController
-func (c *UserApiController) Routes() Routes {
+// Routes returns all the api routes for the UserAPIController
+func (c *UserAPIController) Routes() Routes {
 	return Routes{
-		{
-			"LoginUser",
+		"LoginUser": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/user/login",
 			c.LoginUser,
 		},
-		{
-			"LogoutUser",
+		"LogoutUser": Route{
 			strings.ToUpper("Get"),
 			"/api/v3/user/logout",
 			c.LogoutUser,
@@ -65,7 +61,7 @@ func (c *UserApiController) Routes() Routes {
 }
 
 // LoginUser - Logs user into the system
-func (c *UserApiController) LoginUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserAPIController) LoginUser(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	usernameParam := query.Get("username")
 	passwordParam := query.Get("password")
@@ -77,11 +73,10 @@ func (c *UserApiController) LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }
 
 // LogoutUser - Logs out current logged in user session
-func (c *UserApiController) LogoutUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserAPIController) LogoutUser(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.LogoutUser(r.Context())
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -90,5 +85,4 @@ func (c *UserApiController) LogoutUser(w http.ResponseWriter, r *http.Request) {
 	}
 	// If no error, encode the body and the result code
 	EncodeJSONResponse(result.Body, &result.Code, w)
-
 }

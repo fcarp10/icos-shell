@@ -9,10 +9,15 @@
 
 package shellbackend
 
+
+
+
 type Controller struct {
 
+	// Name of the controller
 	Name string `json:"name"`
 
+	// IP address of the controller
 	Address string `json:"address"`
 }
 
@@ -31,14 +36,7 @@ func AssertControllerRequired(obj Controller) error {
 	return nil
 }
 
-// AssertRecurseControllerRequired recursively checks if required fields are not zero-ed in a nested slice.
-// Accepts only nested slice of Controller (e.g. [][]Controller), otherwise ErrTypeAssertionError is thrown.
-func AssertRecurseControllerRequired(objSlice interface{}) error {
-	return AssertRecurseInterfaceRequired(objSlice, func(obj interface{}) error {
-		aController, ok := obj.(Controller)
-		if !ok {
-			return ErrTypeAssertionError
-		}
-		return AssertControllerRequired(aController)
-	})
+// AssertControllerConstraints checks if the values respects the defined constraints
+func AssertControllerConstraints(obj Controller) error {
+	return nil
 }

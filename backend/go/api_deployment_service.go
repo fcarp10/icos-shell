@@ -15,80 +15,80 @@ import (
 	"errors"
 )
 
-// DeploymentApiService is a service that implements the logic for the DeploymentApiServicer
-// This service should implement the business logic for every endpoint for the DeploymentApi API.
+// DeploymentAPIService is a service that implements the logic for the DeploymentAPIServicer
+// This service should implement the business logic for every endpoint for the DeploymentAPI API.
 // Include any external packages or services that will be required by this service.
-type DeploymentApiService struct {
+type DeploymentAPIService struct {
 }
 
-// NewDeploymentApiService creates a default api service
-func NewDeploymentApiService() DeploymentApiServicer {
-	return &DeploymentApiService{}
+// NewDeploymentAPIService creates a default api service
+func NewDeploymentAPIService() DeploymentAPIServicer {
+	return &DeploymentAPIService{}
 }
 
 // CreateDeployment - Creates a new deployment
-func (s *DeploymentApiService) CreateDeployment(ctx context.Context, createDeploymentRequest CreateDeploymentRequest) (ImplResponse, error) {
+func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, descriptor Descriptor) (ImplResponse, error) {
 	// TODO - update CreateDeployment with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...
-	//return Response(201, nil),nil
+	// TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...
+	// return Response(201, nil),nil
 
-	//TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
-	//return Response(405, nil),nil
+	// TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
+	// return Response(405, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("CreateDeployment method not implemented")
 }
 
 // DeleteDeploymentById - Deletes a deployment
-func (s *DeploymentApiService) DeleteDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
+func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
 	// TODO - update DeleteDeploymentById with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	//return Response(200, nil),nil
+	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
+	// return Response(200, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("DeleteDeploymentById method not implemented")
 }
 
 // GetDeploymentById - Find deployment by ID
-func (s *DeploymentApiService) GetDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
+func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
 	// TODO - update GetDeploymentById with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
-	//return Response(200, Deployment{}), nil
+	// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
+	// return Response(200, Deployment{}), nil
 
-	//TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	//return Response(400, nil),nil
+	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
+	// return Response(400, nil),nil
 
-	//TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	//return Response(404, nil),nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetDeploymentById method not implemented")
 }
 
 // GetDeployments - Returns a list of deployments
-func (s *DeploymentApiService) GetDeployments(ctx context.Context) (ImplResponse, error) {
+func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse, error) {
 	// TODO - update GetDeployments with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
-	//return Response(200, []Deployment{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
+	// return Response(200, []Deployment{}), nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetDeployments method not implemented")
 }
 
 // UpdateDeployment - Updates a deployment
-func (s *DeploymentApiService) UpdateDeployment(ctx context.Context, deploymentId int64, createDeploymentRequest CreateDeploymentRequest) (ImplResponse, error) {
+func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, descriptor Descriptor) (ImplResponse, error) {
 	// TODO - update UpdateDeployment with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	//return Response(200, nil),nil
+	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
+	// return Response(200, nil),nil
 
-	//TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
-	//return Response(405, nil),nil
+	// TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
+	// return Response(405, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("UpdateDeployment method not implemented")
 }
