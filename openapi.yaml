@@ -102,7 +102,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
       responses:
@@ -161,7 +161,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
       responses:

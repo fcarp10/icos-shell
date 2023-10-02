@@ -10,9 +10,15 @@
 package shellbackend
 
 import (
+	"bytes"
 	"context"
-	"net/http"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/spf13/viper"
 )
 
 // DeploymentAPIService is a service that implements the logic for the DeploymentAPIServicer
@@ -28,16 +34,21 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}) (ImplResponse, error) {
-	// TODO - update CreateDeployment with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...
-	// return Response(201, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
-	// return Response(405, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("CreateDeployment method not implemented")
+	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
+	jsonData, err := json.Marshal(body)
+	resp, err := http.Post(viper.GetString("job_manager"), "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, nil), nil
+	} else {
+		if resp.StatusCode == 201 {
+			return Response(201, "Deployment successfully created!"), nil
+		} else if resp.StatusCode == 405 {
+			return Response(405, "Invalid input"), nil
+		} else {
+			return Response(resp.StatusCode, "Error while forwarding deployment to job-manager"), nil
+		}
+	}
 }
 
 // DeleteDeploymentById - Deletes a deployment

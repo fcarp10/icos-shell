@@ -5,6 +5,8 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+	"os"
 
 	"shellclient/pkg/cli"
 
@@ -23,7 +25,11 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if cmd.Parent().Use == "create" {
-			fileDescriptor, _ := cmd.Flags().GetString("file")
+			fileDescriptorString, _ := cmd.Flags().GetString("file")
+			fileDescriptor, err := os.ReadFile(fileDescriptorString)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
 			res := cli.CreateDeployment(fileDescriptor)
 			fmt.Println(res)
 		}

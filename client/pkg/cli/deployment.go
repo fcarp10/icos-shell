@@ -3,12 +3,19 @@ package cli
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	openapi "shellclient/pkg/openapi"
+
+	"gopkg.in/yaml.v3"
 )
 
-func CreateDeployment(file string) (result string) {
+func CreateDeployment(yamlFile []byte) (result string) {
 	body := make(map[string]interface{})
+	err := yaml.Unmarshal(yamlFile, &body)
+	if err != nil {
+		log.Fatalf("Error unmarshaling YAML: %v", err)
+	}
 	resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).Body(body).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)

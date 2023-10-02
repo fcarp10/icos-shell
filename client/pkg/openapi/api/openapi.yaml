@@ -96,7 +96,7 @@ paths:
       operationId: createDeployment
       requestBody:
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
         required: true
@@ -176,7 +176,7 @@ paths:
         style: simple
       requestBody:
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
         required: true

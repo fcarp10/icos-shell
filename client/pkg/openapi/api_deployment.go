@@ -76,7 +76,7 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/x-yaml"}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -529,7 +529,7 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/x-yaml"}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
