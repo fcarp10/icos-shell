@@ -11,8 +11,11 @@ package shellbackend
 
 import (
 	"context"
-	"net/http"
 	"errors"
+	"net/http"
+
+	"github.com/Nerzal/gocloak/v13"
+	"github.com/spf13/viper"
 )
 
 // UserAPIService is a service that implements the logic for the UserAPIServicer
@@ -31,13 +34,18 @@ func (s *UserAPIService) LoginUser(ctx context.Context, username string, passwor
 	// TODO - update LoginUser with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, string{}) or use other options such as http.Ok ...
-	// return Response(200, string{}), nil
+	// Read the user name and password
+	// HARDCODED FOR NOW
 
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
+	client := gocloak.NewClient(viper.GetString("keycloak_URL"))
 
-	return Response(http.StatusNotImplemented, nil), errors.New("LoginUser method not implemented")
+	token, err := client.Login(context.TODO(), viper.GetString("client_ID"), viper.GetString("client_secret"), viper.GetString("realm"), username, password)
+	if err != nil {
+		return Response(400, nil), errors.New("Wrong user or password, provided user: " + username + " provided password: " + password + "")
+	} else {
+		// fmt.Println("Token: ", token)
+		return Response(200, token), nil
+	}
 }
 
 // LogoutUser - Logs out current logged in user session
