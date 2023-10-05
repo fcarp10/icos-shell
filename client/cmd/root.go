@@ -41,16 +41,6 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "$XDG_CONFIG_HOME/icos-shell/config.yaml", "config file")
-	rootCmd.PersistentFlags().StringP("lighthouse", "l", "", "lighthouse address")
-	rootCmd.PersistentFlags().StringP("controller", "b", "", "controller address")
-	rootCmd.PersistentFlags().StringP("username", "u", "", "username parameter")
-	rootCmd.PersistentFlags().StringP("password", "p", "", "password parameter")
-	rootCmd.PersistentFlags().StringP("token", "t", "", "token")
-
-	viper.BindPFlag("lighthouse", rootCmd.PersistentFlags().Lookup("lighthouse"))
-	viper.BindPFlag("controller", rootCmd.PersistentFlags().Lookup("controller"))
-	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
-	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
 	viper.BindEnv("auth_token", "ICOS_AUTH_TOKEN")
 }
 
