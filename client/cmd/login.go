@@ -4,7 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"os"
+	"fmt"
 	"shellclient/pkg/cli"
 
 	"github.com/spf13/cobra"
@@ -22,7 +22,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		token := cli.LoginUser()
-		os.Setenv("ICOS_TOKEN", token)
+		fmt.Printf("%s%s%s", "ICOS_AUTH_TOKEN='", token, "'")
 	},
 }
 

@@ -63,9 +63,6 @@ func (c *ControllerAPIController) Routes() Routes {
 
 // AddController - Adds a new controller
 func (c *ControllerAPIController) AddController(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	usernameParam := query.Get("username")
-	passwordParam := query.Get("password")
 	controllerParam := Controller{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
@@ -81,7 +78,8 @@ func (c *ControllerAPIController) AddController(w http.ResponseWriter, r *http.R
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.AddController(r.Context(), usernameParam, passwordParam, controllerParam)
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.AddController(r.Context(), controllerParam, apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

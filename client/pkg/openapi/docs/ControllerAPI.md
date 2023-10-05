@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## AddController
 
-> AddController(ctx).Username(username).Password(password).Controller(controller).Execute()
+> AddController(ctx).Controller(controller).ApiKey(apiKey).Execute()
 
 Adds a new controller
 
@@ -28,13 +28,12 @@ import (
 )
 
 func main() {
-    username := "username_example" // string | 
-    password := "password_example" // string | 
     controller := *openapiclient.NewController("controller_1", "192.168.100.1") // Controller | 
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.ControllerAPI.AddController(context.Background()).Username(username).Password(password).Controller(controller).Execute()
+    r, err := apiClient.ControllerAPI.AddController(context.Background()).Controller(controller).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `ControllerAPI.AddController``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -53,9 +52,8 @@ Other parameters are passed through a pointer to a apiAddControllerRequest struc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **username** | **string** |  | 
- **password** | **string** |  | 
  **controller** | [**Controller**](Controller.md) |  | 
+ **apiKey** | **string** |  | 
 
 ### Return type
 
@@ -63,7 +61,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -122,7 +120,7 @@ Other parameters are passed through a pointer to a apiGetControllersRequest stru
 
 ### Authorization
 
-No authorization required
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 

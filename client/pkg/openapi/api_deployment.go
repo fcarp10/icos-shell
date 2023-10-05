@@ -27,10 +27,16 @@ type ApiCreateDeploymentRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
 	body *map[string]interface{}
+	apiKey *string
 }
 
 func (r ApiCreateDeploymentRequest) Body(body map[string]interface{}) ApiCreateDeploymentRequest {
 	r.body = &body
+	return r
+}
+
+func (r ApiCreateDeploymentRequest) ApiKey(apiKey string) ApiCreateDeploymentRequest {
+	r.apiKey = &apiKey
 	return r
 }
 
@@ -91,6 +97,9 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
 	}
 	// body params
 	localVarPostBody = r.body

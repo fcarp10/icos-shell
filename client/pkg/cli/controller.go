@@ -12,7 +12,8 @@ import (
 
 func AddController(name string, address string) (result string) {
 	controller := *openapi.NewController(name, address)
-	resp, err := openapi.Client.ControllerAPI.AddController(context.Background()).Username(viper.GetString("username")).Password(viper.GetString("password")).Controller(controller).Execute()
+	token := viper.GetString("auth_token")
+	resp, err := openapi.Client.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		fmt.Fprintf(os.Stderr, "%v\n", resp.Body)

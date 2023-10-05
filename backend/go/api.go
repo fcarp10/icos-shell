@@ -60,7 +60,7 @@ type UserAPIRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type ControllerAPIServicer interface { 
-	AddController(context.Context, string, string, Controller) (ImplResponse, error)
+	AddController(context.Context, Controller, string) (ImplResponse, error)
 	GetControllers(context.Context) (ImplResponse, error)
 }
 
@@ -79,7 +79,7 @@ type DefaultAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type DeploymentAPIServicer interface { 
-	CreateDeployment(context.Context, map[string]interface{}) (ImplResponse, error)
+	CreateDeployment(context.Context, map[string]interface{}, string) (ImplResponse, error)
 	DeleteDeploymentById(context.Context, int64) (ImplResponse, error)
 	GetDeploymentById(context.Context, int64) (ImplResponse, error)
 	GetDeployments(context.Context) (ImplResponse, error)

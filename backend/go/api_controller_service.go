@@ -13,17 +13,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
+	"net/http"
 	"time"
 
 	"github.com/spf13/viper"
 )
-
-// ControllerApiService is a service that implements the logic for the ControllerApiServicer
-// This service should implement the business logic for every endpoint for the ControllerApi API.
-// Include any external packages or services that will be required by this service.
-type ControllerApiService struct {
-}
 
 type TimerData struct {
 	timer      *time.Timer
@@ -69,27 +63,35 @@ func GetControllersList() []Controller {
 	return controllers
 }
 
-// NewControllerApiService creates a default api service
-func NewControllerApiService() ControllerAPIServicer {
-	return &ControllerApiService{}
+// ControllerAPIService is a service that implements the logic for the ControllerAPIServicer
+// This service should implement the business logic for every endpoint for the ControllerAPI API.
+// Include any external packages or services that will be required by this service.
+type ControllerAPIService struct {
+}
+
+// NewControllerAPIService creates a default api service
+func NewControllerAPIService() ControllerAPIServicer {
+	return &ControllerAPIService{}
 }
 
 // AddController - Adds a new controller
-func (s *ControllerApiService) AddController(ctx context.Context, username string, password string, controller Controller) (ImplResponse, error) {
-	if (strings.Compare(username, viper.GetString("lighthouse.username")) == 0) && (strings.Compare(password, viper.GetString("lighthouse.password")) == 0) {
-		exists := AddController(controller)
-		if exists {
-			return Response(202, "Controller already exists, timer has been reset"), nil
-		} else {
-			return Response(201, "New controller correctly added"), nil
-		}
-	} else {
-		return Response(405, nil), errors.New("wrong user or password")
-	}
+func (s *ControllerAPIService) AddController(ctx context.Context, controller Controller, apiKey string) (ImplResponse, error) {
+	// TO-DO keycloak
+	// if (strings.Compare(username, viper.GetString("lighthouse.username")) == 0) && (strings.Compare(password, viper.GetString("lighthouse.password")) == 0) {
+	// 	exists := AddController(controller)
+	// 	if exists {
+	// 		return Response(202, "Controller already exists, timer has been reset"), nil
+	// 	} else {
+	// 		return Response(201, "New controller correctly added"), nil
+	// 	}
+	// } else {
+	// 	return Response(405, nil), errors.New("wrong user or password")
+	// }
+	return Response(http.StatusNotImplemented, nil), errors.New("AddController method not implemented")
 }
 
 // GetControllers - Returns a list of controllers
-func (s *ControllerApiService) GetControllers(ctx context.Context) (ImplResponse, error) {
+func (s *ControllerAPIService) GetControllers(ctx context.Context) (ImplResponse, error) {
 	var controllers = GetControllersList()
 	if controllers == nil {
 		return Response(204, nil), nil

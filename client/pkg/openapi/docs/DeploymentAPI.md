@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateDeployment
 
-> CreateDeployment(ctx).Body(body).Execute()
+> CreateDeployment(ctx).Body(body).ApiKey(apiKey).Execute()
 
 Creates a new deployment
 
@@ -34,10 +34,11 @@ import (
 
 func main() {
     body := map[string]interface{}{ ... } // map[string]interface{} | 
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Body(body).Execute()
+    r, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Body(body).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.CreateDeployment``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -57,6 +58,7 @@ Other parameters are passed through a pointer to a apiCreateDeploymentRequest st
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | **map[string]interface{}** |  | 
+ **apiKey** | **string** |  | 
 
 ### Return type
 

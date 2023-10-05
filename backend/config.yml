@@ -1,7 +1,5 @@
 lighthouse: 
   controller_timeout: 60
-  username: admin
-  password: ###
   
 keycloak: 
   server: https://keycloak.dev.icos.91.109.56.214.sslip.io

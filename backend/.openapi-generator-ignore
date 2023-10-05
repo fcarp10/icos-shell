@@ -24,6 +24,8 @@
 
 go/api_default_service.go
 go/api_controller_service.go
+go/api_deployment_service.go
+go/api_user_service.go
 Dockerfile
 go.mod
 main.go

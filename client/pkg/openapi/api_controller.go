@@ -25,23 +25,17 @@ type ControllerAPIService service
 type ApiAddControllerRequest struct {
 	ctx context.Context
 	ApiService *ControllerAPIService
-	username *string
-	password *string
 	controller *Controller
-}
-
-func (r ApiAddControllerRequest) Username(username string) ApiAddControllerRequest {
-	r.username = &username
-	return r
-}
-
-func (r ApiAddControllerRequest) Password(password string) ApiAddControllerRequest {
-	r.password = &password
-	return r
+	apiKey *string
 }
 
 func (r ApiAddControllerRequest) Controller(controller Controller) ApiAddControllerRequest {
 	r.controller = &controller
+	return r
+}
+
+func (r ApiAddControllerRequest) ApiKey(apiKey string) ApiAddControllerRequest {
+	r.apiKey = &apiKey
 	return r
 }
 
@@ -80,18 +74,10 @@ func (a *ControllerAPIService) AddControllerExecute(r ApiAddControllerRequest) (
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.username == nil {
-		return nil, reportError("username is required and must be specified")
-	}
-	if r.password == nil {
-		return nil, reportError("password is required and must be specified")
-	}
 	if r.controller == nil {
 		return nil, reportError("controller is required and must be specified")
 	}
 
-	parameterAddToHeaderOrQuery(localVarQueryParams, "username", r.username, "")
-	parameterAddToHeaderOrQuery(localVarQueryParams, "password", r.password, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -109,8 +95,25 @@ func (a *ControllerAPIService) AddControllerExecute(r ApiAddControllerRequest) (
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
+	}
 	// body params
 	localVarPostBody = r.controller
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
+	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -198,6 +201,20 @@ func (a *ControllerAPIService) GetControllersExecute(r ApiGetControllersRequest)
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["api_key"] = key
+			}
+		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {

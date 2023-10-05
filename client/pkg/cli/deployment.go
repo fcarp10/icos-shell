@@ -16,7 +16,7 @@ func CreateDeployment(yamlFile []byte) (result string) {
 	if err != nil {
 		log.Fatalf("Error unmarshaling YAML: %v", err)
 	}
-	// token := viper.GetString("ICOS_TOKEN") ## TBD
+	// token := viper.GetString("auth_token") ## TBD
 	resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).Body(body).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)

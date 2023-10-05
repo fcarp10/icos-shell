@@ -19,10 +19,10 @@ func LoginUser() (result string) {
 		return ""
 	} else {
 		if resp.StatusCode == 200 {
-			fmt.Println("Token received, user successfully logged in!")
+			fmt.Fprintln(os.Stderr, "Token received, user successfully logged in!")
 			return value
 		} else {
-			fmt.Println("Wrong status code received")
+			fmt.Fprintln(os.Stderr, "Wrong status code received")
 			return ""
 		}
 	}

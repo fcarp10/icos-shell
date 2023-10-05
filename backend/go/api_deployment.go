@@ -87,7 +87,8 @@ func (c *DeploymentAPIController) CreateDeployment(w http.ResponseWriter, r *htt
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	result, err := c.service.CreateDeployment(r.Context(), bodyParam)
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.CreateDeployment(r.Context(), bodyParam, apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

@@ -8,7 +8,7 @@ ICOS Shell CLI
 ```
 openapi-generator-cli generate -g go -i openapi.yaml -o client/pkg/openapi --additional-properties=packageName=openapi,isGoSubmodule=true
 
-rm client/openapi/go.mod client/openapi/go.sum
+rm client/pkg/openapi/go.mod client/pkg/openapi/go.sum
 ```
 
 ### Docs

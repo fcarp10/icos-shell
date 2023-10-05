@@ -27,7 +27,6 @@ All URIs are relative to *http://localhost:8080/api/v3*
  - [Controller](./Models/Controller.md)
  - [Deployment](./Models/Deployment.md)
  - [Resource](./Models/Resource.md)
- - [createDeployment_request](./Models/createDeployment_request.md)
 
 
 <a name="documentation-for-authorization"></a>

@@ -35,7 +35,7 @@ func main() {
 
 	log.Printf("Backend service starting...")
 
-	ControllerApiService := shellbackend.NewControllerApiService()
+	ControllerApiService := shellbackend.NewControllerAPIService()
 	ControllerApiController := shellbackend.NewControllerAPIController(ControllerApiService)
 
 	DefaultApiService := shellbackend.NewDefaultApiService()

@@ -47,20 +47,13 @@ paths:
       summary: Adds a new controller
       operationId: addController
       parameters:
-      - name: username
-        in: query
-        required: true
-        style: form
-        explode: true
+      - explode: false
+        in: header
+        name: api_key
+        required: false
         schema:
           type: string
-      - name: password
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
+        style: simple
       requestBody:
         required: true
         content:
@@ -72,6 +65,8 @@ paths:
           description: Controller added
         "202":
           description: Controller already exists
+        "401":
+           $ref: "#/components/responses/UnauthorizedError"
         "405":
           description: Invalid input
       
@@ -91,14 +86,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Deployment'
-      security:
-      - api_key: []
     post:
       tags:
       - deployment
       summary: Creates a new deployment
       description: ""
       operationId: createDeployment
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       requestBody:
         required: true
         content:
@@ -108,10 +109,10 @@ paths:
       responses:
         "201":
           description: Deployment created
+        "401":
+           $ref: "#/components/responses/UnauthorizedError"
         "405":
           description: Invalid input
-      security:
-      - api_key: []
   /deployment/{deploymentId}:
     get:
       tags:
@@ -140,8 +141,6 @@ paths:
           description: Invalid ID supplied
         "404":
           description: Deployment not found
-      security:
-      - api_key: []
     put:
       tags:
       - deployment
@@ -169,8 +168,6 @@ paths:
           description: Deployment updated
         "405":
           description: Invalid input
-      security:
-      - api_key: []
     delete:
       tags:
       - deployment
@@ -190,8 +187,6 @@ paths:
       responses:
         "200":
           description: successful operation
-      security:
-      - api_key: []
   /resource/:
     get:
       tags:
@@ -208,8 +203,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Resource'
-      security:
-      - api_key: []
   /resource/{resourceId}:
     get:
       tags:
@@ -238,8 +231,6 @@ paths:
           description: Invalid ID supplied
         "404":
           description: Deployment not found
-      security:
-      - api_key: []
   /user/login:
     get:
       tags:
@@ -383,8 +374,18 @@ components:
         Requirements:
           - optimization_metric: metric_x
         repository: foo/bar
+  responses:
+    UnauthorizedError:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
   securitySchemes:
     api_key:
       type: apiKey
       name: api_key
       in: header
+
+security:
+  - api_key: [] 

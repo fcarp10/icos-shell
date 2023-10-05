@@ -13,7 +13,7 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 <a name="createDeployment"></a>
 # **createDeployment**
-> createDeployment(createDeployment\_request)
+> createDeployment(body, api\_key)
 
 Creates a new deployment
 
@@ -23,7 +23,8 @@ Creates a new deployment
 
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **createDeployment\_request** | [**createDeployment_request**](../Models/createDeployment_request.md)|  | |
+| **body** | **Object**|  | |
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
@@ -118,7 +119,7 @@ This endpoint does not need any parameter.
 
 <a name="updateDeployment"></a>
 # **updateDeployment**
-> updateDeployment(deploymentId, createDeployment\_request)
+> updateDeployment(deploymentId, body)
 
 Updates a deployment
 
@@ -129,7 +130,7 @@ Updates a deployment
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deploymentId** | **Long**| ID of deployment that needs to be updated | [default to null] |
-| **createDeployment\_request** | [**createDeployment_request**](../Models/createDeployment_request.md)|  | |
+| **body** | **Object**|  | |
 
 ### Return type
 

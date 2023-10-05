@@ -53,7 +53,7 @@ Other parameters are passed through a pointer to a apiGetHealthcheckRequest stru
 
 ### Authorization
 
-No authorization required
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 

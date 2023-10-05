@@ -10,7 +10,7 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 <a name="addController"></a>
 # **addController**
-> addController(username, password, Controller)
+> addController(Controller, api\_key)
 
 Adds a new controller
 
@@ -18,9 +18,8 @@ Adds a new controller
 
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **username** | **String**|  | [default to null] |
-| **password** | **String**|  | [default to null] |
 | **Controller** | [**Controller**](../Models/Controller.md)|  | |
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
@@ -28,7 +27,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -50,7 +49,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 

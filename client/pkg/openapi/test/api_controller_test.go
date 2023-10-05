@@ -15,6 +15,7 @@ import (
 
 	openapi "shellclient/pkg/openapi"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -22,8 +23,6 @@ import (
 func Test_openapi_ControllerApiService(t *testing.T) {
 
 	openapi.Init("lighthouse.icos-project.eu:8080")
-	username := "admin"
-	password := "Iki946D56!!J@gSHpuonoUyH1uB*^"
 
 	t.Run("Test ControllerApiService AddController", func(t *testing.T) {
 
@@ -31,7 +30,8 @@ func Test_openapi_ControllerApiService(t *testing.T) {
 
 		// httpRes, err := openapi.Client.ControllerApi.AddController(context.Background()).Execute()
 		controller := *openapi.NewController("name_test", "address_test")
-		httpRes, err := openapi.Client.ControllerAPI.AddController(context.Background()).Username(username).Password(password).Controller(controller).Execute()
+		token := viper.GetString("auth_token")
+		httpRes, err := openapi.Client.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 201, httpRes.StatusCode)

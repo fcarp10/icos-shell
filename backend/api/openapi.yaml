@@ -8,6 +8,8 @@ info:
   version: 1.0.11
 servers:
 - url: http://localhost:8080/api/v3
+security:
+- api_key: []
 tags:
 - description: Operations about resources
   name: resource
@@ -43,20 +45,13 @@ paths:
     post:
       operationId: addController
       parameters:
-      - explode: true
-        in: query
-        name: username
-        required: true
+      - explode: false
+        in: header
+        name: api_key
+        required: false
         schema:
           type: string
-        style: form
-      - explode: true
-        in: query
-        name: password
-        required: true
-        schema:
-          type: string
-        style: form
+        style: simple
       requestBody:
         content:
           application/json:
@@ -68,6 +63,14 @@ paths:
           description: Controller added
         "202":
           description: Controller already exists
+        "401":
+          description: API key is missing or invalid
+          headers:
+            WWW_Authenticate:
+              explode: false
+              schema:
+                type: string
+              style: simple
         "405":
           description: Invalid input
       summary: Adds a new controller
@@ -86,27 +89,39 @@ paths:
                   $ref: '#/components/schemas/Deployment'
                 type: array
           description: successful operation
-      security:
-      - api_key: []
       summary: Returns a list of deployments
       tags:
       - deployment
     post:
       description: ""
       operationId: createDeployment
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
         required: true
       responses:
         "201":
           description: Deployment created
+        "401":
+          description: API key is missing or invalid
+          headers:
+            WWW_Authenticate:
+              explode: false
+              schema:
+                type: string
+              style: simple
         "405":
           description: Invalid input
-      security:
-      - api_key: []
       summary: Creates a new deployment
       tags:
       - deployment
@@ -127,8 +142,6 @@ paths:
       responses:
         "200":
           description: successful operation
-      security:
-      - api_key: []
       summary: Deletes a deployment
       tags:
       - deployment
@@ -156,8 +169,6 @@ paths:
           description: Invalid ID supplied
         "404":
           description: Deployment not found
-      security:
-      - api_key: []
       summary: Find deployment by ID
       tags:
       - deployment
@@ -176,7 +187,7 @@ paths:
         style: simple
       requestBody:
         content:
-          application/x-yaml:
+          application/json:
             schema:
               $ref: '#/components/schemas/Descriptor'
         required: true
@@ -185,8 +196,6 @@ paths:
           description: Deployment updated
         "405":
           description: Invalid input
-      security:
-      - api_key: []
       summary: Updates a deployment
       tags:
       - deployment
@@ -203,8 +212,6 @@ paths:
                   $ref: '#/components/schemas/Resource'
                 type: array
           description: successful operation
-      security:
-      - api_key: []
       summary: Returns a list of resources
       tags:
       - resource
@@ -233,8 +240,6 @@ paths:
           description: Invalid ID supplied
         "404":
           description: Deployment not found
-      security:
-      - api_key: []
       summary: Find resource by ID
       tags:
       - resource
@@ -298,6 +303,15 @@ paths:
       tags:
       - user
 components:
+  responses:
+    UnauthorizedError:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            type: string
+          style: simple
   schemas:
     Resource:
       example:
