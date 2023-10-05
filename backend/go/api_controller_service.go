@@ -40,7 +40,7 @@ func DeleteController(key string) {
 func AddController(controller Controller) bool {
 	key := controller.Address
 	val, exists := timers[key]
-	duration := time.Second * time.Duration(viper.GetInt("controller_timeout"))
+	duration := time.Second * time.Duration(viper.GetInt("lighthouse.controller_timeout"))
 	if exists {
 		val.timer.Reset(duration)
 		fmt.Printf("Timer reset for controller: '%s'\n", controller.Address)
@@ -76,7 +76,7 @@ func NewControllerApiService() ControllerAPIServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerApiService) AddController(ctx context.Context, username string, password string, controller Controller) (ImplResponse, error) {
-	if (strings.Compare(username, viper.GetString("username")) == 0) && (strings.Compare(password, viper.GetString("password")) == 0) {
+	if (strings.Compare(username, viper.GetString("lighthouse.username")) == 0) && (strings.Compare(password, viper.GetString("lighthouse.password")) == 0) {
 		exists := AddController(controller)
 		if exists {
 			return Response(202, "Controller already exists, timer has been reset"), nil
@@ -84,7 +84,7 @@ func (s *ControllerApiService) AddController(ctx context.Context, username strin
 			return Response(201, "New controller correctly added"), nil
 		}
 	} else {
-		return Response(405, nil), errors.New("Wrong user or password")
+		return Response(405, nil), errors.New("wrong user or password")
 	}
 }
 

@@ -1,8 +1,16 @@
-controller_timeout: 60
-job_manager: http://localhost:8080
-password: # see test_config.yml 
-keycloak_URL: https://keycloak.dev.icos.91.109.56.214.sslip.io
-client_ID: shell-backend
-client_secret: # see test_config.yml 
-realm: icos-dev
-username: admin
+lighthouse: 
+  controller_timeout: 60
+  username: admin
+  password: ###
+  
+keycloak: 
+  server: https://keycloak.dev.icos.91.109.56.214.sslip.io
+  client_id: shell-backend
+  client_secret: ###
+  realm: icos-dev
+  username: admin
+  password: ###
+
+components: 
+  job_manager: http://localhost:8080
+

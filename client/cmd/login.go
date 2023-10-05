@@ -4,10 +4,10 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"os"
 	"shellclient/pkg/cli"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // loginCmd represents the login command
@@ -22,8 +22,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		token := cli.LoginUser()
-		viper.Set("token", token)
-		viper.WriteConfig()
+		os.Setenv("ICOS_TOKEN", token)
 	},
 }
 

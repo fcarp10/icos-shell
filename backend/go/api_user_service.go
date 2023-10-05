@@ -31,19 +31,11 @@ func NewUserAPIService() UserAPIServicer {
 
 // LoginUser - Logs user into the system
 func (s *UserAPIService) LoginUser(ctx context.Context, username string, password string) (ImplResponse, error) {
-	// TODO - update LoginUser with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// Read the user name and password
-	// HARDCODED FOR NOW
-
-	client := gocloak.NewClient(viper.GetString("keycloak_URL"))
-
-	token, err := client.Login(context.TODO(), viper.GetString("client_ID"), viper.GetString("client_secret"), viper.GetString("realm"), username, password)
+	client := gocloak.NewClient(viper.GetString("keycloak.server"))
+	token, err := client.Login(context.TODO(), viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"), username, password)
 	if err != nil {
-		return Response(400, nil), errors.New("Wrong user or password, provided user: " + username + " provided password: " + password + "")
+		return Response(400, nil), errors.New("wrong user or password")
 	} else {
-		// fmt.Println("Token: ", token)
 		return Response(200, token), nil
 	}
 }

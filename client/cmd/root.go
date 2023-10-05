@@ -51,7 +51,7 @@ func init() {
 	viper.BindPFlag("controller", rootCmd.PersistentFlags().Lookup("controller"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
-	viper.BindPFlag("token", rootCmd.PersistentFlags().Lookup("token"))
+	viper.BindEnv("token", "ICOS_TOKEN")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -80,11 +80,11 @@ func initConfig() {
 	if viper.GetString("controller") == "" {
 		fmt.Println("Controller not defined")
 		os.Exit(0)
-	} else if viper.GetString("controller") != "" && viper.GetString("token") == "" {
+	} else if viper.GetString("controller") != "" && viper.Get("ICOS_TOKEN") == "" {
 		fmt.Println("Token is empty, you must login first")
 	} else {
 		fmt.Println("Controller:", viper.GetString("controller"))
-		fmt.Println("Token found:", viper.GetString("token"))
+		fmt.Println("Token found!")
 	}
 	openapi.Init(viper.GetString("controller"))
 }

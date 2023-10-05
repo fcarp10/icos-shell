@@ -35,8 +35,8 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}) (ImplResponse, error) {
 	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
-	jsonData, err := json.Marshal(body)
-	resp, err := http.Post(viper.GetString("job_manager"), "application/json", bytes.NewBuffer(jsonData))
+	jsonData, _ := json.Marshal(body)
+	resp, err := http.Post(viper.GetString("components.job_manager"), "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return Response(resp.StatusCode, nil), nil
