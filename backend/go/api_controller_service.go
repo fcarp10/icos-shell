@@ -13,9 +13,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 
+	"github.com/Nerzal/gocloak/v13"
 	"github.com/spf13/viper"
 )
 
@@ -76,18 +76,35 @@ func NewControllerAPIService() ControllerAPIServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerAPIService) AddController(ctx context.Context, controller Controller, apiKey string) (ImplResponse, error) {
-	// TO-DO keycloak
-	// if (strings.Compare(username, viper.GetString("lighthouse.username")) == 0) && (strings.Compare(password, viper.GetString("lighthouse.password")) == 0) {
-	// 	exists := AddController(controller)
-	// 	if exists {
-	// 		return Response(202, "Controller already exists, timer has been reset"), nil
-	// 	} else {
-	// 		return Response(201, "New controller correctly added"), nil
-	// 	}
-	// } else {
-	// 	return Response(405, nil), errors.New("wrong user or password")
-	// }
-	return Response(http.StatusNotImplemented, nil), errors.New("AddController method not implemented")
+	// Implementation of Keycloak authentication with Token
+	client := gocloak.NewClient(viper.GetString("keycloak.server"))
+
+	// read token from apiKey, which is just the access_token part of the token
+	token := apiKey
+
+	// if token is empty, panic
+	if token == "" {
+		return Response(405, nil), errors.New("token is empty")
+	}
+	// cut of the special characters from the token
+	token = token[1 : len(token)-1]
+	rptResult, err := client.RetrospectToken(ctx, token, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
+	if err != nil {
+		return Response(405, nil), errors.New("inspection failed")
+	}
+
+	if !*rptResult.Active {
+		return Response(405, nil), errors.New("token is not active")
+	} else {
+		exists := AddController(controller)
+		if exists {
+			return Response(202, "Controller already exists, timer has been reset"), nil
+		} else {
+			return Response(201, "New controller correctly added"), nil
+		}
+	}
+	// Permissions could be added here
+	// permissions := rptResult.Permissions
 }
 
 // GetControllers - Returns a list of controllers
