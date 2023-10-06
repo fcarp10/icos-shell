@@ -82,7 +82,6 @@ func (s *ControllerAPIService) AddController(ctx context.Context, controller Con
 	// read token from apiKey, which is just the access_token part of the token
 	token := apiKey
 
-	// if token is empty, panic
 	if token == "" {
 		return Response(405, nil), errors.New("token is empty")
 	}
