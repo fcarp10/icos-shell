@@ -36,6 +36,8 @@ func (s *UserAPIService) LoginUser(ctx context.Context, username string, passwor
 	if err != nil {
 		return Response(400, nil), errors.New("wrong user or password")
 	} else {
+		// filter the access token from the token
+		token := token.AccessToken
 		return Response(200, token), nil
 	}
 }
