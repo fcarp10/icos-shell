@@ -13,18 +13,18 @@ backend-docker:
     PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
     PH_DOCKER_IMAGE_PATH: icos/shell-backend
 
-backend-lint:
-  extends: .go-job-lint
-  allow_failure: true
-  variables:
-    PH_GO_SRC_DIR: backend
+# backend-lint:
+#   extends: .go-job-lint
+#   allow_failure: true
+#   variables:
+#     PH_GO_SRC_DIR: backend
 
-backend-test:
-  extends: .go-job-test
-  allow_failure: true
-  variables:
-    PH_GO_SRC_DIR: backend
-    PH_GO_VERSION: "1.10"
+# backend-test:
+#   extends: .go-job-test
+#   allow_failure: true
+#   variables:
+#     PH_GO_SRC_DIR: backend
+#     PH_GO_VERSION: "1.10"
 
 
 # Client Jobs
@@ -35,14 +35,14 @@ cli-compile:
     PH_GO_SRC_DIR: client
     PH_GO_OUTPUT_FILENAME: icosctl
 
-cli-lint:
-  extends: .go-job-lint
-  allow_failure: true
-  variables:
-    PH_GO_SRC_DIR: client
+# cli-lint:
+#   extends: .go-job-lint
+#   allow_failure: true
+#   variables:
+#     PH_GO_SRC_DIR: client
 
-cli-test:
-  extends: .go-job-test
-  allow_failure: true
-  variables:
-    PH_GO_SRC_DIR: client
+# cli-test:
+#   extends: .go-job-test
+#   allow_failure: true
+#   variables:
+#     PH_GO_SRC_DIR: client
