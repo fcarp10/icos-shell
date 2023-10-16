@@ -11,11 +11,9 @@ package shellbackend
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
-	"github.com/Nerzal/gocloak/v13"
 	"github.com/spf13/viper"
 )
 
@@ -76,24 +74,9 @@ func NewControllerAPIService() ControllerAPIServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerAPIService) AddController(ctx context.Context, controller Controller, apiKey string) (ImplResponse, error) {
-	// Implementation of Keycloak authentication with Token
-	client := gocloak.NewClient(viper.GetString("keycloak.server"))
-
-	// read token from apiKey, which is just the access_token part of the token
-	token := apiKey
-
-	if token == "" {
-		return Response(405, nil), errors.New("token is empty")
-	}
-	// cut of the special characters from the token
-	token = token[1 : len(token)-1]
-	rptResult, err := client.RetrospectToken(ctx, token, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
+	tokenvalidation, err := receiveAndValidateAccessToken(ctx, apiKey)
 	if err != nil {
-		return Response(405, nil), errors.New("inspection failed")
-	}
-
-	if !*rptResult.Active {
-		return Response(405, nil), errors.New("token is not active")
+		return tokenvalidation, err
 	} else {
 		exists := AddController(controller)
 		if exists {
@@ -102,8 +85,6 @@ func (s *ControllerAPIService) AddController(ctx context.Context, controller Con
 			return Response(201, "New controller correctly added"), nil
 		}
 	}
-	// Permissions could be added here
-	// permissions := rptResult.Permissions
 }
 
 // GetControllers - Returns a list of controllers
