@@ -3,4 +3,4 @@ controller: "localhost:8080"
 
 keycloak:
   user: "admin"
-  pass: "Iki946D56!!J@gSHpuonoUyH1uB*^"
+  pass: ###
