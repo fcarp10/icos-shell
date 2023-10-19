@@ -74,7 +74,7 @@ func NewControllerAPIService() ControllerAPIServicer {
 
 // AddController - Adds a new controller
 func (s *ControllerAPIService) AddController(ctx context.Context, controller Controller, apiKey string) (ImplResponse, error) {
-	tokenvalidation, err := receiveAndValidateAccessToken(ctx, apiKey)
+	tokenvalidation, _, err := receiveAndValidateAccessToken(ctx, apiKey)
 	if err != nil {
 		return tokenvalidation, err
 	} else {
