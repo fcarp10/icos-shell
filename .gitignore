@@ -1,4 +1,4 @@
 .vscode/
 client/shell-client
 
-*test*.yml
+*config*.yml
