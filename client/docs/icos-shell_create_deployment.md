@@ -33,6 +33,11 @@ icos-shell create deployment [flags]
   -u, --username string     username parameter
 ```
 
+### Example
+```
+./shell-client --config ./config.yml create deployment --file example_application.yaml
+```
+
 ### SEE ALSO
 
 * [icos-shell create](icos-shell_create.md)	 - Create a resource
