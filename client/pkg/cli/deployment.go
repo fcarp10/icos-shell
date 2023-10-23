@@ -55,7 +55,9 @@ func GetDeployment() (result string) {
 }
 
 func GetDeploymentById(id int64) (result string) {
+
 	deployment, resp, err := openapi.Client.DeploymentAPI.GetDeploymentById(context.Background(), id).Execute()
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return "Error when retrieving deployments"

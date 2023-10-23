@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -36,7 +37,7 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
 	jsonData, _ := json.Marshal(body)
-	resp, err := http.Post(viper.GetString("components.job_manager"), "application/json", bytes.NewBuffer(jsonData))
+	resp, err := http.Post(viper.GetString("components.job_manager")+"/jobmanager/jobs/create", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return Response(resp.StatusCode, nil), nil
@@ -64,30 +65,56 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 
 // GetDeploymentById - Find deployment by ID
 func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
-	// TODO - update GetDeploymentById with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
-	// return Response(200, Deployment{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetDeploymentById method not implemented")
+	//TODO: check if this int64 to string conversion works properly
+	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs/get/" + strconv.FormatInt(deploymentId, 10))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
+	} else {
+		if resp.StatusCode == 201 {
+			return Response(201, resp.Body), nil
+		} else if resp.StatusCode == 204 {
+			return Response(resp.StatusCode, "No deployments found"), nil
+		} else if resp.StatusCode == 405 {
+			return Response(405, "Invalid input"), nil
+		} else {
+			return Response(resp.StatusCode, "Unexpected status code received"), nil
+		}
+	}
 }
+
+// TODO - update GetDeploymentById with the required logic for this service method.
+// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
+// return Response(200, Deployment{}), nil
+
+// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
+// return Response(400, nil),nil
+
+// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+// return Response(404, nil),nil
 
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse, error) {
+	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs/get")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, nil), nil
+	} else {
+		if resp.StatusCode == 201 {
+			return Response(201, resp.Body), nil
+		} else if resp.StatusCode == 405 {
+			return Response(405, "Invalid input"), nil
+		} else {
+			return Response(resp.StatusCode, "Error while requesting deployments from job-manager"), nil
+		}
+	}
 	// TODO - update GetDeployments with the required logic for this service method.
 	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	// TODO: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
 	// return Response(200, []Deployment{}), nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetDeployments method not implemented")
 }
 
 // UpdateDeployment - Updates a deployment
