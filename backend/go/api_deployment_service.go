@@ -103,6 +103,18 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 	// return Response(200, Deployment{}), nil
 }
 
+// TODO - update GetDeploymentById with the required logic for this service method.
+// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
+// return Response(200, Deployment{}), nil
+
+// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
+// return Response(400, nil),nil
+
+// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+// return Response(404, nil),nil
+
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse, error) {
 	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs")
