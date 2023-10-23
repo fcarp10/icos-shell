@@ -9,6 +9,6 @@ services:
         environment:
             KEYCLOAK_URL: "keycloak:443"
         ports:
-            - "80:8080"
+            - "8080:8080"
         volumes:
             - ./config.yml:/app/config.yml

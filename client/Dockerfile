@@ -1,4 +1,7 @@
 FROM golang:1.21 AS build
+
+LABEL maintainer="Marc Michalke"
+
 WORKDIR /app
 
 COPY go.mod go.sum ./
