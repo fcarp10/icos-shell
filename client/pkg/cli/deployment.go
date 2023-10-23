@@ -32,3 +32,41 @@ func CreateDeployment(yamlFile []byte) (result string) {
 		}
 	}
 }
+
+func GetDeployment() (result string) {
+
+	deployments, resp, err := openapi.Client.DeploymentAPI.GetDeployments(context.Background()).Execute()
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return "Error when retrieving deployments"
+	} else {
+		if resp.StatusCode == 200 {
+			for _, element := range deployments {
+				fmt.Println(element)
+			}
+			return "Deployment list retrieved"
+		} else if resp.StatusCode == 204 {
+			return "No deployments found"
+		} else {
+			return "Wrong status code received"
+		}
+	}
+}
+
+func GetDeploymentById(id int64) (result string) {
+	deployment, resp, err := openapi.Client.DeploymentAPI.GetDeploymentById(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return "Error when retrieving deployments"
+	} else {
+		if resp.StatusCode == 200 {
+			fmt.Println(deployment)
+			return "Deployment list retrieved"
+		} else if resp.StatusCode == 204 {
+			return "No deployments found"
+		} else {
+			return "Wrong status code received"
+		}
+	}
+}

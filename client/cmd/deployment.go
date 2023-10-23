@@ -32,6 +32,15 @@ to quickly create a Cobra application.`,
 			}
 			res := cli.CreateDeployment(fileDescriptor)
 			fmt.Println(res)
+		} else if cmd.Parent().Use == "get" {
+			specificId, _ := cmd.Flags().GetInt64("id")
+			if specificId != 0 {
+				res := cli.GetDeploymentById(specificId)
+				fmt.Println(res)
+			} else {
+				res := cli.GetDeployment()
+				fmt.Println(res)
+			}
 		}
 	},
 }
@@ -39,8 +48,11 @@ to quickly create a Cobra application.`,
 func init() {
 
 	var createDeploymentCmd = *deploymentCmd
+	var getDeploymentCmd = *deploymentCmd
 	createCmd.AddCommand(&createDeploymentCmd)
+	getCmd.AddCommand(&getDeploymentCmd)
 
 	createDeploymentCmd.PersistentFlags().StringP("file", "", "", "App descriptor file")
+	getDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
 
 }
