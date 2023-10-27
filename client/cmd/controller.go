@@ -4,8 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"shellclient/pkg/cli"
 
 	"github.com/spf13/cobra"
@@ -25,11 +23,9 @@ to quickly create a Cobra application.`,
 		if cmd.Parent().Use == "add" {
 			controllerName, _ := cmd.Flags().GetString("name")
 			controllerAddress, _ := cmd.Flags().GetString("address")
-			res := cli.AddController(controllerName, controllerAddress)
-			fmt.Println(res)
+			cli.AddController(controllerName, controllerAddress)
 		} else if cmd.Parent().Use == "get" {
-			res := cli.GetController()
-			fmt.Println(res)
+			cli.GetController()
 		}
 	},
 }
@@ -41,17 +37,8 @@ func init() {
 	getCmd.AddCommand(&getControllerCmd)
 	addCmd.AddCommand(&addControllerCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
 	addControllerCmd.PersistentFlags().StringP("name", "n", "", "Name of the controller")
 	addControllerCmd.PersistentFlags().StringP("address", "a", "", "Address of the controller")
 	addControllerCmd.MarkPersistentFlagRequired("name")
 	addControllerCmd.MarkPersistentFlagRequired("address")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// controllerCmd.Flags().StringP("name", "n", "", "Name of the controller")
-	// controllerCmd.Flags().StringP("address", "a", "", "Address of the controller")
 }

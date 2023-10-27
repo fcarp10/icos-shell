@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"shellclient/pkg/cli"
 	"shellclient/pkg/openapi"
 
 	"github.com/spf13/cobra"
@@ -22,9 +23,21 @@ var rootCmd = &cobra.Command{
 	Long: `icos-shell - a CLI to interface the ICOS Shell
    
 The icos-shell can be used to modify or inspect resources in the ICOS controller from the terminal`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		if viper.GetString("controller") != "" {
+			openapi.Init(viper.GetString("controller"))
+			cli.GetHealthcheck()
+		} else {
+			if viper.GetString("lighthouse") != "" {
+				fmt.Fprintln(os.Stderr, "Retrieving controllers from lighthouse...")
+				openapi.Init(viper.GetString("lighthouse"))
+				cli.GetController()
+				fmt.Fprintln(os.Stderr, "Please, add a controller to the config file. Exiting.")
+			} else {
+				fmt.Fprintln(os.Stderr, "Lighthouse not defined")
+			}
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -41,6 +54,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "$XDG_CONFIG_HOME/icos-shell/config.yaml", "config file")
+	viper.BindEnv("controller", "CONTROLLER")
 	viper.BindEnv("auth_token", "ICOS_AUTH_TOKEN")
 }
 
@@ -68,13 +82,12 @@ func initConfig() {
 	}
 
 	if viper.GetString("controller") == "" {
-		fmt.Fprintln(os.Stderr, "Controller not defined")
-		os.Exit(0)
+		fmt.Fprintln(os.Stderr, "Controller not defined in the config file")
 	} else if viper.GetString("controller") != "" && viper.GetString("auth_token") == "" {
-		fmt.Fprintln(os.Stderr, "No token found")
+		fmt.Fprintln(os.Stderr, "Controller is defined, but no token found")
 	} else {
-		fmt.Println("Controller:", viper.GetString("controller"))
-		fmt.Println("Token found!")
+		fmt.Fprintln(os.Stderr, "Controller:", viper.GetString("controller"))
+		fmt.Fprintln(os.Stderr, "Token found!")
 	}
 	openapi.Init(viper.GetString("controller"))
 }

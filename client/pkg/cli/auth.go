@@ -14,8 +14,6 @@ func LoginUser() (result string) {
 	value, resp, err := openapi.Client.UserAPI.LoginUser(context.Background()).Username(viper.GetString("keycloak.user")).Password(viper.GetString("keycloak.pass")).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		fmt.Fprintf(os.Stderr, "%v\n", resp.Body)
-		fmt.Println("Error while trying to login")
 		return ""
 	} else {
 		if resp.StatusCode == 200 {

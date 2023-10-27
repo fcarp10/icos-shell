@@ -4,11 +4,10 @@ lighthouse:
 keycloak: 
   server: https://keycloak.dev.icos.91.109.56.214.sslip.io
   client_id: shell-backend
-  client_secret: ###
+  client_secret: rECpyPfRd4YaXtCcpJACFrfxQ1kcikG3
   realm: icos-dev
   username: admin
-  password: ###
+  password: Iki946D56!!J@gSHpuonoUyH1uB*^i
 
 components: 
   job_manager: http://localhost:8080
-
