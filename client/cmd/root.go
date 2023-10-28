@@ -82,12 +82,14 @@ func initConfig() {
 	}
 
 	if viper.GetString("controller") == "" {
-		fmt.Fprintln(os.Stderr, "Controller not defined in the config file")
+		fmt.Fprintln(os.Stderr, "Controller not defined in the config file, trying lighthouse instead...")
+		openapi.Init(viper.GetString("lighthouse"))
 	} else if viper.GetString("controller") != "" && viper.GetString("auth_token") == "" {
 		fmt.Fprintln(os.Stderr, "Controller is defined, but no token found")
+		openapi.Init(viper.GetString("controller"))
 	} else {
 		fmt.Fprintln(os.Stderr, "Controller:", viper.GetString("controller"))
 		fmt.Fprintln(os.Stderr, "Token found!")
+		openapi.Init(viper.GetString("controller"))
 	}
-	openapi.Init(viper.GetString("controller"))
 }

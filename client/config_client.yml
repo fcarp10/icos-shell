@@ -1,5 +1,5 @@
 lighthouse: "lighthouse.icos-project.eu:8080"
-controller: "localhost:8080"
+# controller: "localhost:8080"
 
 keycloak:
   user: "admin"

@@ -25,35 +25,59 @@ function log {
 
 cd client/ || exit
 
-# Add controller to lighthouse (TO-DO)
-# ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN go run main.go --config=config_client.yml add controller -a "192.168.1.1" -n "test2"
+# Login to keycloak
+unset ICOS_AUTH_TOKEN
+COMPONENTS="[shell-backend --> keycloak]"
+eval `CONTROLLER="localhost:8080" go run main.go --config=config_client.yml auth login 2> /dev/null` 
+if [ "$ICOS_AUTH_TOKEN" != "" ]; then
+  log "DONE" "Token returned successfully" "$COMPONENTS"
+else
+  log "FAIL" "failed to retrieve the token" "$COMPONENTS"
+fi
+
+# Add controller to lighthouse
+COMPONENTS="[lighthouse --> keycloak]"
+RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN go run main.go --config=config_client.yml add controller -a 127.0.0.1 -n helloworld_controller 2> /dev/null)
+if [[ $RESPONSE ]]; then
+    log "DONE" "Controller added to the lighthouse successfully" "$COMPONENTS"
+else
+    log "FAIL" "Error while trying to add a controller to the lighthouse" "$COMPONENTS"
+fi
 
 # Get controllers from lighthouse
 unset CONTROLLERS
+COMPONENTS="[lighthouse]"
 CONTROLLERS=$(go run main.go --config=config_client.yml get controller 2> /dev/null) 
 if [ "$CONTROLLERS" != ""  ]; then
-    log "DONE" "Controllers retrieved successfully" [lighthouse]
+    log "DONE" "Controllers retrieved successfully" "$COMPONENTS"
 else
-    log "FAIL" "Error while retrieving controllers" [lighthouse]
+    log "FAIL" "Error while retrieving controllers" "$COMPONENTS"
 fi
 
 # healthcheck shell-backend from controller
 unset CONTROLLER
+COMPONENTS="[shell-backend]"
 CONTROLLER="localhost:8080" go run main.go --config=config_client.yml 2> /dev/null
 if [ $? -eq 0 ]; then
-    log "DONE" "Healthcheck to the shell-backend was successful" [shell-backend]
+    log "DONE" "Healthcheck to the shell-backend was successful" "$COMPONENTS"
 else
-    log "FAIL" "Error when trying healthcheck to the shell-backend" [shell-backend]
+    log "FAIL" "Error while trying healthcheck to the shell-backend" "$COMPONENTS"
 fi
 
-# Login to keycloak
-unset ICOS_AUTH_TOKEN
-eval `go run main.go --config=config_client.yml auth login 2> /dev/null` 
-if [ "$ICOS_AUTH_TOKEN" != "" ]; then
-  log "DONE" "Token returned successfully" [keycloak]
+# Create deployment
+COMPONENTS="[shell-backend --> job-manager]"
+RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN CONTROLLER="localhost:8080" go run main.go --config=config_client.yml create deployment --file ../openapi.yaml 2> /dev/null)
+if [[ $RESPONSE ]]; then
+    log "DONE" "Deployment added to the controller successfully" "$COMPONENTS"
 else
-  log "FAIL" "failed to retrieve the token" [keycloak]
+    log "FAIL" "Error while trying to add a deployment to the controller" "$COMPONENTS"
 fi
 
-# Create deployment (TO-DO)
-# ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN go run main.go --config=config_client.yml create deployment --file any_file.yml
+# Get deployment
+COMPONENTS="[shell-backend --> job-manager]"
+RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN CONTROLLER="localhost:8080" go run main.go --config=config_client.yml get deployment 2> /dev/null)
+if [[ $RESPONSE ]]; then
+    log "DONE" "Deployments retrieved successfully" "$COMPONENTS"
+else
+    log "FAIL" "Error while retrieving deployments" "$COMPONENTS"
+fi

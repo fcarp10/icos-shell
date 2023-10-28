@@ -17,7 +17,6 @@ func AddController(name string, address string) {
 	resp, err := openapi.Client.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		fmt.Fprintf(os.Stderr, "%v\n", resp.Body)
 	} else {
 		if resp.StatusCode == 201 {
 			fmt.Fprintln(os.Stderr, "Controller successfully added!")
