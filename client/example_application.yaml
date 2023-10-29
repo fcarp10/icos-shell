@@ -1,0 +1,45 @@
+name: my_application
+
+components:
+- name: component-1
+  type: helm
+  repository: foo/bar
+- name: component-2
+  type: manifest
+- name: component-3
+  type: container
+  image: foo/bar:latest
+  env:
+    - name: env1
+      value: val1
+  ports: [80, 8080]
+
+telemetry:
+- type: metrics_endpoint
+  port: 9000
+  path: /metrics
+  protocol: prometheus
+  apply_to:
+    - component: component-1
+
+policies:
+  - name: policy1
+    type: performance
+    apply_to:
+    - component-1
+    expression:  my_metric > 100
+    for: 10m
+    remediations:
+      - scale_pod   
+
+matchmaking_requirements:
+  optimization_metric:
+  - type: hard
+    infrastructure: nkua
+  - type: soft
+    req: camera at GPS XX.XX YY.YY
+         facing North
+  - type: data
+    component: component-1
+    require:
+    - dataset1
