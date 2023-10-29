@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	openapi "shellclient/pkg/openapi"
+	"strconv"
 
 	"gopkg.in/yaml.v3"
 )
@@ -33,13 +34,34 @@ func CreateDeployment(yamlFile []byte) (result string) {
 	}
 }
 
+func UpdateDeployment(id int64, yamlFile []byte) (result string) {
+	body := make(map[string]interface{})
+	err := yaml.Unmarshal(yamlFile, &body)
+	if err != nil {
+		log.Fatalf("Error unmarshaling YAML: %v", err)
+	}
+	// token := viper.GetString("auth_token") ## TBD
+	resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).Body(body).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		//		fmt.Fprintf(os.Stderr, "Received response: %v\n", resp.Body)
+		return "Error when updating deployment"
+	} else {
+		if resp.StatusCode == 201 {
+			return "Deployment successfully updated!"
+		} else {
+			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+		}
+	}
+}
+
 func GetDeployment() (result string) {
 
 	deployments, resp, err := openapi.Client.DeploymentAPI.GetDeployments(context.Background()).Execute()
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return "Error when retrieving deployments"
+		return "Error when retrieving deployments: " + strconv.Itoa(resp.StatusCode)
 	} else {
 		if resp.StatusCode == 200 {
 			for _, element := range deployments {
@@ -49,7 +71,7 @@ func GetDeployment() (result string) {
 		} else if resp.StatusCode == 204 {
 			return "No deployments found"
 		} else {
-			return "Wrong status code received"
+			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
 		}
 	}
 }
@@ -60,7 +82,7 @@ func GetDeploymentById(id int64) (result string) {
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return "Error when retrieving deployments"
+		return "Error when retrieving deployment: " + strconv.Itoa(resp.StatusCode)
 	} else {
 		if resp.StatusCode == 200 {
 			fmt.Println(deployment)
@@ -68,7 +90,25 @@ func GetDeploymentById(id int64) (result string) {
 		} else if resp.StatusCode == 204 {
 			return "No deployments found"
 		} else {
-			return "Wrong status code received"
+			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+		}
+	}
+}
+
+func DeleteDeployment(id int64) (result string) {
+
+	resp, err := openapi.Client.DeploymentAPI.DeleteDeploymentById(context.Background(), id).Execute()
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return "Error when deleting deployments"
+	} else {
+		if resp.StatusCode == 200 {
+			return "Deployment successfully deleted"
+		} else if resp.StatusCode == 204 {
+			return "No matching deployments found"
+		} else {
+			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
 		}
 	}
 }

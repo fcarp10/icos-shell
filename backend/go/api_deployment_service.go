@@ -54,22 +54,27 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 
 // DeleteDeploymentById - Deletes a deployment
 func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Sending deployment UPDATE request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
-	resp, err := http.NewRequestWithContext(ctx, "DELETE", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
+	fmt.Fprintf(os.Stderr, "Sending deployment DELETE request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
+	req, err := http.NewRequestWithContext(ctx, "DELETE", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(resp.Response.StatusCode, "Error when deleting deployment"), nil
+		return Response(resp.StatusCode, "Error when deleting deployment"), nil
 	} else {
 		responseString := "Unexpected status code received"
-		if resp.Response.StatusCode == 204 {
+		if resp.StatusCode == 204 {
 			responseString = "No deployments found"
-		} else if resp.Response.StatusCode == 405 {
+		} else if resp.StatusCode == 405 {
 			responseString = "Invalid input"
 		} else {
 			fmt.Fprintf(os.Stderr, "%v\n", responseString)
-			return Response(resp.Response.StatusCode, resp.Body), nil
+			return Response(resp.StatusCode, resp.Body), nil
 		}
-		return Response(resp.Response.StatusCode, responseString), nil
+		return Response(resp.StatusCode, responseString), nil
 	}
 	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
 	// return Response(200, nil),nil
@@ -98,18 +103,6 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 	// return Response(200, Deployment{}), nil
 }
 
-// TODO - update GetDeploymentById with the required logic for this service method.
-// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
-// return Response(200, Deployment{}), nil
-
-// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-// return Response(400, nil),nil
-
-// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-// return Response(404, nil),nil
-
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse, error) {
 	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs")
@@ -135,21 +128,26 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
 	jsonData, _ := json.Marshal(body)
 	fmt.Fprintf(os.Stderr, "Sending deployment UPDATE request to [%v] with content: [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
-	resp, err := http.NewRequestWithContext(ctx, "PUT", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	req, err := http.NewRequestWithContext(ctx, "PUT", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(resp.Response.StatusCode, "Error when retrieving deployment"), nil
+		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
 	} else {
 		responseString := "Unexpected status code received"
-		if resp.Response.StatusCode == 204 {
+		if resp.StatusCode == 204 {
 			responseString = "No deployments found"
-		} else if resp.Response.StatusCode == 405 {
+		} else if resp.StatusCode == 405 {
 			responseString = "Invalid input"
 		} else {
 			fmt.Fprintf(os.Stderr, "%v\n", responseString)
-			return Response(resp.Response.StatusCode, resp.Body), nil
+			return Response(resp.StatusCode, resp.Body), nil
 		}
-		return Response(resp.Response.StatusCode, responseString), nil
+		return Response(resp.StatusCode, responseString), nil
 	}
 	// TODO?: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
 	// return Response(200, nil),nil
