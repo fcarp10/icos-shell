@@ -5,6 +5,8 @@ ICOS Shell is a component part of the [ICOS Project](https://cordis.europa.eu/pr
 - Backend: server running on the ICOS controller
 - Client: CLI tool for interfacing the Shell backend
 
+![diagram](diagram.png)
+
 ## Build and run
 
 ### Backend (with Docker)
