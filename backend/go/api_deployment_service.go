@@ -13,10 +13,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -36,7 +36,8 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
 	jsonData, _ := json.Marshal(body)
-	resp, err := http.Post(viper.GetString("components.job_manager"), "application/json", bytes.NewBuffer(jsonData))
+	fmt.Fprintf(os.Stderr, "Sending deployment creation request to [%v] with content [%v]\n", viper.GetString("components.job_manager")+"/jobmanager/jobs/create", bytes.NewBuffer(jsonData))
+	resp, err := http.Post(viper.GetString("components.job_manager")+"/jobmanager/jobs/create", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return Response(resp.StatusCode, nil), nil
@@ -46,60 +47,109 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 		} else if resp.StatusCode == 405 {
 			return Response(405, "Invalid input"), nil
 		} else {
-			return Response(resp.StatusCode, "Error while forwarding deployment to job-manager"), nil
+			return Response(resp.StatusCode, resp.Body), nil
 		}
 	}
 }
 
 // DeleteDeploymentById - Deletes a deployment
 func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
-	// TODO - update DeleteDeploymentById with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
+	fmt.Fprintf(os.Stderr, "Sending deployment DELETE request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
+	req, err := http.NewRequestWithContext(ctx, "DELETE", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, "Error when deleting deployment"), nil
+	} else {
+		responseString := "Unexpected status code received"
+		if resp.StatusCode == 204 {
+			responseString = "No deployments found"
+		} else if resp.StatusCode == 405 {
+			responseString = "Invalid input"
+		} else {
+			fmt.Fprintf(os.Stderr, "%v\n", responseString)
+			return Response(resp.StatusCode, resp.Body), nil
+		}
+		return Response(resp.StatusCode, responseString), nil
+	}
 	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
 	// return Response(200, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("DeleteDeploymentById method not implemented")
 }
 
 // GetDeploymentById - Find deployment by ID
 func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64) (ImplResponse, error) {
-	// TODO - update GetDeploymentById with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
+	//TODO: check if this int64 to string conversion works properly
+	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
+	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs/" + strconv.FormatInt(deploymentId, 10))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
+	} else {
+		if resp.StatusCode == 201 {
+			return Response(201, resp.Body), nil
+		} else if resp.StatusCode == 204 {
+			return Response(resp.StatusCode, "No deployments found"), nil
+		} else if resp.StatusCode == 405 {
+			return Response(405, "Invalid input"), nil
+		} else {
+			return Response(resp.StatusCode, resp.Body), nil
+		}
+	}
+	// TODO?: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
 	// return Response(200, Deployment{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetDeploymentById method not implemented")
 }
 
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetDeployments with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
+	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs")
+	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, nil), nil
+	} else {
+		if resp.StatusCode == 201 {
+			return Response(201, resp.Body), nil
+		} else if resp.StatusCode == 405 {
+			return Response(405, "Invalid input"), nil
+		} else {
+			return Response(resp.StatusCode, resp.Body), nil
+		}
+	}
+	// TODO?: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
 	// return Response(200, []Deployment{}), nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetDeployments method not implemented")
 }
 
 // UpdateDeployment - Updates a deployment
 func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, body map[string]interface{}) (ImplResponse, error) {
-	// TODO - update UpdateDeployment with the required logic for this service method.
-	// Add api_deployment_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
+	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
+	jsonData, _ := json.Marshal(body)
+	fmt.Fprintf(os.Stderr, "Sending deployment UPDATE request to [%v] with content: [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	req, err := http.NewRequestWithContext(ctx, "PUT", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
+	} else {
+		responseString := "Unexpected status code received"
+		if resp.StatusCode == 204 {
+			responseString = "No deployments found"
+		} else if resp.StatusCode == 405 {
+			responseString = "Invalid input"
+		} else {
+			fmt.Fprintf(os.Stderr, "%v\n", responseString)
+			return Response(resp.StatusCode, resp.Body), nil
+		}
+		return Response(resp.StatusCode, responseString), nil
+	}
+	// TODO?: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
 	// return Response(200, nil),nil
 
-	// TODO: Uncomment the next line to return response Response(405, {}) or use other options such as http.Ok ...
-	// return Response(405, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("UpdateDeployment method not implemented")
 }

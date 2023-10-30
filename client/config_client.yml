@@ -1,6 +1,7 @@
 lighthouse: "lighthouse.icos-project.eu:8080"
-# controller: "localhost:8080"
+controller: "127.0.0.1:8080"
+auth_token: "12345"
 
 keycloak:
   user: "admin"
-  pass:  Iki946D56!!J@gSHpuonoUyH1uB*^i
+  pass: ###

@@ -28,6 +28,11 @@ icos-shell create deployment [flags]
       --config string   config file (default "$XDG_CONFIG_HOME/icos-shell/config.yaml")
 ```
 
+### Example
+```
+./shell-client --config ./config.yml create deployment --file example_application.yaml
+```
+
 ### SEE ALSO
 
 * [icos-shell create](icos-shell_create.md)	 - Create a resource
