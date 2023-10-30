@@ -41,7 +41,7 @@ null (empty response body)
 
 <a name="deleteDeploymentById"></a>
 # **deleteDeploymentById**
-> deleteDeploymentById(deploymentId)
+> deleteDeploymentById(deploymentId, api\_key)
 
 Deletes a deployment
 
@@ -52,6 +52,7 @@ Deletes a deployment
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deploymentId** | **Long**| ID of deployment that needs to be deleted | [default to null] |
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
@@ -68,7 +69,7 @@ null (empty response body)
 
 <a name="getDeploymentById"></a>
 # **getDeploymentById**
-> Deployment getDeploymentById(deploymentId)
+> Deployment getDeploymentById(deploymentId, api\_key)
 
 Find deployment by ID
 
@@ -79,6 +80,7 @@ Find deployment by ID
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deploymentId** | **Long**| ID of deployment to return | [default to null] |
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
@@ -95,14 +97,17 @@ Find deployment by ID
 
 <a name="getDeployments"></a>
 # **getDeployments**
-> List getDeployments()
+> List getDeployments(api\_key)
 
 Returns a list of deployments
 
     Returns the list of deployments
 
 ### Parameters
-This endpoint does not need any parameter.
+
+|Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
@@ -119,7 +124,7 @@ This endpoint does not need any parameter.
 
 <a name="updateDeployment"></a>
 # **updateDeployment**
-> updateDeployment(deploymentId, body)
+> updateDeployment(deploymentId, body, api\_key)
 
 Updates a deployment
 
@@ -131,6 +136,7 @@ Updates a deployment
 |------------- | ------------- | ------------- | -------------|
 | **deploymentId** | **Long**| ID of deployment that needs to be updated | [default to null] |
 | **body** | **Object**|  | |
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 

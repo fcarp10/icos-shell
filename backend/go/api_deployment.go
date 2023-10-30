@@ -19,7 +19,7 @@ import (
 
 // DeploymentAPIController binds http requests to an api service and writes the service results to the http response
 type DeploymentAPIController struct {
-	service      DeploymentAPIServicer
+	service DeploymentAPIServicer
 	errorHandler ErrorHandler
 }
 

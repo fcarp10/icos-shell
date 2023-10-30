@@ -77,6 +77,14 @@ paths:
       summary: Returns a list of deployments
       description: Returns the list of deployments
       operationId: getDeployments
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           description: successful operation
@@ -130,6 +138,13 @@ paths:
         schema:
           type: integer
           format: int64
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           description: successful operation
@@ -157,6 +172,13 @@ paths:
         schema:
           type: integer
           format: int64
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       requestBody:
         required: true
         content:
@@ -184,6 +206,13 @@ paths:
         schema:
           type: integer
           format: int64
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           description: successful operation

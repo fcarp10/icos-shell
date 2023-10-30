@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
 
 ## DeleteDeploymentById
 
-> DeleteDeploymentById(ctx, deploymentId).Execute()
+> DeleteDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
 
 Deletes a deployment
 
@@ -100,10 +100,11 @@ import (
 
 func main() {
     deploymentId := int64(789) // int64 | ID of deployment that needs to be deleted
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).Execute()
+    r, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.DeleteDeploymentById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -127,6 +128,7 @@ Other parameters are passed through a pointer to a apiDeleteDeploymentByIdReques
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **apiKey** | **string** |  | 
 
 ### Return type
 
@@ -148,7 +150,7 @@ Name | Type | Description  | Notes
 
 ## GetDeploymentById
 
-> Deployment GetDeploymentById(ctx, deploymentId).Execute()
+> Deployment GetDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
 
 Find deployment by ID
 
@@ -168,10 +170,11 @@ import (
 
 func main() {
     deploymentId := int64(789) // int64 | ID of deployment to return
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.DeploymentAPI.GetDeploymentById(context.Background(), deploymentId).Execute()
+    resp, r, err := apiClient.DeploymentAPI.GetDeploymentById(context.Background(), deploymentId).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeploymentById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -197,6 +200,7 @@ Other parameters are passed through a pointer to a apiGetDeploymentByIdRequest s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **apiKey** | **string** |  | 
 
 ### Return type
 
@@ -218,7 +222,7 @@ Name | Type | Description  | Notes
 
 ## GetDeployments
 
-> []Deployment GetDeployments(ctx).Execute()
+> []Deployment GetDeployments(ctx).ApiKey(apiKey).Execute()
 
 Returns a list of deployments
 
@@ -237,10 +241,11 @@ import (
 )
 
 func main() {
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.DeploymentAPI.GetDeployments(context.Background()).Execute()
+    resp, r, err := apiClient.DeploymentAPI.GetDeployments(context.Background()).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeployments``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -252,12 +257,16 @@ func main() {
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetDeploymentsRequest struct via the builder pattern
 
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiKey** | **string** |  | 
 
 ### Return type
 
@@ -279,7 +288,7 @@ Other parameters are passed through a pointer to a apiGetDeploymentsRequest stru
 
 ## UpdateDeployment
 
-> UpdateDeployment(ctx, deploymentId).Body(body).Execute()
+> UpdateDeployment(ctx, deploymentId).Body(body).ApiKey(apiKey).Execute()
 
 Updates a deployment
 
@@ -300,10 +309,11 @@ import (
 func main() {
     deploymentId := int64(789) // int64 | ID of deployment that needs to be updated
     body := map[string]interface{}{ ... } // map[string]interface{} | 
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Body(body).Execute()
+    r, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Body(body).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.UpdateDeployment``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -328,6 +338,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **body** | **map[string]interface{}** |  | 
+ **apiKey** | **string** |  | 
 
 ### Return type
 

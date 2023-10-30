@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	openapi "shellclient/pkg/openapi"
-	"strconv"
 
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
@@ -21,91 +20,104 @@ func CreateDeployment(yamlFile []byte) {
 	token := viper.GetString("auth_token")
 	resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).ApiKey(token).Body(body).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
+		fmt.Fprintln(os.Stderr, err)
+		if resp != nil {
+			fmt.Fprintln(os.Stderr, resp.Body)
+		}
 	} else {
 		if resp.StatusCode == 201 {
 			fmt.Fprintln(os.Stderr, "Deployment successfully added!")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else if resp.StatusCode == 202 {
 			fmt.Fprintln(os.Stderr, "Deployment already exists")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			fmt.Fprintln(os.Stderr, "Wrong status code received")
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
 }
 
-func UpdateDeployment(id int64, yamlFile []byte) (result string) {
+func UpdateDeployment(id int64, yamlFile []byte) {
 	body := make(map[string]interface{})
 	err := yaml.Unmarshal(yamlFile, &body)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error unmarshaling YAML: %v", err)
 	}
-	// token := viper.GetString("auth_token") ## TBD
-	resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).Body(body).Execute()
+	token := viper.GetString("auth_token")
+	resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).ApiKey(token).Body(body).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		//		fmt.Fprintf(os.Stderr, "Received response: %v\n", resp.Body)
-		return "Error when updating deployment"
+		fmt.Fprintln(os.Stderr, err)
+		if resp != nil {
+			fmt.Fprintln(os.Stderr, resp.Body)
+		}
 	} else {
 		if resp.StatusCode == 201 {
-			return "Deployment successfully updated!"
+			fmt.Fprintln(os.Stderr, "Deployment successfully updated!")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
 }
 
-func GetDeployment() (result string) {
-
-	deployments, resp, err := openapi.Client.DeploymentAPI.GetDeployments(context.Background()).Execute()
+func GetDeployment() {
+	token := viper.GetString("auth_token")
+	deployments, resp, err := openapi.Client.DeploymentAPI.GetDeployments(context.Background()).ApiKey(token).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return "Error when retrieving deployments: " + strconv.Itoa(resp.StatusCode)
+		fmt.Fprintln(os.Stderr, err)
+		if resp != nil {
+			fmt.Fprintln(os.Stderr, resp.Body)
+		}
 	} else {
 		if resp.StatusCode == 200 {
 			deployments_json, _ := json.Marshal(deployments)
 			fmt.Fprintln(os.Stdout, string(deployments_json))
 		} else if resp.StatusCode == 204 {
 			fmt.Fprintln(os.Stderr, "No deployments found")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
-	return
 }
 
-func GetDeploymentById(id int64) (result string) {
-
-	deployment, resp, err := openapi.Client.DeploymentAPI.GetDeploymentById(context.Background(), id).Execute()
-
+func GetDeploymentById(id int64) {
+	token := viper.GetString("auth_token")
+	deployment, resp, err := openapi.Client.DeploymentAPI.GetDeploymentById(context.Background(), id).ApiKey(token).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return "Error when retrieving deployment: " + strconv.Itoa(resp.StatusCode)
+		fmt.Fprintln(os.Stderr, err)
+		if resp != nil {
+			fmt.Fprintln(os.Stderr, resp.Body)
+		}
 	} else {
 		if resp.StatusCode == 200 {
-			fmt.Fprintln(os.Stdout, deployment)
+			deployments_json, _ := json.Marshal(deployment)
+			fmt.Fprintln(os.Stdout, string(deployments_json))
 		} else if resp.StatusCode == 204 {
 			fmt.Fprintln(os.Stderr, "Deployment not found")
 		} else {
-			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
-	return
 }
 
-func DeleteDeployment(id int64) (result string) {
-
-	resp, err := openapi.Client.DeploymentAPI.DeleteDeploymentById(context.Background(), id).Execute()
-
+func DeleteDeployment(id int64) {
+	token := viper.GetString("auth_token")
+	resp, err := openapi.Client.DeploymentAPI.DeleteDeploymentById(context.Background(), id).ApiKey(token).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return "Error when deleting deployments"
+		fmt.Fprintln(os.Stderr, err)
+		if resp != nil {
+			fmt.Fprintln(os.Stderr, resp.Body)
+		}
 	} else {
 		if resp.StatusCode == 200 {
-			return "Deployment successfully deleted"
+			fmt.Fprintln(os.Stderr, "Deployment successfully deleted")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else if resp.StatusCode == 204 {
-			return "No matching deployments found"
+			fmt.Fprintln(os.Stderr, "No matching deployments found")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			return "Unexpected status code received: " + strconv.Itoa(resp.StatusCode)
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
 }

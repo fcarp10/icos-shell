@@ -23,12 +23,12 @@ func AddController(name string, address string) {
 	} else {
 		if resp.StatusCode == 201 {
 			fmt.Fprintln(os.Stderr, "Controller successfully added!")
-			fmt.Fprintln(os.Stdout, "201")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else if resp.StatusCode == 202 {
 			fmt.Fprintln(os.Stderr, "Controller already exists")
-			fmt.Fprintln(os.Stdout, "202")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			fmt.Fprintln(os.Stderr, "Wrong status code received")
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
 }
@@ -43,8 +43,9 @@ func GetController() {
 			fmt.Fprintln(os.Stdout, string(controllers_json))
 		} else if resp.StatusCode == 204 {
 			fmt.Fprintln(os.Stderr, "No controllers found")
+			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		} else {
-			fmt.Fprintln(os.Stderr, "Wrong status code received")
+			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
 }

@@ -149,6 +149,12 @@ type ApiDeleteDeploymentByIdRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
 	deploymentId int64
+	apiKey *string
+}
+
+func (r ApiDeleteDeploymentByIdRequest) ApiKey(apiKey string) ApiDeleteDeploymentByIdRequest {
+	r.apiKey = &apiKey
+	return r
 }
 
 func (r ApiDeleteDeploymentByIdRequest) Execute() (*http.Response, error) {
@@ -209,6 +215,9 @@ func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeployment
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
+	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -255,6 +264,12 @@ type ApiGetDeploymentByIdRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
 	deploymentId int64
+	apiKey *string
+}
+
+func (r ApiGetDeploymentByIdRequest) ApiKey(apiKey string) ApiGetDeploymentByIdRequest {
+	r.apiKey = &apiKey
+	return r
 }
 
 func (r ApiGetDeploymentByIdRequest) Execute() (*Deployment, *http.Response, error) {
@@ -317,6 +332,9 @@ func (a *DeploymentAPIService) GetDeploymentByIdExecute(r ApiGetDeploymentByIdRe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
+	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -371,6 +389,12 @@ func (a *DeploymentAPIService) GetDeploymentByIdExecute(r ApiGetDeploymentByIdRe
 type ApiGetDeploymentsRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
+	apiKey *string
+}
+
+func (r ApiGetDeploymentsRequest) ApiKey(apiKey string) ApiGetDeploymentsRequest {
+	r.apiKey = &apiKey
+	return r
 }
 
 func (r ApiGetDeploymentsRequest) Execute() ([]Deployment, *http.Response, error) {
@@ -430,6 +454,9 @@ func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
+	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -486,10 +513,16 @@ type ApiUpdateDeploymentRequest struct {
 	ApiService *DeploymentAPIService
 	deploymentId int64
 	body *map[string]interface{}
+	apiKey *string
 }
 
 func (r ApiUpdateDeploymentRequest) Body(body map[string]interface{}) ApiUpdateDeploymentRequest {
 	r.body = &body
+	return r
+}
+
+func (r ApiUpdateDeploymentRequest) ApiKey(apiKey string) ApiUpdateDeploymentRequest {
+	r.apiKey = &apiKey
 	return r
 }
 
@@ -553,6 +586,9 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
 	}
 	// body params
 	localVarPostBody = r.body

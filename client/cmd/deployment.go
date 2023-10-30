@@ -4,7 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -45,12 +44,10 @@ to quickly create a Cobra application.`,
 			if err != nil {
 				log.Fatalf("error: %v", err)
 			}
-			res := cli.UpdateDeployment(specificId, fileDescriptor)
-			fmt.Println(res)
+			cli.UpdateDeployment(specificId, fileDescriptor)
 		} else if cmd.Parent().Use == "delete" {
 			specificId, _ := cmd.Flags().GetInt64("id")
-			res := cli.DeleteDeployment(specificId)
-			fmt.Println(res)
+			cli.DeleteDeployment(specificId)
 		}
 	},
 }

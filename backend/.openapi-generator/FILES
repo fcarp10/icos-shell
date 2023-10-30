@@ -1,7 +1,6 @@
 api/openapi.yaml
 go/api.go
 go/api_controller.go
-go/api_controller_service.go
 go/api_default.go
 go/api_deployment.go
 go/api_resource.go
