@@ -14,94 +14,91 @@ import (
 	"net/http"
 )
 
-
-
 // ControllerAPIRouter defines the required methods for binding the api requests to a responses for the ControllerAPI
 // The ControllerAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a ControllerAPIServicer to perform the required actions, then write the service results to the http response.
-type ControllerAPIRouter interface { 
+type ControllerAPIRouter interface {
 	AddController(http.ResponseWriter, *http.Request)
 	GetControllers(http.ResponseWriter, *http.Request)
 }
+
 // DefaultAPIRouter defines the required methods for binding the api requests to a responses for the DefaultAPI
 // The DefaultAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a DefaultAPIServicer to perform the required actions, then write the service results to the http response.
-type DefaultAPIRouter interface { 
+type DefaultAPIRouter interface {
 	GetHealthcheck(http.ResponseWriter, *http.Request)
 }
+
 // DeploymentAPIRouter defines the required methods for binding the api requests to a responses for the DeploymentAPI
 // The DeploymentAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a DeploymentAPIServicer to perform the required actions, then write the service results to the http response.
-type DeploymentAPIRouter interface { 
+type DeploymentAPIRouter interface {
 	CreateDeployment(http.ResponseWriter, *http.Request)
 	DeleteDeploymentById(http.ResponseWriter, *http.Request)
 	GetDeploymentById(http.ResponseWriter, *http.Request)
 	GetDeployments(http.ResponseWriter, *http.Request)
 	UpdateDeployment(http.ResponseWriter, *http.Request)
 }
+
 // ResourceAPIRouter defines the required methods for binding the api requests to a responses for the ResourceAPI
 // The ResourceAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a ResourceAPIServicer to perform the required actions, then write the service results to the http response.
-type ResourceAPIRouter interface { 
+type ResourceAPIRouter interface {
 	GetResourceById(http.ResponseWriter, *http.Request)
 	GetResources(http.ResponseWriter, *http.Request)
 }
+
 // UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
-type UserAPIRouter interface { 
+type UserAPIRouter interface {
 	LoginUser(http.ResponseWriter, *http.Request)
 	LogoutUser(http.ResponseWriter, *http.Request)
 }
-
 
 // ControllerAPIServicer defines the api actions for the ControllerAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type ControllerAPIServicer interface { 
+type ControllerAPIServicer interface {
 	AddController(context.Context, Controller, string) (ImplResponse, error)
 	GetControllers(context.Context) (ImplResponse, error)
 }
-
 
 // DefaultAPIServicer defines the api actions for the DefaultAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type DefaultAPIServicer interface { 
+type DefaultAPIServicer interface {
 	GetHealthcheck(context.Context) (ImplResponse, error)
 }
-
 
 // DeploymentAPIServicer defines the api actions for the DeploymentAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type DeploymentAPIServicer interface { 
+type DeploymentAPIServicer interface {
 	CreateDeployment(context.Context, map[string]interface{}, string) (ImplResponse, error)
-	DeleteDeploymentById(context.Context, int64) (ImplResponse, error)
-	GetDeploymentById(context.Context, int64) (ImplResponse, error)
-	GetDeployments(context.Context) (ImplResponse, error)
-	UpdateDeployment(context.Context, int64, map[string]interface{}) (ImplResponse, error)
+	DeleteDeploymentById(context.Context, int64, string) (ImplResponse, error)
+	GetDeploymentById(context.Context, int64, string) (ImplResponse, error)
+	GetDeployments(context.Context, string) (ImplResponse, error)
+	UpdateDeployment(context.Context, int64, map[string]interface{}, string) (ImplResponse, error)
 }
-
 
 // ResourceAPIServicer defines the api actions for the ResourceAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type ResourceAPIServicer interface { 
+type ResourceAPIServicer interface {
 	GetResourceById(context.Context, int64) (ImplResponse, error)
 	GetResources(context.Context) (ImplResponse, error)
 }
-
 
 // UserAPIServicer defines the api actions for the UserAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type UserAPIServicer interface { 
+type UserAPIServicer interface {
 	LoginUser(context.Context, string, string) (ImplResponse, error)
 	LogoutUser(context.Context) (ImplResponse, error)
 }
