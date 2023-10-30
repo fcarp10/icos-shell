@@ -4,6 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -37,6 +38,19 @@ to quickly create a Cobra application.`,
 			} else {
 				cli.GetDeployment()
 			}
+		} else if cmd.Parent().Use == "update" {
+			specificId, _ := cmd.Flags().GetInt64("id")
+			fileDescriptorString, _ := cmd.Flags().GetString("file")
+			fileDescriptor, err := os.ReadFile(fileDescriptorString)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+			res := cli.UpdateDeployment(specificId, fileDescriptor)
+			fmt.Println(res)
+		} else if cmd.Parent().Use == "delete" {
+			specificId, _ := cmd.Flags().GetInt64("id")
+			res := cli.DeleteDeployment(specificId)
+			fmt.Println(res)
 		}
 	},
 }
@@ -45,10 +59,17 @@ func init() {
 
 	var createDeploymentCmd = *deploymentCmd
 	var getDeploymentCmd = *deploymentCmd
+	var updateDeploymentCmd = *deploymentCmd
+	var deleteDeploymentCmd = *deploymentCmd
 	createCmd.AddCommand(&createDeploymentCmd)
+	deleteCmd.AddCommand(&deleteDeploymentCmd)
+	updateCmd.AddCommand(&updateDeploymentCmd)
 	getCmd.AddCommand(&getDeploymentCmd)
 
 	createDeploymentCmd.PersistentFlags().StringP("file", "", "", "App descriptor file")
+	updateDeploymentCmd.PersistentFlags().StringP("file", "", "", "App descriptor file")
 	getDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
+	updateDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
+	deleteDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
 
 }

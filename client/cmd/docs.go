@@ -36,6 +36,8 @@ to quickly create a Cobra application.`,
 
 func init() {
 	createCmd.AddCommand(docsCmd)
+	updateCmd.AddCommand(docsCmd)
+	deleteCmd.AddCommand(docsCmd)
 
 	docsCmd.PersistentFlags().StringP("path", "", "", "path where to generate the documentation")
 	docsCmd.MarkPersistentFlagRequired("path")
