@@ -19,7 +19,7 @@ import (
 
 // DeploymentAPIController binds http requests to an api service and writes the service results to the http response
 type DeploymentAPIController struct {
-	service DeploymentAPIServicer
+	service      DeploymentAPIServicer
 	errorHandler ErrorHandler
 }
 
@@ -109,7 +109,8 @@ func (c *DeploymentAPIController) DeleteDeploymentById(w http.ResponseWriter, r 
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	result, err := c.service.DeleteDeploymentById(r.Context(), deploymentIdParam)
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.DeleteDeploymentById(r.Context(), deploymentIdParam, apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -130,7 +131,8 @@ func (c *DeploymentAPIController) GetDeploymentById(w http.ResponseWriter, r *ht
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	result, err := c.service.GetDeploymentById(r.Context(), deploymentIdParam)
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.GetDeploymentById(r.Context(), deploymentIdParam, apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -142,7 +144,8 @@ func (c *DeploymentAPIController) GetDeploymentById(w http.ResponseWriter, r *ht
 
 // GetDeployments - Returns a list of deployments
 func (c *DeploymentAPIController) GetDeployments(w http.ResponseWriter, r *http.Request) {
-	result, err := c.service.GetDeployments(r.Context())
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.GetDeployments(r.Context(), apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -170,7 +173,8 @@ func (c *DeploymentAPIController) UpdateDeployment(w http.ResponseWriter, r *htt
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, bodyParam)
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.UpdateDeployment(r.Context(), deploymentIdParam, bodyParam, apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
