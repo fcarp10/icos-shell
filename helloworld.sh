@@ -38,8 +38,10 @@ fi
 # Add controller to lighthouse
 COMPONENTS="[lighthouse --> keycloak]"
 RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN go run main.go --config=config_client.yml add controller -a 127.0.0.1 -n helloworld_controller 2> /dev/null)
-if [[ $RESPONSE ]]; then
+if [[ $RESPONSE == "201" ]]; then
     log "DONE" "Controller added to the lighthouse successfully" "$COMPONENTS"
+elif [[ $RESPONSE == "202" ]]; then
+    log "INFO" "Controller already exists in the lighthouse (reset timeout)" "$COMPONENTS"
 else
     log "FAIL" "Error while trying to add a controller to the lighthouse" "$COMPONENTS"
 fi

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	openapi "shellclient/pkg/openapi"
 	"strconv"
@@ -17,7 +16,7 @@ func CreateDeployment(yamlFile []byte) {
 	body := make(map[string]interface{})
 	err := yaml.Unmarshal(yamlFile, &body)
 	if err != nil {
-		log.Fatalf("Error unmarshaling YAML: %v", err)
+		fmt.Fprintf(os.Stderr, "Error unmarshaling YAML: %v", err)
 	}
 	token := viper.GetString("auth_token")
 	resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).ApiKey(token).Body(body).Execute()
@@ -38,7 +37,7 @@ func UpdateDeployment(id int64, yamlFile []byte) (result string) {
 	body := make(map[string]interface{})
 	err := yaml.Unmarshal(yamlFile, &body)
 	if err != nil {
-		log.Fatalf("Error unmarshaling YAML: %v", err)
+		fmt.Fprintf(os.Stderr, "Error unmarshaling YAML: %v", err)
 	}
 	// token := viper.GetString("auth_token") ## TBD
 	resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).Body(body).Execute()

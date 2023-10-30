@@ -32,9 +32,9 @@ func NewUserAPIService() UserAPIServicer {
 // LoginUser - Logs user into the system
 func (s *UserAPIService) LoginUser(ctx context.Context, username string, password string) (ImplResponse, error) {
 	client := gocloak.NewClient(viper.GetString("keycloak.server"))
-	token, err := client.Login(context.TODO(), viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"), username, password)
+	token, err := client.Login(ctx, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"), username, password)
 	if err != nil {
-		return Response(400, nil), errors.New("wrong user or password")
+		return Response(400, nil), errors.New(err.Error())
 	} else {
 		// filter the refresh token from the token
 		refresh_token := token.RefreshToken
