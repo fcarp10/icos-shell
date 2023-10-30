@@ -1,7 +1,13 @@
 include:
-  - project: 'icos/common/pipeline-helpers'
+  - project: 'resengit/gitlab/pipeline-helpers'
     ref: main
-    file: '/all-job-templates.yml'
+    file: '/common.yaml'
+  - project: 'resengit/gitlab/pipeline-helpers'
+    ref: main
+    file: '/jobs/docker.yaml'
+  - project: 'resengit/gitlab/pipeline-helpers'
+    ref: main
+    file: '/jobs/golang.yaml'
 
 
 # Backend Jobs
@@ -9,7 +15,6 @@ include:
 backend-docker:
   extends: .build_with_kaniko
   variables:
-    PH_KANIKO_OPTS: --cache-copy-layers=false
     PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
     PH_DOCKER_IMAGE_PATH: icos/shell-backend
 
