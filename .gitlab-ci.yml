@@ -1,31 +1,18 @@
 include:
-  - project: 'icos/common/pipeline-helpers'
+
+  # include the entire docker pipeline to build the backend docker image
+  - project: 'resengit/gitlab/pipeline-helpers'
     ref: main
-    file: '/all-job-templates.yml'
+    file: '/pipelines/docker-image.yaml'
 
+  # also include the templates for golang to define the job to build the shell client binary
+  - project: 'resengit/gitlab/pipeline-helpers'
+    ref: main
+    file: '/jobs/golang.yaml'
 
-# Backend Jobs
-
-backend-docker:
-  extends: .build_with_kaniko
-  variables:
-    PH_KANIKO_OPTS: --cache-copy-layers=false
-    PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
-    PH_DOCKER_IMAGE_PATH: icos/shell-backend
-
-# backend-lint:
-#   extends: .go-job-lint
-#   allow_failure: true
-#   variables:
-#     PH_GO_SRC_DIR: backend
-
-# backend-test:
-#   extends: .go-job-test
-#   allow_failure: true
-#   variables:
-#     PH_GO_SRC_DIR: backend
-#     PH_GO_VERSION: "1.10"
-
+variables:
+  PH_CUSTOM_DOCKER_BUILD_CONTEXT_FOLDER: backend
+  PH_DOCKER_IMAGE_PATH: icos/shell-backend
 
 # Client Jobs
 
