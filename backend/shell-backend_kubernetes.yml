@@ -37,9 +37,6 @@ spec:
         - mountPath: /app/config.yml
           name: backend-config
           subPath: backend-config
-        env: 
-        - name: KEYCLOAK_URL
-          value: "keycloak:443"
       volumes:
       - name: backend-config
         configMap:
@@ -56,7 +53,7 @@ data:
       controller_timeout: 60
 
     keycloak: 
-      server: http://keycloak
+      server: http://keycloak:443
       client_id: shell-backend
       client_secret: "secret"
       realm: icos-dev
