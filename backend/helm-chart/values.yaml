@@ -31,11 +31,7 @@ components:
   # shell
   keycloak: 
     server: http://keycloak:443
-    client_id: shell-backend
-    client_secret: "secret"
-    realm: icos-dev
-    username: "admin"
-    password: "password"
+
   # JobManager settings, needed to be able to manage deployments and jobs in ICOS
   job_manager:
     server: http://jobmanager-service:8080
