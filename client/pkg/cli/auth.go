@@ -21,6 +21,10 @@ func LoginUser() {
 		if resp.StatusCode == 200 {
 			if token != "" {
 				fmt.Printf("%s%s%s", "ICOS_AUTH_TOKEN='", token, "'")
+				viper.Set("auth_token", token)
+				if err := viper.WriteConfig(); err != nil {
+					panic(fmt.Errorf("fatal error writing config file %s", err))
+				}
 			} else {
 				fmt.Fprintln(os.Stderr, "The token received is empty")
 			}

@@ -1,7 +1,7 @@
-lighthouse: "lighthouse.icos-project.eu:8080"
-# controller: "127.0.0.1:8080"
-# auth_token: ""
-
+auth_token: |
+    "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2NmFjOTk3ZC0wNzFlLTQ1N2QtOTY0NC0zYjNhYmYwZmFiZTgifQ.eyJleHAiOjE3MDAwNjQ1NTQsImlhdCI6MTcwMDA2Mjc1NCwianRpIjoiY2M2NzgwZWItMmUwZi00MTViLWFlOTMtNWQ3MzgyYjUzZmY2IiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5kZXYuaWNvcy45MS4xMDkuNTYuMjE0LnNzbGlwLmlvL3JlYWxtcy9pY29zLWRldiIsImF1ZCI6Imh0dHBzOi8va2V5Y2xvYWsuZGV2Lmljb3MuOTEuMTA5LjU2LjIxNC5zc2xpcC5pby9yZWFsbXMvaWNvcy1kZXYiLCJzdWIiOiJkZTIzYTUzYy00MTIzLTQ3Y2YtYjBhZi04ZGQzY2M0YTVmMTEiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoic2hlbGwtYmFja2VuZCIsInNlc3Npb25fc3RhdGUiOiIxMWRhNmEzMi04YWZhLTRjMmItOWIzNy1jYTA2OGRjZDg0ZGEiLCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiMTFkYTZhMzItOGFmYS00YzJiLTliMzctY2EwNjhkY2Q4NGRhIn0.1UxonqvrGANm53DechEXlctyNWBKj5idd2Dv2B0kN0E"
+controller: 127.0.0.1:8080
 keycloak:
-  user: admin
-  pass: Iki946D56!!J@gSHpuonoUyH1uB*^i
+    pass: Iki946D56!!J@gSHpuonoUyH1uB*^i
+    user: admin
+lighthouse: lighthouse.icos-project.eu:8080
