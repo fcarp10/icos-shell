@@ -47,7 +47,7 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 	resp.Body.Close()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(resp.StatusCode, nil), nil
+		return Response(500, nil), nil
 	} else {
 		if resp.StatusCode == 201 {
 			return Response(201, "Deployment successfully created!"), nil
@@ -70,7 +70,7 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 	resp.Body.Close()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(resp.StatusCode, "Error when deleting deployment"), nil
+		return Response(500, nil), nil
 	} else {
 		responseString := "Unexpected status code received"
 		if resp.StatusCode == 204 {
@@ -83,8 +83,6 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 		}
 		return Response(resp.StatusCode, responseString), nil
 	}
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
 }
 
 // GetDeploymentById - Find deployment by ID
@@ -99,7 +97,7 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		resp.Body.Close()
-		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
+		return Response(500, nil), nil
 	} else {
 		if resp.StatusCode == 201 {
 			resBody := resp.Body
@@ -117,8 +115,6 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 			return Response(resp.StatusCode, resBody), nil
 		}
 	}
-	// TODO?: Uncomment the next line to return response Response(200, Deployment{}) or use other options such as http.Ok ...
-	// return Response(200, Deployment{}), nil
 }
 
 // GetDeployments - Returns a list of deployments
@@ -133,7 +129,7 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		resp.Body.Close()
-		return Response(resp.StatusCode, nil), nil
+		return Response(500, nil), nil
 	} else {
 		if resp.StatusCode == 201 {
 			resBody := resp.Body
@@ -148,8 +144,6 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 			return Response(resp.StatusCode, resBody), nil
 		}
 	}
-	// TODO?: Uncomment the next line to return response Response(200, []Deployment{}) or use other options such as http.Ok ...
-	// return Response(200, []Deployment{}), nil
 }
 
 // UpdateDeployment - Updates a deployment
@@ -165,7 +159,7 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		resp.Body.Close()
-		return Response(resp.StatusCode, "Error when retrieving deployment"), nil
+		return Response(500, nil), nil
 	} else {
 		responseString := "Unexpected status code received"
 		if resp.StatusCode == 204 {
@@ -181,7 +175,4 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 		resp.Body.Close()
 		return Response(resp.StatusCode, responseString), nil
 	}
-	// TODO?: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
 }
