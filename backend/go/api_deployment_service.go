@@ -34,13 +34,11 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
 	jsonData, _ := json.Marshal(body)
-	fmt.Fprintf(os.Stderr, "Sending deployment creation request to [%v] with content [%v]\n", viper.GetString("components.job_manager")+"/jobmanager/jobs/create", bytes.NewBuffer(jsonData))
-	//	resp, err := http.Post(viper.GetString("components.job_manager")+"/jobmanager/jobs/create", "application/json", bytes.NewBuffer(jsonData))
-	req, err := http.NewRequestWithContext(ctx, "POST", viper.GetString("components.job_manager")+"/jobmanager/jobs/create", nil)
+	req, _ := http.NewRequestWithContext(ctx, "POST", viper.GetString("components.job_manager")+"/jobmanager/jobs/create", bytes.NewBuffer(jsonData))
 	client := &http.Client{}
-	_, authToken, err := receiveAndValidateAccessToken(ctx, apiKey)
+	_, authToken, _ := receiveAndValidateAccessToken(ctx, apiKey)
+	authToken = "Bearer " + authToken
 	req.Header.Add("Authorization", authToken)
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
@@ -61,10 +59,9 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 
 // DeleteDeploymentById - Deletes a deployment
 func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64, apiKey string) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Sending deployment DELETE request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
-	req, err := http.NewRequestWithContext(ctx, "DELETE", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
+	req, _ := http.NewRequestWithContext(ctx, "DELETE", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
 	client := &http.Client{}
-	_, authToken, err := receiveAndValidateAccessToken(ctx, "token")
+	_, authToken, _ := receiveAndValidateAccessToken(ctx, "token")
 	req.Header.Add("Authorization", authToken)
 	resp, err := client.Do(req)
 	resp.Body.Close()
@@ -87,11 +84,9 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 
 // GetDeploymentById - Find deployment by ID
 func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64, apiKey string) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10))
-	//	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs/" + strconv.FormatInt(deploymentId, 10))
-	req, err := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
+	req, _ := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), nil)
 	client := &http.Client{}
-	_, authToken, err := receiveAndValidateAccessToken(ctx, "token")
+	_, authToken, _ := receiveAndValidateAccessToken(ctx, "token")
 	req.Header.Add("Authorization", authToken)
 	resp, err := client.Do(req)
 	if err != nil {
@@ -119,11 +114,9 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Sending deployment GET request to [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs")
-	//	resp, err := http.Get(viper.GetString("components.job_manager") + "/jobmanager/jobs")
-	req, err := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.job_manager")+"/jobmanager/jobs", nil)
+	req, _ := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.job_manager")+"/jobmanager/jobs", nil)
 	client := &http.Client{}
-	_, authToken, err := receiveAndValidateAccessToken(ctx, "token")
+	_, authToken, _ := receiveAndValidateAccessToken(ctx, "token")
 	req.Header.Add("Authorization", authToken)
 	resp, err := client.Do(req)
 	if err != nil {
@@ -148,12 +141,11 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 
 // UpdateDeployment - Updates a deployment
 func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, body map[string]interface{}, apiKey string) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "Deployment received: %v\n", body)
 	jsonData, _ := json.Marshal(body)
 	fmt.Fprintf(os.Stderr, "Sending deployment UPDATE request to [%v] with content: [%v] \n", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
-	req, err := http.NewRequestWithContext(ctx, "PUT", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequestWithContext(ctx, "PUT", viper.GetString("components.job_manager")+"/jobmanager/jobs/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
 	client := &http.Client{}
-	_, authToken, err := receiveAndValidateAccessToken(ctx, "token")
+	_, authToken, _ := receiveAndValidateAccessToken(ctx, "token")
 	req.Header.Add("Authorization", authToken)
 	resp, err := client.Do(req)
 	if err != nil {
