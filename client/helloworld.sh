@@ -20,7 +20,7 @@ function log {
     fi
 }
 
-# go build -o icos-shell
+go build -o icos-shell
 
 # Login to keycloak
 unset ICOS_AUTH_TOKEN
@@ -65,7 +65,7 @@ fi
 
 # Create deployment
 COMPONENTS="[shell-backend --> job-manager]"
-RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN icos-shell --config=config_client.yml create deployment --file ../openapi.yaml 2> /dev/null)
+RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN icos-shell --config=config_client.yml create deployment --file app_descriptor_example.yaml 2> /dev/null)
 if [[ $RESPONSE ]]; then
     log "DONE" "Deployment added to the controller successfully" "$COMPONENTS"
 else

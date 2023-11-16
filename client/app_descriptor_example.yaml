@@ -1,11 +1,17 @@
 name: my_application
+...
 
 components:
 - name: component-1
   type: helm
   repository: foo/bar
+  values:
+    ...
 - name: component-2
   type: manifest
+  manifests:
+  - ...
+  - ...
 - name: component-3
   type: container
   image: foo/bar:latest
@@ -14,6 +20,8 @@ components:
       value: val1
   ports: [80, 8080]
 
+...
+
 telemetry:
 - type: metrics_endpoint
   port: 9000
@@ -21,6 +29,8 @@ telemetry:
   protocol: prometheus
   apply_to:
     - component: component-1
+
+...
 
 policies:
   - name: policy1
@@ -32,8 +42,10 @@ policies:
     remediations:
       - scale_pod   
 
+...
+
 matchmaking_requirements:
-  optimization_metric:
+  optimization_metric: metric_x
   - type: hard
     infrastructure: nkua
   - type: soft
@@ -43,3 +55,4 @@ matchmaking_requirements:
     component: component-1
     require:
     - dataset1
+...
