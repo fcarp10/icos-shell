@@ -39,6 +39,14 @@ func prepareToken(ctx context.Context, apiKey string, req *http.Request) *http.R
 	return req
 }
 
+func errorConnect(resp *http.Response, err error) (ImplResponse, error) {
+	fmt.Fprintf(os.Stderr, "%v\n", err)
+	if resp != nil {
+		return Response(500, resp.Body), nil
+	}
+	return Response(500, "Error while connecting to job_manager"), nil
+}
+
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
@@ -49,8 +57,7 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 	resp, err := client.Do(req)
 	resp.Body.Close()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(500, nil), nil
+		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
 			return Response(201, "Deployment successfully created!"), nil
@@ -70,8 +77,7 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 	resp, err := client.Do(req)
 	resp.Body.Close()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return Response(500, nil), nil
+		return errorConnect(resp, err)
 	} else {
 		responseString := "Unexpected status code received"
 		if resp.StatusCode == 204 {
@@ -93,9 +99,7 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		resp.Body.Close()
-		return Response(500, nil), nil
+		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
 			resBody := resp.Body
@@ -122,9 +126,7 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		resp.Body.Close()
-		return Response(500, nil), nil
+		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
 			resBody := resp.Body
@@ -149,9 +151,7 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		resp.Body.Close()
-		return Response(500, nil), nil
+		return errorConnect(resp, err)
 	} else {
 		responseString := "Unexpected status code received"
 		if resp.StatusCode == 204 {
