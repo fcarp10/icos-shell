@@ -11,6 +11,9 @@ COPY *.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /shell-backend
 
+FROM scratch
+COPY --from=build /shell-backend /shell-backend
+
 EXPOSE 8080
 CMD ["/shell-backend"]
 
