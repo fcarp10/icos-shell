@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"shellclient/pkg/cli"
 	"shellclient/pkg/openapi"
@@ -89,7 +90,10 @@ func initConfig() {
 		openapi.Init(viper.GetString("controller"))
 	} else {
 		fmt.Fprintln(os.Stderr, "Controller:", viper.GetString("controller"))
-		fmt.Fprintln(os.Stderr, "Token found!")
+		token := viper.GetString("auth_token")
+		token = strings.ReplaceAll(token, "\n", "")
+		viper.Set("auth_token", token)
+		fmt.Fprintln(os.Stderr, "Token found:", viper.GetString("auth_token"))
 		openapi.Init(viper.GetString("controller"))
 	}
 }

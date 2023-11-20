@@ -70,8 +70,16 @@ func GetDeployment() {
 		}
 	} else {
 		if resp.StatusCode == 200 {
-			deployments_json, _ := json.Marshal(deployments)
-			fmt.Fprintln(os.Stdout, string(deployments_json))
+			for _, deployment := range deployments {
+				prettyJSON, err := json.MarshalIndent(deployments, "", "  ")
+				if err != nil {
+					fmt.Fprintln(os.Stderr, "Error marshaling JSON:", err)
+					return
+				} else {
+					fmt.Fprintln(os.Stdout, string(prettyJSON))
+				}
+				fmt.Fprintln(os.Stdout, deployment)
+			}
 		} else if resp.StatusCode == 204 {
 			fmt.Fprintln(os.Stderr, "No deployments found")
 			fmt.Fprintln(os.Stdout, resp.StatusCode)

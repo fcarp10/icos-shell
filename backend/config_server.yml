@@ -8,4 +8,4 @@ keycloak:
   realm: icos-dev
 
 components: 
-  job_manager: http://localhost:8080
+  job_manager: https://ocm-hub.bull1.ari-imet.eu

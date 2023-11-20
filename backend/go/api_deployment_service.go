@@ -60,9 +60,9 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
-			return Response(201, "Deployment successfully created!"), nil
+			return Response(resp.StatusCode, "Deployment successfully created!"), nil
 		} else if resp.StatusCode == 405 {
-			return Response(405, "Invalid input"), nil
+			return Response(resp.StatusCode, "Invalid input"), nil
 		} else {
 			return Response(resp.StatusCode, resp.Body), nil
 		}
@@ -104,13 +104,13 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 		if resp.StatusCode == 201 {
 			resBody := resp.Body
 			resp.Body.Close()
-			return Response(201, resBody), nil
+			return Response(resp.StatusCode, resBody), nil
 		} else if resp.StatusCode == 204 {
 			resp.Body.Close()
 			return Response(resp.StatusCode, "No deployments found"), nil
 		} else if resp.StatusCode == 405 {
 			resp.Body.Close()
-			return Response(405, "Invalid input"), nil
+			return Response(resp.StatusCode, "Invalid input"), nil
 		} else {
 			resBody := resp.Body
 			resp.Body.Close()
@@ -128,13 +128,13 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
-		if resp.StatusCode == 201 {
+		if resp.StatusCode == 200 {
 			resBody := resp.Body
 			resp.Body.Close()
-			return Response(201, resBody), nil
+			return Response(resp.StatusCode, resBody), nil
 		} else if resp.StatusCode == 405 {
 			resp.Body.Close()
-			return Response(405, "Invalid input"), nil
+			return Response(resp.StatusCode, "Invalid input"), nil
 		} else {
 			resBody := resp.Body
 			resp.Body.Close()

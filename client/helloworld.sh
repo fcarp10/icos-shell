@@ -23,10 +23,9 @@ function log {
 go build -o icos-shell
 
 # Login to keycloak
-unset ICOS_AUTH_TOKEN
 COMPONENTS="[shell-backend --> keycloak]"
-eval `icos-shell --config=config_client.yml auth login 2> /dev/null` 
-if [ "$ICOS_AUTH_TOKEN" != "" ]; then
+RESPONSE=$(icos-shell --config=config_client.yml auth login 2> /dev/null)
+if [ "$RESPONSE" != "" ]; then
   log "DONE" "Token returned successfully" "$COMPONENTS"
 else
   log "FAIL" "failed to retrieve the token" "$COMPONENTS"
@@ -34,7 +33,7 @@ fi
 
 # Add controller to lighthouse
 COMPONENTS="[lighthouse --> keycloak]"
-RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN icos-shell --config=config_client.yml add controller -a 127.0.0.1 -n helloworld_controller 2> /dev/null)
+RESPONSE=$(icos-shell --config=config_client.yml add controller -a 127.0.0.1 -n helloworld_controller 2> /dev/null)
 if [[ $RESPONSE == "201" ]]; then
     log "DONE" "Controller added to the lighthouse successfully" "$COMPONENTS"
 elif [[ $RESPONSE == "202" ]]; then
@@ -44,17 +43,15 @@ else
 fi
 
 # Get controllers from lighthouse
-unset CONTROLLERS
 COMPONENTS="[lighthouse]"
-CONTROLLERS=$(icos-shell --config=config_client.yml get controller 2> /dev/null) 
-if [ "$CONTROLLERS" != ""  ]; then
+RESPONSE=$(icos-shell --config=config_client.yml get controller 2> /dev/null) 
+if [ "$RESPONSE" != ""  ]; then
     log "DONE" "Controllers retrieved successfully" "$COMPONENTS"
 else
     log "FAIL" "Error while retrieving controllers" "$COMPONENTS"
 fi
 
 # healthcheck shell-backend from controller
-unset CONTROLLER
 COMPONENTS="[shell-backend]"
 icos-shell --config=config_client.yml 2> /dev/null
 if [ $? -eq 0 ]; then
@@ -65,16 +62,18 @@ fi
 
 # Create deployment
 COMPONENTS="[shell-backend --> job-manager]"
-RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN icos-shell --config=config_client.yml create deployment --file app_descriptor_example.yaml 2> /dev/null)
-if [[ $RESPONSE ]]; then
+RESPONSE=$(icos-shell --config=config_client.yml create deployment --file app_descriptor_example.yaml 2> /dev/null)
+if [[ $RESPONSE == "201" ]]; then
     log "DONE" "Deployment added to the controller successfully" "$COMPONENTS"
+elif [[ $RESPONSE == "202" ]]; then
+    log "INFO" "Deployment already exists in the controller" "$COMPONENTS"
 else
     log "FAIL" "Error while trying to add a deployment to the controller" "$COMPONENTS"
 fi
 
 # Get deployment
 COMPONENTS="[shell-backend --> job-manager]"
-RESPONSE=$(ICOS_AUTH_TOKEN=$ICOS_AUTH_TOKEN icos-shell --config=config_client.yml get deployment 2> /dev/null)
+RESPONSE=$(icos-shell --config=config_client.yml get deployment 2> /dev/null)
 if [[ $RESPONSE ]]; then
     log "DONE" "Deployments retrieved successfully" "$COMPONENTS"
 else
