@@ -1,7 +1,7 @@
 /*
 ICOS Shell
 
-Testing ControllerApiService
+Testing ControllerAPIService
 
 */
 
@@ -11,38 +11,48 @@ package openapi
 
 import (
 	"context"
+	"log"
+	openapiclient "shellclient/pkg/openapi"
 	"testing"
-
-	openapi "shellclient/pkg/openapi"
 
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func Test_openapi_ControllerApiService(t *testing.T) {
+func Test_openapi_ControllerAPIService(t *testing.T) {
 
-	openapi.Init("lighthouse.icos-project.eu:8080")
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test ControllerApiService AddController", func(t *testing.T) {
+	t.Run("Test ControllerAPIService AddController", func(t *testing.T) {
 
+		viper.SetConfigType("env")       // treating the file like an .env file
+		viper.SetConfigFile("token.txt") // Read the config file
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		// Get the whole string
+		tokenRaw := viper.GetString("ICOS_AUTH_TOKEN")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
 		// t.Skip("skip test") // remove to run test
 
-		// httpRes, err := openapi.Client.ControllerApi.AddController(context.Background()).Execute()
-		controller := *openapi.NewController("name_test", "address_test")
-		token := viper.GetString("auth_token")
-		httpRes, err := openapi.Client.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
+		controller := *openapiclient.NewController("name_test", "address_test")
+
+		httpRes, err := apiClient.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 201, httpRes.StatusCode)
 
 	})
 
-	t.Run("Test ControllerApiService GetControllers", func(t *testing.T) {
+	t.Run("Test ControllerAPIService GetControllers", func(t *testing.T) {
 
 		// t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := openapi.Client.ControllerAPI.GetControllers(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ControllerAPI.GetControllers(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
