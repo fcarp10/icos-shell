@@ -27,17 +27,16 @@ func Test_openapi_ControllerAPIService(t *testing.T) {
 
 	t.Run("Test ControllerAPIService AddController", func(t *testing.T) {
 
-		viper.SetConfigType("env")       // treating the file like an .env file
-		viper.SetConfigFile("token.txt") // Read the config file
+		// t.Skip("skip test") // remove to run test
+
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
+
 		if err := viper.ReadInConfig(); err != nil {
 			log.Fatalf("Error reading config file: %s", err)
 		}
-		// Get the whole string
-		tokenRaw := viper.GetString("ICOS_AUTH_TOKEN")
-
-		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		tokenRaw := viper.GetString("auth_token")
 		token := tokenRaw[1 : len(tokenRaw)-2]
-		// t.Skip("skip test") // remove to run test
 
 		controller := *openapiclient.NewController("name_test", "address_test")
 

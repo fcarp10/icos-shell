@@ -11,10 +11,13 @@ package openapi
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"testing"
 
 	openapi "shellclient/pkg/openapi"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -26,10 +29,26 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 	t.Run("Test ResourceApiService GetResourceById", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented in the ICOS system and in the shell backend yet
+		*/
 		t.Skip("skip test") // remove to run test
 
+		// Read in the Token
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
+
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+		fmt.Println(token)
 		var resourceId int64
 
+		// add this in the following argument to the next line, if the backend is implemented: ApiKey(token)
 		resp, httpRes, err := apiClient.ResourceAPI.GetResourceById(context.Background(), resourceId).Execute()
 
 		require.Nil(t, err)
@@ -40,8 +59,25 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 
 	t.Run("Test ResourceApiService GetResources", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented in the ICOS system and in the shell backend yet
+		*/
 		t.Skip("skip test") // remove to run test
 
+		// Read in the Token
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
+
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		fmt.Println(token)
+		// add this in the following argument to the next line, if the backend is implemented: ApiKey(token)
 		resp, httpRes, err := apiClient.ResourceAPI.GetResources(context.Background()).Execute()
 
 		require.Nil(t, err)
