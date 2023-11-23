@@ -60,9 +60,9 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 	t.Run("Test ResourceApiService GetResources", func(t *testing.T) {
 
 		/*
-			This functionality is not correctly implemented in the ICOS system and in the shell backend yet
+			This functionality is not correctly implemented in the ICOS system
 		*/
-		t.Skip("skip test") // remove to run test
+		// t.Skip("skip test") // remove to run test
 
 		// Read in the Token
 		viper.SetConfigFile("../../../config_client.yml") // Read the config file
@@ -76,9 +76,7 @@ func Test_openapi_ResourceApiService(t *testing.T) {
 		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
 		token := tokenRaw[1 : len(tokenRaw)-2]
 
-		fmt.Println(token)
-		// add this in the following argument to the next line, if the backend is implemented: ApiKey(token)
-		resp, httpRes, err := apiClient.ResourceAPI.GetResources(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ResourceAPI.GetResources(context.Background()).ApiKey(token).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
