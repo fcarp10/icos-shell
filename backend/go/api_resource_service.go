@@ -11,8 +11,10 @@ package shellbackend
 
 import (
 	"context"
-	"net/http"
 	"errors"
+	"net/http"
+
+	"github.com/spf13/viper"
 )
 
 // ResourceAPIService is a service that implements the logic for the ResourceAPIServicer
@@ -44,12 +46,22 @@ func (s *ResourceAPIService) GetResourceById(ctx context.Context, resourceId int
 }
 
 // GetResources - Returns a list of resources
-func (s *ResourceAPIService) GetResources(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetResources with the required logic for this service method.
-	// Add api_resource_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []Resource{}) or use other options such as http.Ok ...
-	// return Response(200, []Resource{}), nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetResources method not implemented")
+func (s *ResourceAPIService) GetResources(ctx context.Context, apiKey string) (ImplResponse, error) {
+	req, _ := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.aggregator")+"/", nil)
+	req = prepareToken(ctx, apiKey, req)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return errorConnect(resp, err)
+	} else {
+		if resp.StatusCode == 200 {
+			resBody := resp.Body
+			resp.Body.Close()
+			return Response(resp.StatusCode, resBody), nil
+		} else {
+			resBody := resp.Body
+			resp.Body.Close()
+			return Response(resp.StatusCode, resBody), nil
+		}
+	}
 }

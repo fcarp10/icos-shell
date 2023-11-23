@@ -143,9 +143,15 @@ func (a *ResourceAPIService) GetResourceByIdExecute(r ApiGetResourceByIdRequest)
 type ApiGetResourcesRequest struct {
 	ctx context.Context
 	ApiService *ResourceAPIService
+	apiKey *string
 }
 
-func (r ApiGetResourcesRequest) Execute() ([]Resource, *http.Response, error) {
+func (r ApiGetResourcesRequest) ApiKey(apiKey string) ApiGetResourcesRequest {
+	r.apiKey = &apiKey
+	return r
+}
+
+func (r ApiGetResourcesRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.GetResourcesExecute(r)
 }
 
@@ -165,13 +171,13 @@ func (a *ResourceAPIService) GetResources(ctx context.Context) ApiGetResourcesRe
 }
 
 // Execute executes the request
-//  @return []Resource
-func (a *ResourceAPIService) GetResourcesExecute(r ApiGetResourcesRequest) ([]Resource, *http.Response, error) {
+//  @return map[string]interface{}
+func (a *ResourceAPIService) GetResourcesExecute(r ApiGetResourcesRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  []Resource
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceAPIService.GetResources")
@@ -201,6 +207,9 @@ func (a *ResourceAPIService) GetResourcesExecute(r ApiGetResourcesRequest) ([]Re
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.apiKey != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "api_key", r.apiKey, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication

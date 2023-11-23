@@ -91,9 +91,11 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Deployment'
+                type: object
+                additionalProperties: true
+                # type: array
+                # items:
+                #   $ref: '#/components/schemas/Deployment'
     post:
       tags:
       - deployment
@@ -223,15 +225,25 @@ paths:
       summary: Returns a list of resources
       description: Returns a list of resources
       operationId: getResources
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           description: successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Resource'
+                type: object
+                additionalProperties: true
+                # type: array
+                # items:
+                #   $ref: '#/components/schemas/Resource'
   /resource/{resourceId}:
     get:
       tags:

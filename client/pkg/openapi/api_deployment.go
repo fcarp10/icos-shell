@@ -397,7 +397,7 @@ func (r ApiGetDeploymentsRequest) ApiKey(apiKey string) ApiGetDeploymentsRequest
 	return r
 }
 
-func (r ApiGetDeploymentsRequest) Execute() ([]Deployment, *http.Response, error) {
+func (r ApiGetDeploymentsRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.GetDeploymentsExecute(r)
 }
 
@@ -417,13 +417,13 @@ func (a *DeploymentAPIService) GetDeployments(ctx context.Context) ApiGetDeploym
 }
 
 // Execute executes the request
-//  @return []Deployment
-func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest) ([]Deployment, *http.Response, error) {
+//  @return map[string]interface{}
+func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  []Deployment
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeployments")

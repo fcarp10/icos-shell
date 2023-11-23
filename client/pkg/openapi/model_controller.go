@@ -12,6 +12,7 @@ package openapi
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Controller type satisfies the MappedNullable interface at compile time
@@ -24,6 +25,8 @@ type Controller struct {
 	// IP address of the controller
 	Address string `json:"address"`
 }
+
+type _Controller Controller
 
 // NewController instantiates a new Controller object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +108,42 @@ func (o Controller) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["address"] = o.Address
 	return toSerialize, nil
+}
+
+func (o *Controller) UnmarshalJSON(bytes []byte) (err error) {
+    // This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"address",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varController := _Controller{}
+
+	err = json.Unmarshal(bytes, &varController)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Controller(varController)
+
+	return err
 }
 
 type NullableController struct {

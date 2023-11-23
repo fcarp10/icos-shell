@@ -9,3 +9,4 @@ keycloak:
 
 components: 
   job_manager: https://ocm-hub.bull1.ari-imet.eu
+  aggregator: http://127.0.0.1:8080

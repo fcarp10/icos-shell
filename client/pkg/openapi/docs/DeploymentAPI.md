@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ## GetDeployments
 
-> []Deployment GetDeployments(ctx).ApiKey(apiKey).Execute()
+> map[string]interface{} GetDeployments(ctx).ApiKey(apiKey).Execute()
 
 Returns a list of deployments
 
@@ -250,7 +250,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeployments``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetDeployments`: []Deployment
+    // response from `GetDeployments`: map[string]interface{}
     fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.GetDeployments`: %v\n", resp)
 }
 ```
@@ -270,7 +270,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]Deployment**](Deployment.md)
+**map[string]interface{}**
 
 ### Authorization
 

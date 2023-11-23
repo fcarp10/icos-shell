@@ -63,8 +63,14 @@ func (c *UserAPIController) Routes() Routes {
 // LoginUser - Logs user into the system
 func (c *UserAPIController) LoginUser(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-	usernameParam := query.Get("username")
-	passwordParam := query.Get("password")
+	var usernameParam string
+	if query.Has("username") {
+		usernameParam = query.Get("username")
+	}
+	var passwordParam string
+	if query.Has("password") {
+		passwordParam = query.Get("password")
+	}
 	result, err := c.service.LoginUser(r.Context(), usernameParam, passwordParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {

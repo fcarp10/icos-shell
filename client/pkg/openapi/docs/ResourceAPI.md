@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ## GetResources
 
-> []Resource GetResources(ctx).Execute()
+> map[string]interface{} GetResources(ctx).ApiKey(apiKey).Execute()
 
 Returns a list of resources
 
@@ -100,31 +100,36 @@ import (
 )
 
 func main() {
+    apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.ResourceAPI.GetResources(context.Background()).Execute()
+    resp, r, err := apiClient.ResourceAPI.GetResources(context.Background()).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `ResourceAPI.GetResources``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetResources`: []Resource
+    // response from `GetResources`: map[string]interface{}
     fmt.Fprintf(os.Stdout, "Response from `ResourceAPI.GetResources`: %v\n", resp)
 }
 ```
 
 ### Path Parameters
 
-This endpoint does not need any parameter.
+
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetResourcesRequest struct via the builder pattern
 
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **apiKey** | **string** |  | 
+
 ### Return type
 
-[**[]Resource**](Resource.md)
+**map[string]interface{}**
 
 ### Authorization
 

@@ -85,7 +85,8 @@ func (c *ResourceAPIController) GetResourceById(w http.ResponseWriter, r *http.R
 
 // GetResources - Returns a list of resources
 func (c *ResourceAPIController) GetResources(w http.ResponseWriter, r *http.Request) {
-	result, err := c.service.GetResources(r.Context())
+	apiKeyParam := r.Header.Get("api_key")
+	result, err := c.service.GetResources(r.Context(), apiKeyParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

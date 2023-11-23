@@ -79,3 +79,12 @@ if [[ $RESPONSE ]]; then
 else
     log "FAIL" "Error while retrieving deployments" "$COMPONENTS"
 fi
+
+# Get resources
+COMPONENTS="[shell-backend --> aggregator]"
+RESPONSE=$(icos-shell --config=config_client.yml get resource 2> /dev/null)
+if [[ $RESPONSE ]]; then
+    log "DONE" "Resources retrieved successfully" "$COMPONENTS"
+else
+    log "FAIL" "Error while retrieving resources" "$COMPONENTS"
+fi
