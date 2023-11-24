@@ -8,11 +8,14 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY go ./go
 COPY *.go ./
+RUN mkdir -p /empty
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /shell-backend
 
 FROM scratch
 COPY --from=build /shell-backend /shell-backend
+
+COPY --from=build /empty /app
 
 EXPOSE 8080
 CMD ["/shell-backend"]
