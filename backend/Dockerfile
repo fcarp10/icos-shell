@@ -12,7 +12,7 @@ RUN mkdir -p /empty
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /shell-backend
 
-FROM scratch
+FROM alpine:3
 COPY --from=build /shell-backend /shell-backend
 
 WORKDIR /app
