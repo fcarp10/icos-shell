@@ -11,10 +11,13 @@ package openapi
 
 import (
 	"context"
+	"log"
+	"reflect"
 	"testing"
 
 	openapi "shellclient/pkg/openapi"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -26,22 +29,60 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService CreateDeployment", func(t *testing.T) {
 
-		t.Skip("skip test") // remove to run test
+		// t.Skip("skip test") // remove to run test
 
-		httpRes, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Execute()
+		// Read in the Token
+		// that is stored locally, to be able to connect to keycloak
+
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
+
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		// Create a new deployment
+
+		deploymentID := int64(0) // replace with the actual deployment ID
+		body := openapi.NewDeployment(deploymentID)
+
+		// Convert the Deployment object to a map[string]interface{}
+		bodyMap := structToMap(body, "name_test", "status_test")
+
+		httpRes, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Body(bodyMap).ApiKey(token).Execute()
 
 		require.Nil(t, err)
-		assert.Equal(t, 200, httpRes.StatusCode)
+		assert.Equal(t, 201, httpRes.StatusCode)
 
 	})
 
 	t.Run("Test DeploymentApiService DeleteDeploymentById", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented yet in the ICOS system
+		*/
 		t.Skip("skip test") // remove to run test
 
-		var deploymentId int64
+		// Read in the Token
+		// that is stored locally, to be able to connect to keycloak
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
 
-		httpRes, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).Execute()
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		deploymentId := int64(0)
+
+		httpRes, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).ApiKey(token).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -50,11 +91,27 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService GetDeploymentById", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented yet in the ICOS system
+		*/
 		t.Skip("skip test") // remove to run test
 
-		var deploymentId int64
+		// Read in the Token
+		// that is stored locally, to be able to connect to keycloak
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
 
-		resp, httpRes, err := apiClient.DeploymentAPI.GetDeploymentById(context.Background(), deploymentId).Execute()
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		deploymentId := int64(0)
+
+		resp, httpRes, err := apiClient.DeploymentAPI.GetDeploymentById(context.Background(), deploymentId).ApiKey(token).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -64,9 +121,25 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService GetDeployments", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented yet in the ICOS system
+		*/
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.DeploymentAPI.GetDeployments(context.Background()).Execute()
+		// Read in the Token
+
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
+
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		resp, httpRes, err := apiClient.DeploymentAPI.GetDeployments(context.Background()).ApiKey(token).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -76,15 +149,53 @@ func Test_openapi_DeploymentApiService(t *testing.T) {
 
 	t.Run("Test DeploymentApiService UpdateDeployment", func(t *testing.T) {
 
+		/*
+			This functionality is not correctly implemented yet in the ICOS system
+		*/
 		t.Skip("skip test") // remove to run test
 
-		var deploymentId int64
+		// Read in the Token
+		viper.SetConfigFile("../../../config_client.yml") // Read the config file
+		viper.AddConfigPath(".")                          // look for config in the working directory
 
-		httpRes, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Execute()
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Error reading config file: %s", err)
+		}
+		tokenRaw := viper.GetString("auth_token")
+
+		// Extract the token from the raw string, otherwise it can not be passed as a httpReq
+		token := tokenRaw[1 : len(tokenRaw)-2]
+
+		var deploymentId int64
+		// Update a new deployment
+
+		deploymentID := int64(0) // replace with the actual deployment ID
+		body := openapi.NewDeployment(deploymentID)
+
+		// Convert the Deployment object to a map[string]interface{}
+		bodyMap := structToMap(body, "name_test_updated", "status_test_updated")
+		httpRes, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Body(bodyMap).ApiKey(token).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 
 	})
 
+}
+
+// structToMap converts a struct to a map using the struct's tags.
+func structToMap(item interface{}, name string, status string) map[string]interface{} {
+	result := map[string]interface{}{}
+	val := reflect.ValueOf(item).Elem()
+
+	for i := 0; i < val.NumField(); i++ {
+		tag := val.Type().Field(i).Tag.Get("json")
+		if tag != "" && tag != "-" {
+			result[tag] = val.Field(i).Interface()
+		}
+	}
+	// Add name and status to the map
+	result["name"] = name
+	result["status"] = status
+	return result
 }

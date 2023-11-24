@@ -18,7 +18,6 @@ import (
 	"net/url"
 )
 
-
 // UserAPIService UserAPI service
 type UserAPIService service
 

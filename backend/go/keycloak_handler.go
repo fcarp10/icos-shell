@@ -3,6 +3,7 @@ package shellbackend
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Nerzal/gocloak/v13"
 	"github.com/spf13/viper"
@@ -18,6 +19,7 @@ import (
 func receiveAndValidateAccessToken(ctx context.Context, apiKey string) (ImplResponse, string, error) {
 	// Implementation of Keycloak authentication with Token
 	client := gocloak.NewClient(viper.GetString("keycloak.server"))
+	fmt.Println("this should be the config file : " + viper.ConfigFileUsed())
 
 	// read refresh token from apiKey, which is just the access_token part of the token
 	refresh_token := apiKey
@@ -25,8 +27,11 @@ func receiveAndValidateAccessToken(ctx context.Context, apiKey string) (ImplResp
 	if refresh_token == "" {
 		return Response(405, nil), "", errors.New("refresh token is empty")
 	}
-	// cut of the special characters from the token
-	refresh_token = refresh_token[1 : len(refresh_token)-1]
+	// check if there are still special characters, if so cut of the special characters from the token
+	// refresh_token = refresh_token[1 : len(refresh_token)-1]
+	if string(refresh_token[0]) == "\"" {
+		refresh_token = refresh_token[1 : len(refresh_token)-1]
+	}
 	rptResult, err := client.RetrospectToken(ctx, refresh_token, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
 	if err != nil {
 		return Response(405, nil), "", errors.New("inspection of refresh token failed")
