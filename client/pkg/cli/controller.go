@@ -15,22 +15,7 @@ func AddController(name string, address string) {
 	controller := *openapi.NewController(name, address)
 	token := viper.GetString("auth_token")
 	resp, err := openapi.Client.ControllerAPI.AddController(context.Background()).ApiKey(token).Controller(controller).Execute()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		if resp != nil {
-			fmt.Fprintln(os.Stderr, resp.Body)
-		}
-	} else {
-		if resp.StatusCode == 201 {
-			fmt.Fprintln(os.Stderr, "Controller successfully added!")
-			fmt.Fprintln(os.Stdout, resp.StatusCode)
-		} else if resp.StatusCode == 202 {
-			fmt.Fprintln(os.Stderr, "Controller already exists")
-			fmt.Fprintln(os.Stdout, resp.StatusCode)
-		} else {
-			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
-		}
-	}
+	printResponseSimple(resp, err)
 }
 
 func GetController() {

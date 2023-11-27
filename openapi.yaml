@@ -153,7 +153,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Deployment'
+                type: object
+                additionalProperties: true
+                # $ref: '#/components/schemas/Deployment'
         "400":
           description: Invalid ID supplied
         "404":
@@ -267,7 +269,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resource'
+                type: object
+                additionalProperties: true
+                # $ref: '#/components/schemas/Resource'
         "400":
           description: Invalid ID supplied
         "404":

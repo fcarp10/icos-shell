@@ -101,7 +101,7 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
-		if resp.StatusCode == 201 {
+		if resp.StatusCode == 200 {
 			resBody := resp.Body
 			resp.Body.Close()
 			return Response(resp.StatusCode, resBody), nil

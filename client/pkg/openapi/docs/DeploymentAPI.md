@@ -150,7 +150,7 @@ Name | Type | Description  | Notes
 
 ## GetDeploymentById
 
-> Deployment GetDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
+> map[string]interface{} GetDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
 
 Find deployment by ID
 
@@ -179,7 +179,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeploymentById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetDeploymentById`: Deployment
+    // response from `GetDeploymentById`: map[string]interface{}
     fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.GetDeploymentById`: %v\n", resp)
 }
 ```
@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Deployment**](Deployment.md)
+**map[string]interface{}**
 
 ### Authorization
 

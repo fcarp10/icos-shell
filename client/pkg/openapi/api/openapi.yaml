@@ -184,7 +184,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Deployment'
+                additionalProperties: true
+                type: object
           description: successful operation
         "400":
           description: Invalid ID supplied
@@ -269,7 +270,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resource'
+                additionalProperties: true
+                type: object
           description: successful operation
         "400":
           description: Invalid ID supplied

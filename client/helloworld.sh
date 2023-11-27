@@ -53,8 +53,8 @@ fi
 
 # healthcheck shell-backend from controller
 COMPONENTS="[shell-backend]"
-./icos-shell --config=config_client.yml 2> /dev/null
-if [ $? -eq 0 ]; then
+RESPONSE=$(./icos-shell --config=config_client.yml 2> /dev/null)
+if [[ $RESPONSE == "200" ]]; then
     log "DONE" "Healthcheck to the shell-backend was successful" "$COMPONENTS"
 else
     log "FAIL" "Error while trying healthcheck to the shell-backend" "$COMPONENTS"

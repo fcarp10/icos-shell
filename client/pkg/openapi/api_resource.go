@@ -29,7 +29,7 @@ type ApiGetResourceByIdRequest struct {
 	resourceId int64
 }
 
-func (r ApiGetResourceByIdRequest) Execute() (*Resource, *http.Response, error) {
+func (r ApiGetResourceByIdRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.GetResourceByIdExecute(r)
 }
 
@@ -51,13 +51,13 @@ func (a *ResourceAPIService) GetResourceById(ctx context.Context, resourceId int
 }
 
 // Execute executes the request
-//  @return Resource
-func (a *ResourceAPIService) GetResourceByIdExecute(r ApiGetResourceByIdRequest) (*Resource, *http.Response, error) {
+//  @return map[string]interface{}
+func (a *ResourceAPIService) GetResourceByIdExecute(r ApiGetResourceByIdRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Resource
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ResourceAPIService.GetResourceById")

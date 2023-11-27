@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## GetResourceById
 
-> Resource GetResourceById(ctx, resourceId).Execute()
+> map[string]interface{} GetResourceById(ctx, resourceId).Execute()
 
 Find resource by ID
 
@@ -39,7 +39,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `ResourceAPI.GetResourceById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetResourceById`: Resource
+    // response from `GetResourceById`: map[string]interface{}
     fmt.Fprintf(os.Stdout, "Response from `ResourceAPI.GetResourceById`: %v\n", resp)
 }
 ```
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Resource**](Resource.md)
+**map[string]interface{}**
 
 ### Authorization
 
