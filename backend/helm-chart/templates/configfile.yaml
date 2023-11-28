@@ -12,9 +12,8 @@ data:
       client_id: {{ .Values.components.keycloak.client_id }}
       client_secret: {{ .Values.components.keycloak.client_secret }}
       realm: {{ .Values.components.keycloak.realm }}
-      username: {{ .Values.components.keycloak.username }}
-      password: {{ .Values.components.keycloak.password }}
 
     components: 
       job_manager: {{ .Values.components.job_manager.server }}
+      aggregator: {{ .Values.components.aggregator.server }}
 

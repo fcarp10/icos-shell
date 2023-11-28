@@ -11,7 +11,7 @@ package shellbackend
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/spf13/viper"
@@ -24,18 +24,13 @@ type TimerData struct {
 
 var timers = make(map[string]TimerData)
 
-func DeleteController(key string) {
-	fmt.Printf("Timeout, deleting controller: '%s'\n", key)
-	delete(timers, key)
-}
-
 func AddController(controller Controller) bool {
 	key := controller.Address
 	val, exists := timers[key]
 	duration := time.Second * time.Duration(viper.GetInt("lighthouse.controller_timeout"))
 	if exists {
 		val.timer.Reset(duration)
-		fmt.Printf("Timer reset for controller: '%s'\n", controller.Address)
+		log.Println("[Controller] Reset timer -->", controller, duration)
 		return true
 	} else {
 		timer := time.NewTimer(duration)
@@ -43,11 +38,11 @@ func AddController(controller Controller) bool {
 			timer:      timer,
 			controller: controller,
 		}
-		fmt.Printf("Controller added: '%s'\n", controller.Address)
-		// Start a goroutine to wait for the timer to expire
+		log.Println("[Controller] New -->", controller)
 		go func() {
 			<-timer.C
-			DeleteController(key)
+			delete(timers, key)
+			log.Println("[Controller] Delete -->", controller)
 		}()
 		return false
 	}

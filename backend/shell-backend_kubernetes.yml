@@ -57,8 +57,7 @@ data:
       client_id: shell-backend
       client_secret: "secret"
       realm: icos-dev
-      username: "admin"
-      password: "password"
 
     components: 
       job_manager: http://jobmanager-service:8080
+      aggregator: http://aggregator:8080

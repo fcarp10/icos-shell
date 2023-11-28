@@ -35,6 +35,9 @@ components:
   # JobManager settings, needed to be able to manage deployments and jobs in ICOS
   job_manager:
     server: http://jobmanager-service:8080
+  
+  aggregator:
+    server: http://aggregator:8080
 
 podAnnotations: {}
 

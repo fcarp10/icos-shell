@@ -3,7 +3,6 @@ package shellbackend
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/Nerzal/gocloak/v13"
 	"github.com/spf13/viper"
@@ -19,7 +18,6 @@ import (
 func receiveAndValidateAccessToken(ctx context.Context, apiKey string) (ImplResponse, string, error) {
 	// Implementation of Keycloak authentication with Token
 	client := gocloak.NewClient(viper.GetString("keycloak.server"))
-	fmt.Println("this should be the config file : " + viper.ConfigFileUsed())
 
 	// read refresh token from apiKey, which is just the access_token part of the token
 	refresh_token := apiKey
