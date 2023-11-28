@@ -69,7 +69,7 @@ null (empty response body)
 
 <a name="getDeploymentById"></a>
 # **getDeploymentById**
-> Deployment getDeploymentById(deploymentId, api\_key)
+> Map getDeploymentById(deploymentId, api\_key)
 
 Find deployment by ID
 
@@ -84,7 +84,7 @@ Find deployment by ID
 
 ### Return type
 
-[**Deployment**](../Models/Deployment.md)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 
@@ -97,7 +97,7 @@ Find deployment by ID
 
 <a name="getDeployments"></a>
 # **getDeployments**
-> List getDeployments(api\_key)
+> Map getDeployments(api\_key)
 
 Returns a list of deployments
 
@@ -111,7 +111,7 @@ Returns a list of deployments
 
 ### Return type
 
-[**List**](../Models/Deployment.md)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 

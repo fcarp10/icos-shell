@@ -10,7 +10,7 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 <a name="getResourceById"></a>
 # **getResourceById**
-> Resource getResourceById(resourceId)
+> Map getResourceById(resourceId)
 
 Find resource by ID
 
@@ -24,7 +24,7 @@ Find resource by ID
 
 ### Return type
 
-[**Resource**](../Models/Resource.md)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 
@@ -37,18 +37,21 @@ Find resource by ID
 
 <a name="getResources"></a>
 # **getResources**
-> List getResources()
+> Map getResources(api\_key)
 
 Returns a list of resources
 
     Returns a list of resources
 
 ### Parameters
-This endpoint does not need any parameter.
+
+|Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
-[**List**](../Models/Resource.md)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 

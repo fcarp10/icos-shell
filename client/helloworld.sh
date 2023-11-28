@@ -67,6 +67,8 @@ if [[ $RESPONSE == "201" ]]; then
     log "DONE" "Deployment added to the controller successfully" "$COMPONENTS"
 elif [[ $RESPONSE == "202" ]]; then
     log "INFO" "Deployment already exists in the controller" "$COMPONENTS"
+elif [[ $RESPONSE == "200" ]]; then
+    log "WARN" "Wrong response code from the controller" "$COMPONENTS"
 else
     log "FAIL" "Error while trying to add a deployment to the controller" "$COMPONENTS"
 fi
