@@ -93,8 +93,10 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                type: object
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
           description: successful operation
       summary: Returns a list of deployments
       tags:
@@ -143,8 +145,7 @@ paths:
         name: deploymentId
         required: true
         schema:
-          format: int64
-          type: integer
+          type: string
         style: simple
       - explode: false
         in: header
@@ -169,8 +170,7 @@ paths:
         name: deploymentId
         required: true
         schema:
-          format: int64
-          type: integer
+          type: string
         style: simple
       - explode: false
         in: header
@@ -204,8 +204,7 @@ paths:
         name: deploymentId
         required: true
         schema:
-          format: int64
-          type: integer
+          type: string
         style: simple
       - explode: false
         in: header

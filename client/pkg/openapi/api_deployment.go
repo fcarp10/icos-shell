@@ -148,7 +148,7 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 type ApiDeleteDeploymentByIdRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
-	deploymentId int64
+	deploymentId string
 	apiKey *string
 }
 
@@ -170,7 +170,7 @@ Deletes a deployment
  @param deploymentId ID of deployment that needs to be deleted
  @return ApiDeleteDeploymentByIdRequest
 */
-func (a *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64) ApiDeleteDeploymentByIdRequest {
+func (a *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId string) ApiDeleteDeploymentByIdRequest {
 	return ApiDeleteDeploymentByIdRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -263,7 +263,7 @@ func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeployment
 type ApiGetDeploymentByIdRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
-	deploymentId int64
+	deploymentId string
 	apiKey *string
 }
 
@@ -285,7 +285,7 @@ Returns a single deployment
  @param deploymentId ID of deployment to return
  @return ApiGetDeploymentByIdRequest
 */
-func (a *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64) ApiGetDeploymentByIdRequest {
+func (a *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId string) ApiGetDeploymentByIdRequest {
 	return ApiGetDeploymentByIdRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -397,7 +397,7 @@ func (r ApiGetDeploymentsRequest) ApiKey(apiKey string) ApiGetDeploymentsRequest
 	return r
 }
 
-func (r ApiGetDeploymentsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+func (r ApiGetDeploymentsRequest) Execute() ([]map[string]interface{}, *http.Response, error) {
 	return r.ApiService.GetDeploymentsExecute(r)
 }
 
@@ -417,13 +417,13 @@ func (a *DeploymentAPIService) GetDeployments(ctx context.Context) ApiGetDeploym
 }
 
 // Execute executes the request
-//  @return map[string]interface{}
-func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest) (map[string]interface{}, *http.Response, error) {
+//  @return []map[string]interface{}
+func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest) ([]map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  map[string]interface{}
+		localVarReturnValue  []map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeployments")
@@ -511,7 +511,7 @@ func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest)
 type ApiUpdateDeploymentRequest struct {
 	ctx context.Context
 	ApiService *DeploymentAPIService
-	deploymentId int64
+	deploymentId string
 	body *map[string]interface{}
 	apiKey *string
 }
@@ -539,7 +539,7 @@ Updates a deployment
  @param deploymentId ID of deployment that needs to be updated
  @return ApiUpdateDeploymentRequest
 */
-func (a *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64) ApiUpdateDeploymentRequest {
+func (a *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId string) ApiUpdateDeploymentRequest {
 	return ApiUpdateDeploymentRequest{
 		ApiService: a,
 		ctx: ctx,

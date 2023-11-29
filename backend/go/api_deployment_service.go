@@ -13,10 +13,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"os"
-	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -32,21 +29,6 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 	return &DeploymentAPIService{}
 }
 
-func prepareToken(ctx context.Context, apiKey string, req *http.Request) *http.Request {
-	_, authToken, _ := receiveAndValidateAccessToken(ctx, apiKey)
-	authToken = "Bearer " + authToken
-	req.Header.Add("Authorization", authToken)
-	return req
-}
-
-func errorConnect(resp *http.Response, err error) (ImplResponse, error) {
-	fmt.Fprintf(os.Stderr, "%v\n", err)
-	if resp != nil {
-		return Response(500, resp.Body), nil
-	}
-	return Response(500, "Error while connecting to the component"), nil
-}
-
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
@@ -60,18 +42,16 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
-			return Response(resp.StatusCode, "Deployment successfully created!"), nil
-		} else if resp.StatusCode == 405 {
-			return Response(resp.StatusCode, "Invalid input"), nil
+			return Response(resp.StatusCode, readResponse(resp)), nil
 		} else {
-			return Response(resp.StatusCode, resp.Body), nil
+			return unexpectedCode(resp.StatusCode)
 		}
 	}
 }
 
 // DeleteDeploymentById - Deletes a deployment
-func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId int64, apiKey string) (ImplResponse, error) {
-	req, _ := http.NewRequestWithContext(ctx, http.MethodDelete, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+strconv.FormatInt(deploymentId, 10), nil)
+func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId string, apiKey string) (ImplResponse, error) {
+	req, _ := http.NewRequestWithContext(ctx, http.MethodDelete, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, nil)
 	req = prepareToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -79,22 +59,17 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
-		responseString := "Unexpected status code received"
-		if resp.StatusCode == 204 {
-			responseString = "No deployments found"
-		} else if resp.StatusCode == 405 {
-			responseString = "Invalid input"
+		if resp.StatusCode == 200 {
+			return Response(resp.StatusCode, readResponse(resp)), nil
 		} else {
-			fmt.Fprintf(os.Stderr, "%v\n", responseString)
-			return Response(resp.StatusCode, resp.Body), nil
+			return unexpectedCode(resp.StatusCode)
 		}
-		return Response(resp.StatusCode, responseString), nil
 	}
 }
 
 // GetDeploymentById - Find deployment by ID
-func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId int64, apiKey string) (ImplResponse, error) {
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+strconv.FormatInt(deploymentId, 10), nil)
+func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId string, apiKey string) (ImplResponse, error) {
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, nil)
 	req = prepareToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -102,19 +77,9 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 200 {
-			resBody := resp.Body
-			resp.Body.Close()
-			return Response(resp.StatusCode, resBody), nil
-		} else if resp.StatusCode == 204 {
-			resp.Body.Close()
-			return Response(resp.StatusCode, "No deployments found"), nil
-		} else if resp.StatusCode == 405 {
-			resp.Body.Close()
-			return Response(resp.StatusCode, "Invalid input"), nil
+			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
 		} else {
-			resBody := resp.Body
-			resp.Body.Close()
-			return Response(resp.StatusCode, resBody), nil
+			return unexpectedCode(resp.StatusCode)
 		}
 	}
 }
@@ -129,42 +94,27 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 200 {
-			resBody := resp.Body
-			resp.Body.Close()
-			return Response(resp.StatusCode, resBody), nil
-		} else if resp.StatusCode == 405 {
-			resp.Body.Close()
-			return Response(resp.StatusCode, "Invalid input"), nil
+			return Response(resp.StatusCode, unmarshalArrayResponse(resp)), nil
 		} else {
-			resBody := resp.Body
-			resp.Body.Close()
-			return Response(resp.StatusCode, resBody), nil
+			return unexpectedCode(resp.StatusCode)
 		}
 	}
 }
 
 // UpdateDeployment - Updates a deployment
-func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId int64, body map[string]interface{}, apiKey string) (ImplResponse, error) {
+func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId string, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPut, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+strconv.FormatInt(deploymentId, 10), bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPut, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, bytes.NewBuffer(jsonData))
 	req = prepareToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
-		responseString := "Unexpected status code received"
-		if resp.StatusCode == 204 {
-			responseString = "No deployments found"
-		} else if resp.StatusCode == 405 {
-			responseString = "Invalid input"
+		if resp.StatusCode == 200 {
+			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
 		} else {
-			fmt.Fprintf(os.Stderr, "%v\n", responseString)
-			resBody := resp.Body
-			resp.Body.Close()
-			return Response(resp.StatusCode, resBody), nil
+			return unexpectedCode(resp.StatusCode)
 		}
-		resp.Body.Close()
-		return Response(resp.StatusCode, responseString), nil
 	}
 }

@@ -4,7 +4,6 @@ go/api_controller.go
 go/api_default.go
 go/api_deployment.go
 go/api_resource.go
-go/api_resource_service.go
 go/api_user.go
 go/error.go
 go/helpers.go

@@ -31,14 +31,14 @@ to quickly create a Cobra application.`,
 			}
 			cli.CreateDeployment(fileDescriptor)
 		} else if cmd.Parent().Use == "get" {
-			specificId, _ := cmd.Flags().GetInt64("id")
-			if specificId != 0 {
+			specificId, _ := cmd.Flags().GetString("id")
+			if specificId != "" {
 				cli.GetDeploymentById(specificId)
 			} else {
 				cli.GetDeployment()
 			}
 		} else if cmd.Parent().Use == "update" {
-			specificId, _ := cmd.Flags().GetInt64("id")
+			specificId, _ := cmd.Flags().GetString("id")
 			fileDescriptorString, _ := cmd.Flags().GetString("file")
 			fileDescriptor, err := os.ReadFile(fileDescriptorString)
 			if err != nil {
@@ -46,7 +46,7 @@ to quickly create a Cobra application.`,
 			}
 			cli.UpdateDeployment(specificId, fileDescriptor)
 		} else if cmd.Parent().Use == "delete" {
-			specificId, _ := cmd.Flags().GetInt64("id")
+			specificId, _ := cmd.Flags().GetString("id")
 			cli.DeleteDeployment(specificId)
 		}
 	},
@@ -65,8 +65,8 @@ func init() {
 
 	createDeploymentCmd.PersistentFlags().StringP("file", "", "", "App descriptor file")
 	updateDeploymentCmd.PersistentFlags().StringP("file", "", "", "App descriptor file")
-	getDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
-	updateDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
-	deleteDeploymentCmd.PersistentFlags().Int64P("id", "", 0, "ID of the deployment")
+	getDeploymentCmd.PersistentFlags().StringP("id", "", "", "ID of the deployment")
+	updateDeploymentCmd.PersistentFlags().StringP("id", "", "", "ID of the deployment")
+	deleteDeploymentCmd.PersistentFlags().StringP("id", "", "", "ID of the deployment")
 
 }

@@ -80,10 +80,10 @@ type DefaultAPIServicer interface {
 // and updated with the logic required for the API.
 type DeploymentAPIServicer interface { 
 	CreateDeployment(context.Context, map[string]interface{}, string) (ImplResponse, error)
-	DeleteDeploymentById(context.Context, int64, string) (ImplResponse, error)
-	GetDeploymentById(context.Context, int64, string) (ImplResponse, error)
+	DeleteDeploymentById(context.Context, string, string) (ImplResponse, error)
+	GetDeploymentById(context.Context, string, string) (ImplResponse, error)
 	GetDeployments(context.Context, string) (ImplResponse, error)
-	UpdateDeployment(context.Context, int64, map[string]interface{}, string) (ImplResponse, error)
+	UpdateDeployment(context.Context, string, map[string]interface{}, string) (ImplResponse, error)
 }
 
 

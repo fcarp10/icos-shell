@@ -99,7 +99,7 @@ import (
 )
 
 func main() {
-    deploymentId := int64(789) // int64 | ID of deployment that needs to be deleted
+    deploymentId := "deploymentId_example" // string | ID of deployment that needs to be deleted
     apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -118,7 +118,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**deploymentId** | **int64** | ID of deployment that needs to be deleted | 
+**deploymentId** | **string** | ID of deployment that needs to be deleted | 
 
 ### Other Parameters
 
@@ -169,7 +169,7 @@ import (
 )
 
 func main() {
-    deploymentId := int64(789) // int64 | ID of deployment to return
+    deploymentId := "deploymentId_example" // string | ID of deployment to return
     apiKey := "apiKey_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -190,7 +190,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**deploymentId** | **int64** | ID of deployment to return | 
+**deploymentId** | **string** | ID of deployment to return | 
 
 ### Other Parameters
 
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ## GetDeployments
 
-> map[string]interface{} GetDeployments(ctx).ApiKey(apiKey).Execute()
+> []map[string]interface{} GetDeployments(ctx).ApiKey(apiKey).Execute()
 
 Returns a list of deployments
 
@@ -250,7 +250,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.GetDeployments``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetDeployments`: map[string]interface{}
+    // response from `GetDeployments`: []map[string]interface{}
     fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.GetDeployments`: %v\n", resp)
 }
 ```
@@ -270,7 +270,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**map[string]interface{}**
+[**[]map[string]interface{}**](map.md)
 
 ### Authorization
 
@@ -307,7 +307,7 @@ import (
 )
 
 func main() {
-    deploymentId := int64(789) // int64 | ID of deployment that needs to be updated
+    deploymentId := "deploymentId_example" // string | ID of deployment that needs to be updated
     body := map[string]interface{}{ ... } // map[string]interface{} | 
     apiKey := "apiKey_example" // string |  (optional)
 
@@ -327,7 +327,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**deploymentId** | **int64** | ID of deployment that needs to be updated | 
+**deploymentId** | **string** | ID of deployment that needs to be updated | 
 
 ### Other Parameters
 

@@ -101,12 +101,9 @@ func (c *DeploymentAPIController) CreateDeployment(w http.ResponseWriter, r *htt
 // DeleteDeploymentById - Deletes a deployment
 func (c *DeploymentAPIController) DeleteDeploymentById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseNumericParameter[int64](
-		params["deploymentId"],
-		WithRequire[int64](parseInt64),
-	)
-	if err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+	deploymentIdParam := params["deploymentId"]
+	if deploymentIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"deploymentId"}, nil)
 		return
 	}
 	apiKeyParam := r.Header.Get("api_key")
@@ -123,12 +120,9 @@ func (c *DeploymentAPIController) DeleteDeploymentById(w http.ResponseWriter, r 
 // GetDeploymentById - Find deployment by ID
 func (c *DeploymentAPIController) GetDeploymentById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseNumericParameter[int64](
-		params["deploymentId"],
-		WithRequire[int64](parseInt64),
-	)
-	if err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+	deploymentIdParam := params["deploymentId"]
+	if deploymentIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"deploymentId"}, nil)
 		return
 	}
 	apiKeyParam := r.Header.Get("api_key")
@@ -158,12 +152,9 @@ func (c *DeploymentAPIController) GetDeployments(w http.ResponseWriter, r *http.
 // UpdateDeployment - Updates a deployment
 func (c *DeploymentAPIController) UpdateDeployment(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	deploymentIdParam, err := parseNumericParameter[int64](
-		params["deploymentId"],
-		WithRequire[int64](parseInt64),
-	)
-	if err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+	deploymentIdParam := params["deploymentId"]
+	if deploymentIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"deploymentId"}, nil)
 		return
 	}
 	bodyParam := map[string]interface{}{}
