@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/hokaccha/go-prettyjson"
 )
 
 func printError(resp *http.Response, err error) bool {
@@ -28,7 +29,7 @@ func printResponseSimple(resp *http.Response, err error) {
 func printPrettyJSON(object map[string]interface{}, resp *http.Response, err error) {
 	if !printError(resp, err) {
 		if resp.StatusCode == 200 || resp.StatusCode == 201 {
-			prettyJSON, err := json.MarshalIndent(object, "", "  ")
+			prettyJSON, err := prettyjson.Marshal(object)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, "Error marshaling JSON:", err)
 				return

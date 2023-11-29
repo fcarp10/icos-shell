@@ -93,7 +93,7 @@ func initConfig() {
 		token := viper.GetString("auth_token")
 		token = strings.ReplaceAll(token, "\n", "")
 		viper.Set("auth_token", token)
-		fmt.Fprintln(os.Stderr, "Token found:", viper.GetString("auth_token"))
+		fmt.Fprintln(os.Stderr, "Token found:", "..."+token[len(token)-50:len(token)-1])
 		openapi.Init(viper.GetString("controller"))
 	}
 }

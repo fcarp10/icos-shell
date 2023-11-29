@@ -112,7 +112,7 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 200 {
-			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
+			return Response(resp.StatusCode, readResponse(resp)), nil
 		} else {
 			return unexpectedCode(resp.StatusCode)
 		}
