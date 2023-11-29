@@ -33,7 +33,7 @@ func printPrettyJSON(object map[string]interface{}, resp *http.Response, err err
 				fmt.Fprintln(os.Stderr, "Error marshaling JSON:", err)
 				return
 			} else {
-				fmt.Fprintln(os.Stdout, "Results:", string(prettyJSON))
+				fmt.Fprintln(os.Stdout, string(prettyJSON))
 			}
 		} else {
 			fmt.Fprintln(os.Stderr, resp.Body)
