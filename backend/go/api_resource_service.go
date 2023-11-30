@@ -48,7 +48,7 @@ func (s *ResourceAPIService) GetResourceById(ctx context.Context, resourceId int
 // GetResources - Returns a list of resources
 func (s *ResourceAPIService) GetResources(ctx context.Context, apiKey string) (ImplResponse, error) {
 	req, _ := http.NewRequestWithContext(ctx, "GET", viper.GetString("components.aggregator.server")+viper.GetString("components.aggregator.path"), nil)
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

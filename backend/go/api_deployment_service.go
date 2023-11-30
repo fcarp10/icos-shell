@@ -33,7 +33,7 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
 	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs_create"), bytes.NewBuffer(jsonData))
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	req.Header.Add("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -51,7 +51,7 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 // DeleteDeploymentById - Deletes a deployment
 func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploymentId string, apiKey string) (ImplResponse, error) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodDelete, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, nil)
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -68,7 +68,7 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 // GetDeploymentById - Find deployment by ID
 func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deploymentId string, apiKey string) (ImplResponse, error) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, nil)
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -85,7 +85,7 @@ func (s *DeploymentAPIService) GetDeploymentById(ctx context.Context, deployment
 // GetDeployments - Returns a list of deployments
 func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string) (ImplResponse, error) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs"), nil)
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -103,7 +103,7 @@ func (s *DeploymentAPIService) GetDeployments(ctx context.Context, apiKey string
 func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentId string, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
 	req, _ := http.NewRequestWithContext(ctx, http.MethodPut, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs")+"/"+deploymentId, bytes.NewBuffer(jsonData))
-	req = prepareToken(ctx, apiKey, req)
+	req = addBearerToToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

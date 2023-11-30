@@ -3,17 +3,56 @@ package shellbackend
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/Nerzal/gocloak/v13"
+	"github.com/spf13/viper"
 )
 
-func prepareToken(ctx context.Context, apiKey string, req *http.Request) *http.Request {
-	_, authToken, _ := receiveAndValidateAccessToken(ctx, apiKey)
-	authToken = "Bearer " + authToken
-	req.Header.Add("Authorization", authToken)
+// receiveAndValidateAccessToken - Check if refresh token is valid, if so, generate a new access token
+//   - input: refresh token (apiKey)
+//   - returns: access token
+func receiveAndValidateAccessToken(ctx context.Context, apiKey string) (string, error) {
+	if apiKey == "" {
+		return "", errors.New("token is empty")
+	}
+	if string(apiKey[0]) == "\"" {
+		apiKey = apiKey[1 : len(apiKey)-1] // remove special characters from token
+	}
+	client := gocloak.NewClient(viper.GetString("keycloak.server"))
+	rptResult, err := client.RetrospectToken(ctx, apiKey, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
+	if err != nil {
+		return "", errors.New("inspection of token failed")
+	}
+	if !*rptResult.Active {
+		return "", errors.New("token is not active")
+	} else {
+		access_token, err := client.RefreshToken(ctx, apiKey, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
+		if err != nil {
+			return "", errors.New("wrong or expired refresh token")
+		} else {
+			access_token_rptResult, err := client.RetrospectToken(ctx, access_token.AccessToken, viper.GetString("keycloak.client_id"), viper.GetString("keycloak.client_secret"), viper.GetString("keycloak.realm"))
+			if err != nil {
+				return "", errors.New("inspection of access token failed")
+			}
+			if !*access_token_rptResult.Active {
+				return "", errors.New("access token is not active")
+			} else {
+				return access_token.AccessToken, nil
+			}
+		}
+	}
+}
+
+func addBearerToToken(ctx context.Context, apiKey string, req *http.Request) *http.Request {
+	accessToken, _ := receiveAndValidateAccessToken(ctx, apiKey)
+	accessToken = "Bearer " + accessToken
+	req.Header.Add("Authorization", accessToken)
 	return req
 }
 
