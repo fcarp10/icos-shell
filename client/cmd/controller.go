@@ -13,12 +13,7 @@ import (
 var controllerCmd = &cobra.Command{
 	Use:   "controller",
 	Short: "Controller resource",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  `ICOS controller model.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if cmd.Parent().Use == "add" {
 			controllerName, _ := cmd.Flags().GetString("name")

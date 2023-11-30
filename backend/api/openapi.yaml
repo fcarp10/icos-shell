@@ -120,6 +120,11 @@ paths:
         required: true
       responses:
         "201":
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
           description: Deployment created
         "401":
           description: API key is missing or invalid
@@ -156,6 +161,11 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
           description: successful operation
       summary: Deletes a deployment
       tags:
@@ -221,6 +231,11 @@ paths:
         required: true
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
           description: Deployment updated
         "405":
           description: Invalid input

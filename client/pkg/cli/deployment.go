@@ -17,8 +17,8 @@ func CreateDeployment(yamlFile []byte) {
 		fmt.Fprintf(os.Stderr, "Error unmarshaling YAML: %v", err)
 	}
 	token := viper.GetString("auth_token")
-	resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).ApiKey(token).Body(body).Execute()
-	printResponseSimple(resp, err)
+	deployment, resp, err := openapi.Client.DeploymentAPI.CreateDeployment(context.Background()).ApiKey(token).Body(body).Execute()
+	printPrettyJSON(deployment, resp, err)
 }
 
 func UpdateDeployment(id string, yamlFile []byte) {
@@ -28,8 +28,8 @@ func UpdateDeployment(id string, yamlFile []byte) {
 		fmt.Fprintf(os.Stderr, "Error unmarshaling YAML: %v", err)
 	}
 	token := viper.GetString("auth_token")
-	resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).ApiKey(token).Body(body).Execute()
-	printResponseSimple(resp, err)
+	deployment, resp, err := openapi.Client.DeploymentAPI.UpdateDeployment(context.Background(), id).ApiKey(token).Body(body).Execute()
+	printPrettyJSON(deployment, resp, err)
 }
 
 func GetDeployment() {
@@ -46,6 +46,6 @@ func GetDeploymentById(id string) {
 
 func DeleteDeployment(id string) {
 	token := viper.GetString("auth_token")
-	resp, err := openapi.Client.DeploymentAPI.DeleteDeploymentById(context.Background(), id).ApiKey(token).Execute()
-	printResponseSimple(resp, err)
+	deployment, resp, err := openapi.Client.DeploymentAPI.DeleteDeploymentById(context.Background(), id).ApiKey(token).Execute()
+	printPrettyJSON(deployment, resp, err)
 }

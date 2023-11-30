@@ -40,7 +40,7 @@ func (r ApiCreateDeploymentRequest) ApiKey(apiKey string) ApiCreateDeploymentReq
 	return r
 }
 
-func (r ApiCreateDeploymentRequest) Execute() (*http.Response, error) {
+func (r ApiCreateDeploymentRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.CreateDeploymentExecute(r)
 }
 
@@ -60,16 +60,18 @@ func (a *DeploymentAPIService) CreateDeployment(ctx context.Context) ApiCreateDe
 }
 
 // Execute executes the request
-func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequest) (*http.Response, error) {
+//  @return map[string]interface{}
+func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.CreateDeployment")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/deployment/"
@@ -78,7 +80,7 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.body == nil {
-		return nil, reportError("body is required and must be specified")
+		return localVarReturnValue, nil, reportError("body is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -91,7 +93,7 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -119,19 +121,19 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -139,10 +141,19 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiDeleteDeploymentByIdRequest struct {
@@ -157,7 +168,7 @@ func (r ApiDeleteDeploymentByIdRequest) ApiKey(apiKey string) ApiDeleteDeploymen
 	return r
 }
 
-func (r ApiDeleteDeploymentByIdRequest) Execute() (*http.Response, error) {
+func (r ApiDeleteDeploymentByIdRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.DeleteDeploymentByIdExecute(r)
 }
 
@@ -179,16 +190,18 @@ func (a *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 }
 
 // Execute executes the request
-func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeploymentByIdRequest) (*http.Response, error) {
+//  @return map[string]interface{}
+func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeploymentByIdRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.DeleteDeploymentById")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/deployment/{deploymentId}"
@@ -208,7 +221,7 @@ func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeployment
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -234,19 +247,19 @@ func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeployment
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -254,10 +267,19 @@ func (a *DeploymentAPIService) DeleteDeploymentByIdExecute(r ApiDeleteDeployment
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetDeploymentByIdRequest struct {
@@ -526,7 +548,7 @@ func (r ApiUpdateDeploymentRequest) ApiKey(apiKey string) ApiUpdateDeploymentReq
 	return r
 }
 
-func (r ApiUpdateDeploymentRequest) Execute() (*http.Response, error) {
+func (r ApiUpdateDeploymentRequest) Execute() (map[string]interface{}, *http.Response, error) {
 	return r.ApiService.UpdateDeploymentExecute(r)
 }
 
@@ -548,16 +570,18 @@ func (a *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 }
 
 // Execute executes the request
-func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequest) (*http.Response, error) {
+//  @return map[string]interface{}
+func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.UpdateDeployment")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/deployment/{deploymentId}"
@@ -567,7 +591,7 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.body == nil {
-		return nil, reportError("body is required and must be specified")
+		return localVarReturnValue, nil, reportError("body is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -580,7 +604,7 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -608,19 +632,19 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -628,8 +652,17 @@ func (a *DeploymentAPIService) UpdateDeploymentExecute(r ApiUpdateDeploymentRequ
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

@@ -37,12 +37,11 @@ func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[st
 	req.Header.Add("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	resp.Body.Close()
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 201 {
-			return Response(resp.StatusCode, readResponse(resp)), nil
+			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
 		} else {
 			return unexpectedCode(resp.StatusCode)
 		}
@@ -55,12 +54,11 @@ func (s *DeploymentAPIService) DeleteDeploymentById(ctx context.Context, deploym
 	req = prepareToken(ctx, apiKey, req)
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	resp.Body.Close()
 	if err != nil {
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 200 {
-			return Response(resp.StatusCode, readResponse(resp)), nil
+			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
 		} else {
 			return unexpectedCode(resp.StatusCode)
 		}
@@ -112,7 +110,7 @@ func (s *DeploymentAPIService) UpdateDeployment(ctx context.Context, deploymentI
 		return errorConnect(resp, err)
 	} else {
 		if resp.StatusCode == 200 {
-			return Response(resp.StatusCode, readResponse(resp)), nil
+			return Response(resp.StatusCode, unmarshalResponse(resp)), nil
 		} else {
 			return unexpectedCode(resp.StatusCode)
 		}

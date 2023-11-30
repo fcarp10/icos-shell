@@ -1,19 +1,19 @@
-## icos-shell get controller
+## icos-shell get resource
 
-Controller resource
+Resource model
 
 ### Synopsis
 
-ICOS controller model.
+ICOS resource model.
 
 ```
-icos-shell get controller [flags]
+icos-shell get resource [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for controller
+  -h, --help   help for resource
 ```
 
 ### Options inherited from parent commands

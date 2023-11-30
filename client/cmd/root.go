@@ -20,10 +20,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "icos-shell",
-	Short: "icos-shell - a CLI to interface the ICOS Shell",
-	Long: `icos-shell - a CLI to interface the ICOS Shell
-   
-The icos-shell can be used to modify or inspect resources in the ICOS controller from the terminal`,
+	Short: "icos-shell - CLI interface for ICOS",
+	Long:  `icos-shell - a CLI tool to interface with ICOS components`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if viper.GetString("controller") != "" {
 			openapi.Init(viper.GetString("controller"))

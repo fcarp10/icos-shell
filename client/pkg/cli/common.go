@@ -16,13 +16,13 @@ func printError(resp *http.Response, err error) bool {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return true
 	}
+	fmt.Fprintln(os.Stdout, resp.StatusCode)
 	return false
 }
 
 func printResponseSimple(resp *http.Response, err error) {
 	if !printError(resp, err) {
 		fmt.Fprintln(os.Stderr, resp.Body)
-		fmt.Fprintln(os.Stdout, resp.StatusCode)
 	}
 }
 
@@ -34,11 +34,10 @@ func printPrettyJSON(object map[string]interface{}, resp *http.Response, err err
 				fmt.Fprintln(os.Stderr, "Error marshaling JSON:", err)
 				return
 			} else {
-				fmt.Fprintln(os.Stdout, string(prettyJSON))
+				fmt.Fprintln(os.Stderr, string(prettyJSON))
 			}
 		} else {
 			fmt.Fprintln(os.Stderr, resp.Body)
-			fmt.Fprintln(os.Stdout, resp.StatusCode)
 		}
 	}
 }

@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateDeployment
 
-> CreateDeployment(ctx).Body(body).ApiKey(apiKey).Execute()
+> map[string]interface{} CreateDeployment(ctx).Body(body).ApiKey(apiKey).Execute()
 
 Creates a new deployment
 
@@ -38,11 +38,13 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Body(body).ApiKey(apiKey).Execute()
+    resp, r, err := apiClient.DeploymentAPI.CreateDeployment(context.Background()).Body(body).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.CreateDeployment``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
+    // response from `CreateDeployment`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.CreateDeployment`: %v\n", resp)
 }
 ```
 
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+**map[string]interface{}**
 
 ### Authorization
 
@@ -71,7 +73,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -80,7 +82,7 @@ Name | Type | Description  | Notes
 
 ## DeleteDeploymentById
 
-> DeleteDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
+> map[string]interface{} DeleteDeploymentById(ctx, deploymentId).ApiKey(apiKey).Execute()
 
 Deletes a deployment
 
@@ -104,11 +106,13 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).ApiKey(apiKey).Execute()
+    resp, r, err := apiClient.DeploymentAPI.DeleteDeploymentById(context.Background(), deploymentId).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.DeleteDeploymentById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
+    // response from `DeleteDeploymentById`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.DeleteDeploymentById`: %v\n", resp)
 }
 ```
 
@@ -132,7 +136,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+**map[string]interface{}**
 
 ### Authorization
 
@@ -141,7 +145,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -288,7 +292,7 @@ Name | Type | Description  | Notes
 
 ## UpdateDeployment
 
-> UpdateDeployment(ctx, deploymentId).Body(body).ApiKey(apiKey).Execute()
+> map[string]interface{} UpdateDeployment(ctx, deploymentId).Body(body).ApiKey(apiKey).Execute()
 
 Updates a deployment
 
@@ -313,11 +317,13 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    r, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Body(body).ApiKey(apiKey).Execute()
+    resp, r, err := apiClient.DeploymentAPI.UpdateDeployment(context.Background(), deploymentId).Body(body).ApiKey(apiKey).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DeploymentAPI.UpdateDeployment``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
+    // response from `UpdateDeployment`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `DeploymentAPI.UpdateDeployment`: %v\n", resp)
 }
 ```
 
@@ -342,7 +348,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+**map[string]interface{}**
 
 ### Authorization
 
@@ -351,7 +357,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

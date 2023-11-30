@@ -13,7 +13,7 @@ All URIs are relative to *http://localhost:8080/api/v3*
 
 <a name="createDeployment"></a>
 # **createDeployment**
-> createDeployment(body, api\_key)
+> Map createDeployment(body, api\_key)
 
 Creates a new deployment
 
@@ -28,7 +28,7 @@ Creates a new deployment
 
 ### Return type
 
-null (empty response body)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 
@@ -37,11 +37,11 @@ null (empty response body)
 ### HTTP request headers
 
 - **Content-Type**: application/json
-- **Accept**: Not defined
+- **Accept**: application/json
 
 <a name="deleteDeploymentById"></a>
 # **deleteDeploymentById**
-> deleteDeploymentById(deploymentId, api\_key)
+> Map deleteDeploymentById(deploymentId, api\_key)
 
 Deletes a deployment
 
@@ -51,12 +51,12 @@ Deletes a deployment
 
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **deploymentId** | **Long**| ID of deployment that needs to be deleted | [default to null] |
+| **deploymentId** | **String**| ID of deployment that needs to be deleted | [default to null] |
 | **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
-null (empty response body)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 
@@ -65,7 +65,7 @@ null (empty response body)
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 <a name="getDeploymentById"></a>
 # **getDeploymentById**
@@ -79,7 +79,7 @@ Find deployment by ID
 
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **deploymentId** | **Long**| ID of deployment to return | [default to null] |
+| **deploymentId** | **String**| ID of deployment to return | [default to null] |
 | **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
@@ -97,7 +97,7 @@ Find deployment by ID
 
 <a name="getDeployments"></a>
 # **getDeployments**
-> Map getDeployments(api\_key)
+> List getDeployments(api\_key)
 
 Returns a list of deployments
 
@@ -111,7 +111,7 @@ Returns a list of deployments
 
 ### Return type
 
-[**Map**](../Models/AnyType.md)
+[**List**](../Models/map.md)
 
 ### Authorization
 
@@ -124,7 +124,7 @@ Returns a list of deployments
 
 <a name="updateDeployment"></a>
 # **updateDeployment**
-> updateDeployment(deploymentId, body, api\_key)
+> Map updateDeployment(deploymentId, body, api\_key)
 
 Updates a deployment
 
@@ -134,13 +134,13 @@ Updates a deployment
 
 |Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **deploymentId** | **Long**| ID of deployment that needs to be updated | [default to null] |
+| **deploymentId** | **String**| ID of deployment that needs to be updated | [default to null] |
 | **body** | **Object**|  | |
 | **api\_key** | **String**|  | [optional] [default to null] |
 
 ### Return type
 
-null (empty response body)
+[**Map**](../Models/AnyType.md)
 
 ### Authorization
 
@@ -149,5 +149,5 @@ null (empty response body)
 ### HTTP request headers
 
 - **Content-Type**: application/json
-- **Accept**: Not defined
+- **Accept**: application/json
 

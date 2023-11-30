@@ -14,13 +14,8 @@ import (
 // docsCmd represents the docs command
 var docsCmd = &cobra.Command{
 	Use:   "docs",
-	Short: "Generates the documentation of icos-shell in markdown files",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Docs in markdown format",
+	Long:  `Generates the documentation of the icos-shell in markdown format.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		pathDocs, _ := cmd.Flags().GetString("path")
 		err := os.MkdirAll(pathDocs, 0755)
