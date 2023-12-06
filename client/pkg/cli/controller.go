@@ -18,14 +18,15 @@ func AddController(name string, address string) {
 	printResponseSimple(resp, err)
 }
 
-func GetController() {
+func GetController() string {
 	controllers, resp, err := openapi.Client.ControllerAPI.GetControllers(context.Background()).Execute()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	} else {
 		if resp.StatusCode == 200 {
-			controllers_json, _ := json.Marshal(controllers)
+			controllers_json, _ := json.MarshalIndent(controllers, "", "  ")
 			fmt.Fprintln(os.Stdout, string(controllers_json))
+			return controllers[0].Address // for now, return the address of first controller (TBD)
 		} else if resp.StatusCode == 204 {
 			fmt.Fprintln(os.Stderr, "No controllers found")
 			fmt.Fprintln(os.Stdout, resp.StatusCode)
@@ -33,4 +34,5 @@ func GetController() {
 			fmt.Fprintln(os.Stderr, "Unexpected status code received: ", resp.StatusCode)
 		}
 	}
+	return ""
 }

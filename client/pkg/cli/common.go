@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/hokaccha/go-prettyjson"
+	"github.com/spf13/viper"
 )
 
 func printError(resp *http.Response, err error) bool {
@@ -46,4 +48,11 @@ func printArrayPrettyJSON(object []map[string]interface{}, resp *http.Response, 
 	for _, value := range object {
 		printPrettyJSON(value, resp, err)
 	}
+}
+
+func CleanToken() {
+	token := viper.GetString("auth_token")
+	token = strings.ReplaceAll(token, "\n", "")
+	fmt.Fprintln(os.Stderr, "Token found:", "..."+token[len(token)-50:len(token)-1])
+	viper.Set("auth_token", token)
 }

@@ -24,9 +24,11 @@ func LoginUser() {
 				viper.Set("auth_token", token)
 				if err := viper.WriteConfig(); err != nil {
 					panic(fmt.Errorf("fatal error writing config file %s", err))
+				} else {
+					fmt.Fprintln(os.Stderr, "Token received and added to the config file")
 				}
 			} else {
-				fmt.Fprintln(os.Stderr, "The token received is empty")
+				fmt.Fprintln(os.Stderr, "Token received is empty")
 			}
 		} else {
 			fmt.Fprintln(os.Stderr, "Wrong status code received")

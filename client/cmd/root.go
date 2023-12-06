@@ -6,7 +6,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"shellclient/pkg/cli"
 	"shellclient/pkg/openapi"
@@ -80,18 +79,31 @@ func initConfig() {
 		fmt.Fprintln(os.Stderr, "Config:", viper.ConfigFileUsed())
 	}
 
+	// if controller not defined, ask for one to the lighthouse
 	if viper.GetString("controller") == "" {
-		fmt.Fprintln(os.Stderr, "Controller not defined in the config file, trying lighthouse instead...")
+		fmt.Fprintln(os.Stderr, "Controller not defined, asking lighthouse for a controller...")
 		openapi.Init(viper.GetString("lighthouse"))
+		controller := cli.GetController()
+		if controller != "" {
+			viper.Set("controller", controller)
+			if err := viper.WriteConfig(); err != nil {
+				panic(fmt.Errorf("fatal error writing config file %s", err))
+			} else {
+				fmt.Fprintln(os.Stderr, "Controller added to the config file, you can try your command again")
+			}
+		} else {
+			fmt.Fprintln(os.Stderr, "No controllers in the lighthouse either")
+		}
+		cli.CleanToken()
+		// if controller defined, but no token, try authentication
 	} else if viper.GetString("controller") != "" && viper.GetString("auth_token") == "" {
-		fmt.Fprintln(os.Stderr, "Controller is defined, but no token found")
+		fmt.Fprintln(os.Stderr, "Controller is defined, but no token found, trying to log in...")
 		openapi.Init(viper.GetString("controller"))
+		cli.LoginUser()
+		cli.CleanToken()
 	} else {
 		fmt.Fprintln(os.Stderr, "Controller:", viper.GetString("controller"))
-		token := viper.GetString("auth_token")
-		token = strings.ReplaceAll(token, "\n", "")
-		viper.Set("auth_token", token)
-		fmt.Fprintln(os.Stderr, "Token found:", "..."+token[len(token)-50:len(token)-1])
+		cli.CleanToken()
 		openapi.Init(viper.GetString("controller"))
 	}
 }
