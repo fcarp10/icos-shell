@@ -13,7 +13,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -32,7 +34,8 @@ func NewDeploymentAPIService() DeploymentAPIServicer {
 // CreateDeployment - Creates a new deployment
 func (s *DeploymentAPIService) CreateDeployment(ctx context.Context, body map[string]interface{}, apiKey string) (ImplResponse, error) {
 	jsonData, _ := json.Marshal(body)
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs_create"), bytes.NewBuffer(jsonData))
+	timestamp := fmt.Sprint(int32(time.Now().Unix()))
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, viper.GetString("components.job_manager.server")+viper.GetString("components.job_manager.path_jobs_create")+timestamp, bytes.NewBuffer(jsonData))
 	req = addBearerToToken(ctx, apiKey, req)
 	req.Header.Add("Content-Type", "application/json")
 	client := &http.Client{}
